@@ -1,0 +1,43 @@
+[
+  {
+    "id":"stenotrophomonas-maltophilia",
+    "canonical":"Stenotrophomonas maltophilia",
+    "ja":"ステノトロフォモナス・マルトフィリア",
+    "short":"S. maltophilia",
+    "aliases":["マルトフィリア","マルトフィーリア","ステノトロフォモナス","ステノトロモナス","すてのとろふぉもなす","まるとふぃりあ","S maltophilia","S.maltophilia"],
+    "tags":["GNR","ST","高K"],
+    "note":"content/notes/stenotrophomonas-maltophilia.md"
+  },
+  {
+    "id":"staphylococcus-aureus",
+    "canonical":"Staphylococcus aureus",
+    "ja":"黄色ブドウ球菌",
+    "short":"S. aureus",
+    "aliases":["黄色ブドウ","おうしょくぶどうきゅうきん","スタフィロコッカスアウレウス","スタフアウレウス","MSSA","MRSA","S aureus"],
+    "tags":["GPC clusters","菌血症"]
+  },
+  {
+    "id":"enterococcus",
+    "canonical":"Enterococcus spp.",
+    "ja":"腸球菌",
+    "short":"Enterococcus",
+    "aliases":["エンテロコッカス","ちょうきゅうきん","GPC chains"],
+    "tags":["GPC chains","胆道感染"]
+  },
+  {
+    "id":"candida",
+    "canonical":"Candida spp.",
+    "ja":"カンジダ",
+    "short":"Candida",
+    "aliases":["キャンディダ","カンディダ","酵母","yeast"],
+    "tags":["真菌","血流感染"]
+  },
+  {
+    "id":"pseudomonas-aeruginosa",
+    "canonical":"Pseudomonas aeruginosa",
+    "ja":"緑膿菌",
+    "short":"P. aeruginosa",
+    "aliases":["りょくのうきん","シュードモナス","シュードモナスアエルギノーサ","緑膿"],
+    "tags":["GNR","耐性"]
+  }
+]
