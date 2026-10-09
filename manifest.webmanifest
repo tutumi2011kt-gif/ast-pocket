@@ -1,0 +1,9 @@
+{
+  "name": "AST Pocket",
+  "short_name": "AST Pocket",
+  "description": "感染症・抗菌薬・AST学習の個人ナレッジベース",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f7fbff",
+  "theme_color": "#1374d1"
+}
