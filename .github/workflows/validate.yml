@@ -1,0 +1,17 @@
+name: Validate AST Pocket
+on:
+  push:
+  pull_request:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Validate JSON
+        run: |
+          node -e "JSON.parse(require('fs').readFileSync('data/organisms.json','utf8')); JSON.parse(require('fs').readFileSync('data/antibiotics.json','utf8')); JSON.parse(require('fs').readFileSync('content/index.json','utf8')); JSON.parse(require('fs').readFileSync('content/review/questions.json','utf8')); console.log('JSON OK')"
+      - name: Check required files
+        run: test -f index.html && test -f app.js && test -f styles.css
