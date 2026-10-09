@@ -1,0 +1,47 @@
+[
+  {
+    "id":"tmp-smx",
+    "generic":"スルファメトキサゾール・トリメトプリム",
+    "english":"trimethoprim-sulfamethoxazole",
+    "abbr":["ST","TMP-SMX"],
+    "brands":["バクタ","バクトラミン"],
+    "aliases":["ST合剤","エスティー合剤","すてぃー合剤","TMP SMX","トリメトプリムスルファメトキサゾール"],
+    "tags":["高K","腎機能","S. maltophilia"]
+  },
+  {
+    "id":"meropenem",
+    "generic":"メロペネム",
+    "english":"meropenem",
+    "abbr":["MEPM"],
+    "brands":["メロペン"],
+    "aliases":["めろぺねむ","メロペネン","メロペネム水和物"],
+    "tags":["カルバペネム","GNR"]
+  },
+  {
+    "id":"vancomycin",
+    "generic":"バンコマイシン",
+    "english":"vancomycin",
+    "abbr":["VCM"],
+    "brands":["塩酸バンコマイシン"],
+    "aliases":["ばんこまいしん","バンコ","VCM注"],
+    "tags":["TDM","MRSA"]
+  },
+  {
+    "id":"cefazolin",
+    "generic":"セファゾリン",
+    "english":"cefazolin",
+    "abbr":["CEZ"],
+    "brands":["セファメジン"],
+    "aliases":["せふぁぞりん","セファゾリンNa","セファゾリンナトリウム"],
+    "tags":["MSSA"]
+  },
+  {
+    "id":"levofloxacin",
+    "generic":"レボフロキサシン",
+    "english":"levofloxacin",
+    "abbr":["LVFX"],
+    "brands":["クラビット"],
+    "aliases":["れぼふろきさしん","レボフロキサシン水和物"],
+    "tags":["キノロン","S. maltophilia"]
+  }
+]
