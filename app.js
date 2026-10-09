@@ -2,6 +2,7 @@ const state={view:'home',query:'',filter:'all',notes:[],weekly:[],organisms:[],a
 const $=s=>document.querySelector(s); const app=$('#app');
 
 const icons={home:'⌂',search:'⌕',weekly:'▣',review:'▤',bug:'🦠',drug:'💊',infection:'🧫',culture:'🧪',ast:'👥'};
+let searchTimer=null;
 function normalize(s=''){
   s=s.normalize('NFKC').toLowerCase();
   s=s.replace(/[・･\s._\-\/()（）]+/g,'');
@@ -32,9 +33,52 @@ async function load(){
   render();
 }
 function brand(sub='感染症ナレッジ'){return `<div class="brand"><div><h1><span class="ast">AST</span> Pocket</h1><p>${sub}</p></div><div class="brand-mark">🩺</div></div>`}
-function searchBox(){return `<div class="searchbox"><span class="search-icon">⌕</span><input id="searchInput" value="${esc(state.query)}" placeholder="菌・抗菌薬・感染症を検索" autocomplete="off"/>${state.query?'<button class="clear-btn" id="clearSearch">×</button>':''}</div>`}
+function searchBox(){return `<div class="searchbox"><span class="search-icon">⌕</span><input id="searchInput" value="${esc(state.query)}" placeholder="菌・抗菌薬・感染症を検索" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"/>${state.query?'<button class="clear-btn" id="clearSearch">×</button>':''}</div>`}
 function nav(){return `<nav class="bottom-nav"><div class="inner">${[['home','Home'],['search','Search'],['weekly','Weekly'],['review','Review']].map(([v,l])=>`<button class="nav-btn ${state.view===v?'active':''}" data-nav="${v}"><span class="nav-icon">${icons[v]}</span>${l}</button>`).join('')}</div></nav><button class="fab" id="fab">＋</button>`}
-function bindCommon(){document.querySelectorAll('[data-nav]').forEach(b=>b.onclick=()=>{state.view=b.dataset.nav;state.query='';render()});$('#fab').onclick=openMemo;const inp=$('#searchInput');if(inp){inp.oninput=e=>{state.query=e.target.value;state.view='search';render(false);setTimeout(()=>{const i=$('#searchInput');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length)}},0)};$('#clearSearch')?.addEventListener('click',()=>{state.query='';render()})}}
+function bindCommon(){
+  document.querySelectorAll('[data-nav]').forEach(b=>b.onclick=()=>{clearTimeout(searchTimer);state.view=b.dataset.nav;state.query='';render()});
+  $('#fab').onclick=openMemo;
+  const inp=$('#searchInput');
+  if(inp){
+    let composing=false;
+    const scheduleSearch=()=>{
+      clearTimeout(searchTimer);
+      searchTimer=setTimeout(()=>{
+        if(composing)return;
+        state.view='search';
+        render(false);
+        setTimeout(()=>{
+          const i=$('#searchInput');
+          if(i){
+            i.focus();
+            const pos=i.value.length;
+            i.setSelectionRange(pos,pos);
+          }
+        },0);
+      },400);
+    };
+    inp.addEventListener('compositionstart',()=>{
+      composing=true;
+      clearTimeout(searchTimer);
+    });
+    inp.addEventListener('compositionend',e=>{
+      composing=false;
+      state.query=e.target.value;
+      scheduleSearch();
+    });
+    inp.addEventListener('input',e=>{
+      state.query=e.target.value;
+      state.view='search';
+      if(e.isComposing||composing)return;
+      scheduleSearch();
+    });
+    $('#clearSearch')?.addEventListener('click',()=>{
+      clearTimeout(searchTimer);
+      state.query='';
+      render();
+    });
+  }
+}
 function home(){
   const w=state.weekly[0];return `<main class="screen">${brand()}${searchBox()}<section class="hero-card"><div class="hero-title">💡 AST重要ポイント</div><p>明日からの診療に役立つ<br>感染症診療・ASTのキーポイントを確認</p></section>
   <div class="grid"><button class="category" data-cat="菌"><span class="icon-bubble teal">🦠</span><strong>菌</strong></button><button class="category" data-cat="抗菌薬"><span class="icon-bubble">💊</span><strong>抗菌薬</strong></button></div>
