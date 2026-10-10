@@ -140,3 +140,7 @@ button,input{font:inherit}.app-shell{min-height:100vh;padding-bottom:92px}.scree
 .review-backup-notice{background:#fff4e5;color:#8b5318;border:1px solid #f0d5aa;padding:11px;border-radius:12px}
 .review-message{padding:12px 14px;border-radius:12px;background:#eaf5ff;color:#0c608c;line-height:1.6}
 @media(max-width:520px){.review-panel,.review-dashboard{padding:16px}.review-rating button{font-size:13px}}
+
+.review-mastery-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-bottom:8px}
+.review-mastery-strip span{background:#eaf5ff;border-radius:10px;text-align:center;padding:10px 4px;font-size:12px;font-weight:750;overflow-wrap:anywhere}
+@media(max-width:390px){.review-mastery-strip span{font-size:11px}}
