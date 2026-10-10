@@ -1,0 +1,223 @@
+{
+  "version": 1,
+  "categories": [
+    {
+      "id": "organism",
+      "label": "菌・微生物",
+      "icon": "🦠"
+    },
+    {
+      "id": "drug",
+      "label": "抗菌薬・抗真菌薬",
+      "icon": "💊"
+    },
+    {
+      "id": "infection",
+      "label": "感染症・感染臓器",
+      "icon": "🫀"
+    },
+    {
+      "id": "culture",
+      "label": "検査・培養",
+      "icon": "🧪"
+    },
+    {
+      "id": "ast",
+      "label": "AST実務",
+      "icon": "📋"
+    },
+    {
+      "id": "cross",
+      "label": "横断テーマ",
+      "icon": "🔬"
+    }
+  ],
+  "topics": [
+    {
+      "id": "infection-mssa-bacteremia",
+      "title": "MSSA・黄色ブドウ球菌菌血症",
+      "category": "infection",
+      "aliases": [
+        "MSSA菌血症",
+        "黄色ブドウ球菌菌血症",
+        "S. aureus菌血症",
+        "S aureus bacteremia",
+        "Staphylococcus aureus bacteremia",
+        "SAB"
+      ],
+      "note": "content/notes/mssa-bacteremia.md"
+    },
+    {
+      "id": "infection-candidemia",
+      "title": "Candida血症",
+      "category": "infection",
+      "aliases": [
+        "Candida血症",
+        "カンジダ血症",
+        "candidemia",
+        "侵襲性カンジダ血症"
+      ]
+    },
+    {
+      "id": "infection-uti",
+      "title": "尿路感染症",
+      "category": "infection",
+      "aliases": [
+        "尿路感染症",
+        "腎盂腎炎",
+        "UTI",
+        "pyelonephritis"
+      ]
+    },
+    {
+      "id": "infection-biliary",
+      "title": "胆道感染症",
+      "category": "infection",
+      "aliases": [
+        "胆管炎",
+        "胆道感染症",
+        "cholangitis"
+      ]
+    },
+    {
+      "id": "infection-endocarditis",
+      "title": "感染性心内膜炎",
+      "category": "infection",
+      "aliases": [
+        "感染性心内膜炎",
+        "心内膜炎",
+        "infective endocarditis"
+      ]
+    },
+    {
+      "id": "culture-gpc-clusters",
+      "title": "GPC clusters",
+      "category": "culture",
+      "aliases": [
+        "GPC clusters",
+        "GPC cluster",
+        "グラム陽性球菌ブドウ房状"
+      ]
+    },
+    {
+      "id": "culture-gpc-chains",
+      "title": "GPC chains",
+      "category": "culture",
+      "aliases": [
+        "GPC chains",
+        "GPC chain",
+        "グラム陽性球菌連鎖状"
+      ]
+    },
+    {
+      "id": "culture-followup",
+      "title": "再血培・血培陰性化",
+      "category": "culture",
+      "aliases": [
+        "再血培",
+        "再血液培養",
+        "血液培養再検",
+        "血培陰性化",
+        "フォローアップ血液培養"
+      ]
+    },
+    {
+      "id": "culture-contamination",
+      "title": "血液培養の汚染判定",
+      "category": "culture",
+      "aliases": [
+        "CoNS",
+        "コンタミネーション",
+        "血培汚染",
+        "培養汚染"
+      ]
+    },
+    {
+      "id": "ast-source-control",
+      "title": "感染源コントロール",
+      "category": "ast",
+      "aliases": [
+        "感染源コントロール",
+        "感染源検索",
+        "source control",
+        "デバイス抜去"
+      ]
+    },
+    {
+      "id": "ast-deescalation",
+      "title": "de-escalation",
+      "category": "ast",
+      "aliases": [
+        "de-escalation",
+        "デエスカレーション",
+        "de escalation"
+      ]
+    },
+    {
+      "id": "ast-oral-switch",
+      "title": "経口切替",
+      "category": "ast",
+      "aliases": [
+        "経口切替",
+        "IV to PO",
+        "経静脈から経口"
+      ]
+    },
+    {
+      "id": "ast-persistent-bacteremia",
+      "title": "持続菌血症の評価",
+      "category": "ast",
+      "aliases": [
+        "持続菌血症",
+        "持続陽性",
+        "48時間後も陽性"
+      ]
+    },
+    {
+      "id": "cross-renal",
+      "title": "腎機能・投与設計",
+      "category": "cross",
+      "aliases": [
+        "腎機能",
+        "腎障害",
+        "腎機能調整",
+        "透析",
+        "renal function"
+      ]
+    },
+    {
+      "id": "cross-potassium",
+      "title": "高カリウム血症",
+      "category": "cross",
+      "aliases": [
+        "高カリウム血症",
+        "高K",
+        "K値",
+        "カリウム"
+      ]
+    },
+    {
+      "id": "cross-tdm",
+      "title": "TDM・PK/PD",
+      "category": "cross",
+      "aliases": [
+        "TDM",
+        "AUC",
+        "PK/PD",
+        "トラフ値"
+      ]
+    },
+    {
+      "id": "cross-resistance",
+      "title": "薬剤耐性・感受性",
+      "category": "cross",
+      "aliases": [
+        "ESBL",
+        "耐性菌",
+        "感受性検査",
+        "ブレイクポイント",
+        "MIC"
+      ]
+    }
+  ]
+}
