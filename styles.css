@@ -22,3 +22,45 @@ button,input{font:inherit}.app-shell{min-height:100vh;padding-bottom:92px}.scree
 .weekly-picker-card label{display:block;font-weight:800;font-size:17px;margin-bottom:10px}
 .weekly-picker-card select{width:100%;max-width:100%;font:inherit;font-size:17px;padding:12px 14px;border:1px solid #c9dff1;border-radius:14px;background:#fff;color:var(--ink)}
 .weekly-disclaimer{font-size:13px;color:var(--muted);line-height:1.6;margin:10px 0 0}
+
+
+/* AST Pocket Ver.2 step 1: shared mode switch and integrated notes */
+.mode-toggle{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:5px;margin:2px 0 18px;border:1px solid #cfe2f2;background:#eaf3fb;border-radius:17px}
+.mode-toggle button{border:0;border-radius:12px;padding:13px 8px;background:transparent;color:#4e6981;font-weight:750;font-size:15px;cursor:pointer;min-height:46px}
+.mode-toggle button.selected{color:#075aa1;background:#fff;box-shadow:0 2px 7px rgba(19,86,142,.13)}
+.mode-toggle button:focus-visible,.related-link:focus-visible,.detail-panel summary:focus-visible{outline:3px solid #138bd8;outline-offset:2px}
+.featured-note{margin:17px 0;padding:20px}
+.featured-note h2{font-size:23px;margin:8px 0}
+.featured-note p{color:var(--muted);line-height:1.6;margin:6px 0 12px}
+.featured-note .primary-btn{margin-top:14px}
+.eyebrow{color:#487591;font-weight:800;font-size:13px;letter-spacing:.02em}
+.draft-label{display:inline-block;background:#fff1df;color:#98601a;border:1px solid #f7dcac;font-size:12px;padding:5px 9px;border-radius:99px;font-weight:750}
+.study-hero{background:linear-gradient(145deg,#e8f7f3,#eaf6ff)}
+.study-landing{padding:18px;margin:16px 0}
+.section-title.compact{font-size:20px;margin:0 0 8px}
+.study-landing p{line-height:1.65;color:var(--muted)}
+.small-note{font-size:13px;line-height:1.65;color:var(--muted)}
+.integrated-heading{margin:12px 2px 16px}
+.integrated-heading h1{font-size:33px;line-height:1.2;margin:6px 0 4px}
+.integrated-heading p{color:var(--muted);margin:0 0 8px}
+.draft-alert{background:#fff6e9;border:1px solid #f3d8a9;border-radius:16px;padding:13px 15px;margin:14px 0;color:#7d5123}
+.draft-alert strong{display:block;font-size:15px}
+.draft-alert p{font-size:13px;line-height:1.6;margin:7px 0 0}
+.integrated-card{padding:18px;margin:14px 0}
+.integrated-card h2{font-size:20px;margin:0 0 12px}
+.integrated-card p{line-height:1.65}
+.integrated-card ul,.brief-points{padding-left:24px;margin:8px 0;line-height:1.75}
+.integrated-card li{margin:7px 0}
+.brief-points li::marker{color:#0f8177;font-weight:800}
+.quick-checks{list-style:none;padding-left:0!important}
+.quick-checks li label{display:flex;gap:11px;align-items:flex-start;line-height:1.6}
+.quick-checks input{width:20px;height:20px;flex:none;margin-top:3px;accent-color:#087d9e}
+.detail-panel{border-top:1px solid #e1edf5}
+.detail-panel:last-child{border-bottom:1px solid #e1edf5}
+.detail-panel summary{padding:15px 4px;font-weight:750;cursor:pointer;line-height:1.5}
+.detail-panel[open] summary{color:#126ba9}
+.detail-panel ul{padding:0 9px 10px 25px;margin:0}
+.model-answer{margin:0 0 12px;padding:12px;background:#eef7ff;border-radius:12px}
+.related-links{display:flex;flex-wrap:wrap;gap:9px}
+.related-link{border:1px solid #badbee;border-radius:14px;background:#eff8ff;color:#1069a9;padding:10px 12px;cursor:pointer;font-weight:750;font-size:14px}
+@media(max-width:520px){.mode-toggle button{font-size:14px}.integrated-heading h1{font-size:29px}.featured-note h2{font-size:21px}.integrated-card{padding:16px}}
