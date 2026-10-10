@@ -41,6 +41,7 @@ export function getQuestionProgress(question,events=[],today=jstDayKey()){
   weak:lastRating==='again'||lastRating==='hard',
   last_day_jst:lastDay,
   // Practice outcomes may schedule repetition but cannot establish clinical mastery.
+  practice_status:history.length===0?'未学習':(lastRating==='again'||lastRating==='hard')?'復習が必要':'練習済み',
   proficiency:formal?(streak>=4?'定着':streak>=2?'理解確認済み':'学習済み'):'練習中・原典未確認',
   clinical_verified:formal
  };
