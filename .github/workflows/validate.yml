@@ -21,5 +21,7 @@ jobs:
         run: node scripts/organize-weekly.mjs --check
       - name: Test automatic classification and source provenance
         run: node scripts/test-organizer.mjs
+      - name: Validate integration proposal generator
+        run: node scripts/organize-weekly.mjs --write && node scripts/propose-integrations.mjs --write && node scripts/test-integrations.mjs
       - name: Check required files
         run: test -f index.html && test -f app.js && test -f styles.css
