@@ -110,14 +110,14 @@ export class ReviewFeature {
     this.message='JSONの保存を開始しました。実際に保存できたら「保存済み」を押してください。';
    }catch(e){this.message='書き出し失敗：'+e.message;}
    this.draw();
-  }));
+  });
   root.querySelector('#reviewBackupAck')?.addEventListener('click',async()=>{
    if(!this.events.length){this.message='まだ回答履歴がありません。';this.draw();return;}
    if(!confirm('バックアップファイルを安全な場所へ保存できましたか？'))return;
    try{await acknowledgeReviewBackup();this.ack=await getReviewSetting('backup_ack_at');this.message='保存済みとして記録しました。';}
    catch(e){this.message='保存確認を記録できませんでした：'+e.message;}
    this.draw();
-  }));
+  });
   root.querySelector('#reviewImportFile')?.addEventListener('change',async ev=>{
    const file=ev.target.files?.[0];if(!file)return;
    if(!confirm('選択したバックアップの回答履歴を、この端末へ重複なく追加しますか？'))return;
