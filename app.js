@@ -367,7 +367,7 @@ function weeklyView(){
     '<section class="card weekly-section"><h2>💡 今週の重要ポイント</h2><div class="body"><ol class="numbered">'+points.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol></div></section>'+
     '<section class="card weekly-section"><h2>📘 今週の復習</h2><div class="body">'+rev.map(x=>'<div class="q-row"><strong>Q '+esc(x.q)+'</strong><div class="answer">'+esc(x.a)+'</div></div>').join('')+'</div></section>'+
     '<section class="card weekly-section"><h2>📓 正式ノート候補</h2><div class="body">'+candidates.map(x=>'<div class="list-row"><span>'+esc(x)+'</span><span class="pill">要確認</span></div>').join('')+'</div></section>'+
-    +backControl+'</main>'+nav();
+    backControl+'</main>'+nav();
 }
 function parseQA(s=''){const lines=s.split('\n');const out=[];let cur=null;for(const line of lines){if(line.startsWith('- Q:')){cur={q:line.replace('- Q:','').trim(),a:''};out.push(cur)}else if(line.trim().startsWith('A:')&&cur)cur.a=line.trim().replace(/^A:\s*/,'')}return out}
 function reviewView(){return `<main class="screen">${brand('復習')}<div class="section-title">🧠 今日の復習</div><section class="card weekly-card">${state.review.map(x=>`<div class="q-row"><strong>Q ${esc(x.q)}</strong><div class="answer">${esc(x.a)}</div></div>`).join('')}</section></main>${nav()}`}
