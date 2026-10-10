@@ -1,47 +1,1813 @@
 [
   {
-    "id":"tmp-smx",
-    "generic":"スルファメトキサゾール・トリメトプリム",
-    "english":"trimethoprim-sulfamethoxazole",
-    "abbr":["ST","TMP-SMX"],
-    "brands":["バクタ","バクトラミン"],
-    "aliases":["ST合剤","エスティー合剤","すてぃー合剤","TMP SMX","トリメトプリムスルファメトキサゾール"],
-    "tags":["高K","腎機能","S. maltophilia"]
+    "id": "tmp-smx",
+    "generic": "スルファメトキサゾール・トリメトプリム",
+    "english": "trimethoprim-sulfamethoxazole",
+    "abbr": [
+      "ST",
+      "TMP-SMX"
+    ],
+    "brands": [
+      "バクタ",
+      "バクトラミン"
+    ],
+    "aliases": [
+      "ST合剤",
+      "エスティー合剤",
+      "すてぃー合剤",
+      "TMP SMX",
+      "トリメトプリムスルファメトキサゾール"
+    ],
+    "tags": [
+      "高K",
+      "腎機能",
+      "S. maltophilia"
+    ],
+    "class": "葉酸代謝阻害薬",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
   },
   {
-    "id":"meropenem",
-    "generic":"メロペネム",
-    "english":"meropenem",
-    "abbr":["MEPM"],
-    "brands":["メロペン"],
-    "aliases":["めろぺねむ","メロペネン","メロペネム水和物"],
-    "tags":["カルバペネム","GNR"]
+    "id": "meropenem",
+    "generic": "メロペネム",
+    "english": "meropenem",
+    "abbr": [
+      "MEPM"
+    ],
+    "brands": [
+      "メロペン"
+    ],
+    "aliases": [
+      "めろぺねむ",
+      "メロペネン",
+      "メロペネム水和物"
+    ],
+    "tags": [
+      "カルバペネム",
+      "GNR"
+    ],
+    "class": "カルバペネム系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
   },
   {
-    "id":"vancomycin",
-    "generic":"バンコマイシン",
-    "english":"vancomycin",
-    "abbr":["VCM"],
-    "brands":["塩酸バンコマイシン"],
-    "aliases":["ばんこまいしん","バンコ","VCM注"],
-    "tags":["TDM","MRSA"]
+    "id": "vancomycin",
+    "generic": "バンコマイシン",
+    "english": "vancomycin",
+    "abbr": [
+      "VCM"
+    ],
+    "brands": [],
+    "aliases": [
+      "ばんこまいしん",
+      "バンコ",
+      "VCM注",
+      "塩酸バンコマイシン"
+    ],
+    "tags": [
+      "TDM",
+      "MRSA"
+    ],
+    "class": "グリコペプチド系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
   },
   {
-    "id":"cefazolin",
-    "generic":"セファゾリン",
-    "english":"cefazolin",
-    "abbr":["CEZ"],
-    "brands":["セファメジン"],
-    "aliases":["せふぁぞりん","セファゾリンNa","セファゾリンナトリウム"],
-    "tags":["MSSA"]
+    "id": "cefazolin",
+    "generic": "セファゾリン",
+    "english": "cefazolin",
+    "abbr": [
+      "CEZ"
+    ],
+    "brands": [
+      "セファメジン"
+    ],
+    "aliases": [
+      "せふぁぞりん",
+      "セファゾリンNa",
+      "セファゾリンナトリウム"
+    ],
+    "tags": [
+      "MSSA"
+    ],
+    "class": "第1世代セフェム",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
   },
   {
-    "id":"levofloxacin",
-    "generic":"レボフロキサシン",
-    "english":"levofloxacin",
-    "abbr":["LVFX"],
-    "brands":["クラビット"],
-    "aliases":["れぼふろきさしん","レボフロキサシン水和物"],
-    "tags":["キノロン","S. maltophilia"]
+    "id": "levofloxacin",
+    "generic": "レボフロキサシン",
+    "english": "levofloxacin",
+    "abbr": [
+      "LVFX"
+    ],
+    "brands": [
+      "クラビット"
+    ],
+    "aliases": [
+      "れぼふろきさしん",
+      "レボフロキサシン水和物"
+    ],
+    "tags": [
+      "キノロン",
+      "S. maltophilia"
+    ],
+    "class": "ニューキノロン系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "benzylpenicillin",
+    "generic": "ベンジルペニシリン",
+    "english": "benzylpenicillin",
+    "abbr": [
+      "PCG"
+    ],
+    "brands": [
+      "ペニシリンG"
+    ],
+    "aliases": [],
+    "tags": [
+      "ペニシリンG",
+      "PCG",
+      "ペニシリン系"
+    ],
+    "class": "ペニシリン系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "ampicillin",
+    "generic": "アンピシリン",
+    "english": "ampicillin",
+    "abbr": [
+      "ABPC"
+    ],
+    "brands": [
+      "ビクシリン"
+    ],
+    "aliases": [],
+    "tags": [
+      "アミノペニシリン",
+      "ペニシリン系"
+    ],
+    "class": "ペニシリン系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "amoxicillin",
+    "generic": "アモキシシリン",
+    "english": "amoxicillin",
+    "abbr": [
+      "AMPC"
+    ],
+    "brands": [
+      "サワシリン",
+      "パセトシン"
+    ],
+    "aliases": [],
+    "tags": [
+      "アミノペニシリン",
+      "ペニシリン系"
+    ],
+    "class": "ペニシリン系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "ampicillin-sulbactam",
+    "generic": "アンピシリン・スルバクタム",
+    "english": "ampicillin-sulbactam",
+    "abbr": [
+      "SBT/ABPC"
+    ],
+    "brands": [
+      "ユナシンS"
+    ],
+    "aliases": [],
+    "tags": [
+      "スルバクタムアンピシリン",
+      "βラクタマーゼ阻害薬配合ペニシリン"
+    ],
+    "class": "βラクタマーゼ阻害薬配合ペニシリン",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "amoxicillin-clavulanate",
+    "generic": "アモキシシリン・クラブラン酸",
+    "english": "amoxicillin-clavulanate",
+    "abbr": [
+      "CVA/AMPC"
+    ],
+    "brands": [
+      "オーグメンチン"
+    ],
+    "aliases": [],
+    "tags": [
+      "クラブラン酸アモキシシリン",
+      "βラクタマーゼ阻害薬配合ペニシリン"
+    ],
+    "class": "βラクタマーゼ阻害薬配合ペニシリン",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "piperacillin",
+    "generic": "ピペラシリン",
+    "english": "piperacillin",
+    "abbr": [
+      "PIPC"
+    ],
+    "brands": [
+      "ペントシリン"
+    ],
+    "aliases": [],
+    "tags": [
+      "抗緑膿菌ペニシリン",
+      "ペニシリン系"
+    ],
+    "class": "ペニシリン系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "piperacillin-tazobactam",
+    "generic": "ピペラシリン・タゾバクタム",
+    "english": "piperacillin-tazobactam",
+    "abbr": [
+      "TAZ/PIPC"
+    ],
+    "brands": [
+      "ゾシン"
+    ],
+    "aliases": [],
+    "tags": [
+      "タゾピペ",
+      "βラクタマーゼ阻害薬配合ペニシリン"
+    ],
+    "class": "βラクタマーゼ阻害薬配合ペニシリン",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "cephalexin",
+    "generic": "セファレキシン",
+    "english": "cephalexin",
+    "abbr": [
+      "CEX"
+    ],
+    "brands": [
+      "ケフレックス"
+    ],
+    "aliases": [],
+    "tags": [
+      "経口セフェム",
+      "第1世代セフェム"
+    ],
+    "class": "第1世代セフェム",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "cefaclor",
+    "generic": "セファクロル",
+    "english": "cefaclor",
+    "abbr": [
+      "CCL"
+    ],
+    "brands": [
+      "ケフラール"
+    ],
+    "aliases": [],
+    "tags": [
+      "経口セフェム",
+      "第2世代セフェム"
+    ],
+    "class": "第2世代セフェム",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "cefmetazole",
+    "generic": "セフメタゾール",
+    "english": "cefmetazole",
+    "abbr": [
+      "CMZ"
+    ],
+    "brands": [
+      "セフメタゾン"
+    ],
+    "aliases": [],
+    "tags": [
+      "嫌気性菌",
+      "セファマイシン系"
+    ],
+    "class": "セファマイシン系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "cefotiam",
+    "generic": "セフォチアム",
+    "english": "cefotiam",
+    "abbr": [
+      "CTM"
+    ],
+    "brands": [
+      "パンスポリン"
+    ],
+    "aliases": [],
+    "tags": [
+      "セフェム",
+      "第2世代セフェム"
+    ],
+    "class": "第2世代セフェム",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "cefotaxime",
+    "generic": "セフォタキシム",
+    "english": "cefotaxime",
+    "abbr": [
+      "CTX"
+    ],
+    "brands": [
+      "クラフォラン"
+    ],
+    "aliases": [],
+    "tags": [
+      "セフェム",
+      "第3世代セフェム"
+    ],
+    "class": "第3世代セフェム",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "ceftriaxone",
+    "generic": "セフトリアキソン",
+    "english": "ceftriaxone",
+    "abbr": [
+      "CTRX"
+    ],
+    "brands": [
+      "ロセフィン"
+    ],
+    "aliases": [],
+    "tags": [
+      "セフェム",
+      "第3世代セフェム"
+    ],
+    "class": "第3世代セフェム",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "ceftazidime",
+    "generic": "セフタジジム",
+    "english": "ceftazidime",
+    "abbr": [
+      "CAZ"
+    ],
+    "brands": [
+      "モダシン"
+    ],
+    "aliases": [],
+    "tags": [
+      "抗緑膿菌",
+      "第3世代セフェム"
+    ],
+    "class": "第3世代セフェム",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "cefepime",
+    "generic": "セフェピム",
+    "english": "cefepime",
+    "abbr": [
+      "CFPM"
+    ],
+    "brands": [
+      "マキシピーム"
+    ],
+    "aliases": [],
+    "tags": [
+      "抗緑膿菌",
+      "第4世代セフェム"
+    ],
+    "class": "第4世代セフェム",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "cefozopran",
+    "generic": "セフォゾプラン",
+    "english": "cefozopran",
+    "abbr": [
+      "CZOP"
+    ],
+    "brands": [
+      "ファーストシン"
+    ],
+    "aliases": [],
+    "tags": [
+      "セフェム",
+      "第4世代セフェム"
+    ],
+    "class": "第4世代セフェム",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "cefoperazone-sulbactam",
+    "generic": "セフォペラゾン・スルバクタム",
+    "english": "cefoperazone-sulbactam",
+    "abbr": [
+      "SBT/CPZ"
+    ],
+    "brands": [
+      "スルペラゾン"
+    ],
+    "aliases": [],
+    "tags": [
+      "セフェム",
+      "βラクタマーゼ阻害薬配合セフェム"
+    ],
+    "class": "βラクタマーゼ阻害薬配合セフェム",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "ceftolozane-tazobactam",
+    "generic": "セフトロザン・タゾバクタム",
+    "english": "ceftolozane-tazobactam",
+    "abbr": [
+      "CTLZ/TAZ"
+    ],
+    "brands": [
+      "ザバクサ"
+    ],
+    "aliases": [],
+    "tags": [
+      "抗緑膿菌",
+      "βラクタマーゼ阻害薬配合セフェム"
+    ],
+    "class": "βラクタマーゼ阻害薬配合セフェム",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "ceftazidime-avibactam",
+    "generic": "セフタジジム・アビバクタム",
+    "english": "ceftazidime-avibactam",
+    "abbr": [
+      "CAZ/AVI"
+    ],
+    "brands": [
+      "ザビセフタ"
+    ],
+    "aliases": [],
+    "tags": [
+      "耐性菌",
+      "βラクタマーゼ阻害薬配合セフェム"
+    ],
+    "class": "βラクタマーゼ阻害薬配合セフェム",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "cefiderocol",
+    "generic": "セフィデロコル",
+    "english": "cefiderocol",
+    "abbr": [
+      "CFDC"
+    ],
+    "brands": [
+      "フェトロージャ"
+    ],
+    "aliases": [],
+    "tags": [
+      "耐性菌",
+      "シデロフォアセフェム"
+    ],
+    "class": "シデロフォアセフェム",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "cefdinir",
+    "generic": "セフジニル",
+    "english": "cefdinir",
+    "abbr": [
+      "CFDN"
+    ],
+    "brands": [
+      "セフゾン"
+    ],
+    "aliases": [],
+    "tags": [
+      "経口セフェム",
+      "経口第3世代セフェム"
+    ],
+    "class": "経口第3世代セフェム",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "cefcapene-pivoxil",
+    "generic": "セフカペンピボキシル",
+    "english": "cefcapene pivoxil",
+    "abbr": [
+      "CFPN-PI"
+    ],
+    "brands": [
+      "フロモックス"
+    ],
+    "aliases": [],
+    "tags": [
+      "ピボキシル",
+      "経口セフェム"
+    ],
+    "class": "経口セフェム",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "cefditoren-pivoxil",
+    "generic": "セフジトレンピボキシル",
+    "english": "cefditoren pivoxil",
+    "abbr": [
+      "CDTR-PI"
+    ],
+    "brands": [
+      "メイアクト"
+    ],
+    "aliases": [],
+    "tags": [
+      "ピボキシル",
+      "経口セフェム"
+    ],
+    "class": "経口セフェム",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "cefpodoxime-proxetil",
+    "generic": "セフポドキシムプロキセチル",
+    "english": "cefpodoxime proxetil",
+    "abbr": [
+      "CPDX-PR"
+    ],
+    "brands": [
+      "バナン"
+    ],
+    "aliases": [],
+    "tags": [
+      "経口セフェム",
+      "経口セフェム"
+    ],
+    "class": "経口セフェム",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "flomoxef",
+    "generic": "フロモキセフ",
+    "english": "flomoxef",
+    "abbr": [
+      "FMOX"
+    ],
+    "brands": [
+      "フルマリン"
+    ],
+    "aliases": [],
+    "tags": [
+      "セフェム",
+      "オキサセフェム"
+    ],
+    "class": "オキサセフェム",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "latamoxef",
+    "generic": "ラタモキセフ",
+    "english": "latamoxef",
+    "abbr": [
+      "LMOX"
+    ],
+    "brands": [
+      "シオマリン"
+    ],
+    "aliases": [],
+    "tags": [
+      "セフェム",
+      "オキサセフェム"
+    ],
+    "class": "オキサセフェム",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "imipenem-cilastatin",
+    "generic": "イミペネム・シラスタチン",
+    "english": "imipenem-cilastatin",
+    "abbr": [
+      "IPM/CS"
+    ],
+    "brands": [
+      "チエナム"
+    ],
+    "aliases": [],
+    "tags": [
+      "カルバペネム",
+      "カルバペネム系"
+    ],
+    "class": "カルバペネム系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "doripenem",
+    "generic": "ドリペネム",
+    "english": "doripenem",
+    "abbr": [
+      "DRPM"
+    ],
+    "brands": [
+      "フィニバックス"
+    ],
+    "aliases": [],
+    "tags": [
+      "カルバペネム",
+      "カルバペネム系"
+    ],
+    "class": "カルバペネム系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "biapenem",
+    "generic": "ビアペネム",
+    "english": "biapenem",
+    "abbr": [
+      "BIPM"
+    ],
+    "brands": [
+      "オメガシン"
+    ],
+    "aliases": [],
+    "tags": [
+      "カルバペネム",
+      "カルバペネム系"
+    ],
+    "class": "カルバペネム系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "panipenem-betamipron",
+    "generic": "パニペネム・ベタミプロン",
+    "english": "panipenem-betamipron",
+    "abbr": [
+      "PAPM/BP"
+    ],
+    "brands": [
+      "カルベニン"
+    ],
+    "aliases": [],
+    "tags": [
+      "カルバペネム",
+      "カルバペネム系"
+    ],
+    "class": "カルバペネム系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "tebipenem-pivoxil",
+    "generic": "テビペネムピボキシル",
+    "english": "tebipenem pivoxil",
+    "abbr": [
+      "TBPM-PI"
+    ],
+    "brands": [
+      "オラペネム"
+    ],
+    "aliases": [],
+    "tags": [
+      "経口カルバペネム",
+      "カルバペネム系"
+    ],
+    "class": "カルバペネム系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "faropenem",
+    "generic": "ファロペネム",
+    "english": "faropenem",
+    "abbr": [
+      "FRPM"
+    ],
+    "brands": [
+      "ファロム"
+    ],
+    "aliases": [],
+    "tags": [
+      "ペネム",
+      "ペネム系"
+    ],
+    "class": "ペネム系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "aztreonam",
+    "generic": "アズトレオナム",
+    "english": "aztreonam",
+    "abbr": [
+      "AZT"
+    ],
+    "brands": [
+      "アザクタム"
+    ],
+    "aliases": [],
+    "tags": [
+      "GNR",
+      "モノバクタム系"
+    ],
+    "class": "モノバクタム系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "gentamicin",
+    "generic": "ゲンタマイシン",
+    "english": "gentamicin",
+    "abbr": [
+      "GM"
+    ],
+    "brands": [
+      "ゲンタシン"
+    ],
+    "aliases": [],
+    "tags": [
+      "TDM",
+      "アミノグリコシド系"
+    ],
+    "class": "アミノグリコシド系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "amikacin",
+    "generic": "アミカシン",
+    "english": "amikacin",
+    "abbr": [
+      "AMK"
+    ],
+    "brands": [
+      "アミカシン"
+    ],
+    "aliases": [],
+    "tags": [
+      "TDM",
+      "アミノグリコシド系"
+    ],
+    "class": "アミノグリコシド系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "tobramycin",
+    "generic": "トブラマイシン",
+    "english": "tobramycin",
+    "abbr": [
+      "TOB"
+    ],
+    "brands": [
+      "トブラシン"
+    ],
+    "aliases": [],
+    "tags": [
+      "TDM",
+      "アミノグリコシド系"
+    ],
+    "class": "アミノグリコシド系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "arbekacin",
+    "generic": "アルベカシン",
+    "english": "arbekacin",
+    "abbr": [
+      "ABK"
+    ],
+    "brands": [
+      "ハベカシン"
+    ],
+    "aliases": [],
+    "tags": [
+      "TDM",
+      "アミノグリコシド系"
+    ],
+    "class": "アミノグリコシド系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "streptomycin",
+    "generic": "ストレプトマイシン",
+    "english": "streptomycin",
+    "abbr": [
+      "SM"
+    ],
+    "brands": [
+      "ストレプトマイシン"
+    ],
+    "aliases": [],
+    "tags": [
+      "抗結核薬",
+      "アミノグリコシド系"
+    ],
+    "class": "アミノグリコシド系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "minocycline",
+    "generic": "ミノサイクリン",
+    "english": "minocycline",
+    "abbr": [
+      "MINO"
+    ],
+    "brands": [
+      "ミノマイシン"
+    ],
+    "aliases": [],
+    "tags": [
+      "テトラサイクリン",
+      "テトラサイクリン系"
+    ],
+    "class": "テトラサイクリン系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "doxycycline",
+    "generic": "ドキシサイクリン",
+    "english": "doxycycline",
+    "abbr": [
+      "DOXY"
+    ],
+    "brands": [
+      "ビブラマイシン"
+    ],
+    "aliases": [],
+    "tags": [
+      "テトラサイクリン",
+      "テトラサイクリン系"
+    ],
+    "class": "テトラサイクリン系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "azithromycin",
+    "generic": "アジスロマイシン",
+    "english": "azithromycin",
+    "abbr": [
+      "AZM"
+    ],
+    "brands": [
+      "ジスロマック"
+    ],
+    "aliases": [],
+    "tags": [
+      "非定型",
+      "マクロライド系"
+    ],
+    "class": "マクロライド系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "clarithromycin",
+    "generic": "クラリスロマイシン",
+    "english": "clarithromycin",
+    "abbr": [
+      "CAM"
+    ],
+    "brands": [
+      "クラリス",
+      "クラリシッド"
+    ],
+    "aliases": [],
+    "tags": [
+      "非定型",
+      "マクロライド系"
+    ],
+    "class": "マクロライド系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "erythromycin",
+    "generic": "エリスロマイシン",
+    "english": "erythromycin",
+    "abbr": [
+      "EM"
+    ],
+    "brands": [
+      "エリスロシン"
+    ],
+    "aliases": [],
+    "tags": [
+      "マクロライド",
+      "マクロライド系"
+    ],
+    "class": "マクロライド系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "roxithromycin",
+    "generic": "ロキシスロマイシン",
+    "english": "roxithromycin",
+    "abbr": [
+      "RXM"
+    ],
+    "brands": [
+      "ルリッド"
+    ],
+    "aliases": [],
+    "tags": [
+      "マクロライド",
+      "マクロライド系"
+    ],
+    "class": "マクロライド系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "clindamycin",
+    "generic": "クリンダマイシン",
+    "english": "clindamycin",
+    "abbr": [
+      "CLDM"
+    ],
+    "brands": [
+      "ダラシン"
+    ],
+    "aliases": [],
+    "tags": [
+      "嫌気性菌",
+      "リンコマイシン系"
+    ],
+    "class": "リンコマイシン系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "lincomycin",
+    "generic": "リンコマイシン",
+    "english": "lincomycin",
+    "abbr": [
+      "LCM"
+    ],
+    "brands": [
+      "リンコシン"
+    ],
+    "aliases": [],
+    "tags": [
+      "リンコマイシン",
+      "リンコマイシン系"
+    ],
+    "class": "リンコマイシン系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "teicoplanin",
+    "generic": "テイコプラニン",
+    "english": "teicoplanin",
+    "abbr": [
+      "TEIC"
+    ],
+    "brands": [
+      "タゴシッド"
+    ],
+    "aliases": [],
+    "tags": [
+      "TDM",
+      "MRSA",
+      "グリコペプチド系"
+    ],
+    "class": "グリコペプチド系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "linezolid",
+    "generic": "リネゾリド",
+    "english": "linezolid",
+    "abbr": [
+      "LZD"
+    ],
+    "brands": [
+      "ザイボックス"
+    ],
+    "aliases": [],
+    "tags": [
+      "MRSA",
+      "VRE",
+      "オキサゾリジノン系"
+    ],
+    "class": "オキサゾリジノン系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "tedizolid",
+    "generic": "テジゾリド",
+    "english": "tedizolid",
+    "abbr": [
+      "TZD"
+    ],
+    "brands": [
+      "シベクトロ"
+    ],
+    "aliases": [],
+    "tags": [
+      "MRSA",
+      "オキサゾリジノン系"
+    ],
+    "class": "オキサゾリジノン系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "daptomycin",
+    "generic": "ダプトマイシン",
+    "english": "daptomycin",
+    "abbr": [
+      "DAP"
+    ],
+    "brands": [
+      "キュビシン"
+    ],
+    "aliases": [],
+    "tags": [
+      "MRSA",
+      "リポペプチド系"
+    ],
+    "class": "リポペプチド系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "ciprofloxacin",
+    "generic": "シプロフロキサシン",
+    "english": "ciprofloxacin",
+    "abbr": [
+      "CPFX"
+    ],
+    "brands": [
+      "シプロキサン"
+    ],
+    "aliases": [],
+    "tags": [
+      "キノロン",
+      "ニューキノロン系"
+    ],
+    "class": "ニューキノロン系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "moxifloxacin",
+    "generic": "モキシフロキサシン",
+    "english": "moxifloxacin",
+    "abbr": [
+      "MFLX"
+    ],
+    "brands": [
+      "アベロックス"
+    ],
+    "aliases": [],
+    "tags": [
+      "キノロン",
+      "ニューキノロン系"
+    ],
+    "class": "ニューキノロン系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "sitafloxacin",
+    "generic": "シタフロキサシン",
+    "english": "sitafloxacin",
+    "abbr": [
+      "STFX"
+    ],
+    "brands": [
+      "グレースビット"
+    ],
+    "aliases": [],
+    "tags": [
+      "キノロン",
+      "ニューキノロン系"
+    ],
+    "class": "ニューキノロン系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "garenoxacin",
+    "generic": "ガレノキサシン",
+    "english": "garenoxacin",
+    "abbr": [
+      "GRNX"
+    ],
+    "brands": [
+      "ジェニナック"
+    ],
+    "aliases": [],
+    "tags": [
+      "キノロン",
+      "ニューキノロン系"
+    ],
+    "class": "ニューキノロン系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "tosufloxacin",
+    "generic": "トスフロキサシン",
+    "english": "tosufloxacin",
+    "abbr": [
+      "TFLX"
+    ],
+    "brands": [
+      "オゼックス"
+    ],
+    "aliases": [],
+    "tags": [
+      "キノロン",
+      "ニューキノロン系"
+    ],
+    "class": "ニューキノロン系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "pazufloxacin",
+    "generic": "パズフロキサシン",
+    "english": "pazufloxacin",
+    "abbr": [
+      "PZFX"
+    ],
+    "brands": [
+      "パシル",
+      "パズクロス"
+    ],
+    "aliases": [],
+    "tags": [
+      "キノロン",
+      "ニューキノロン系"
+    ],
+    "class": "ニューキノロン系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "metronidazole",
+    "generic": "メトロニダゾール",
+    "english": "metronidazole",
+    "abbr": [
+      "MNZ"
+    ],
+    "brands": [
+      "フラジール",
+      "アネメトロ"
+    ],
+    "aliases": [],
+    "tags": [
+      "嫌気性菌",
+      "ニトロイミダゾール系"
+    ],
+    "class": "ニトロイミダゾール系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "fosfomycin",
+    "generic": "ホスホマイシン",
+    "english": "fosfomycin",
+    "abbr": [
+      "FOM"
+    ],
+    "brands": [
+      "ホスミシン"
+    ],
+    "aliases": [],
+    "tags": [
+      "尿路感染",
+      "ホスホマイシン系"
+    ],
+    "class": "ホスホマイシン系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "rifampicin",
+    "generic": "リファンピシン",
+    "english": "rifampicin",
+    "abbr": [
+      "RFP"
+    ],
+    "brands": [
+      "リファジン"
+    ],
+    "aliases": [],
+    "tags": [
+      "抗結核薬",
+      "リファマイシン系"
+    ],
+    "class": "リファマイシン系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "rifabutin",
+    "generic": "リファブチン",
+    "english": "rifabutin",
+    "abbr": [
+      "RBT"
+    ],
+    "brands": [
+      "ミコブティン"
+    ],
+    "aliases": [],
+    "tags": [
+      "抗酸菌",
+      "リファマイシン系"
+    ],
+    "class": "リファマイシン系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "isoniazid",
+    "generic": "イソニアジド",
+    "english": "isoniazid",
+    "abbr": [
+      "INH"
+    ],
+    "brands": [
+      "イスコチン"
+    ],
+    "aliases": [],
+    "tags": [
+      "結核",
+      "抗結核薬"
+    ],
+    "class": "抗結核薬",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "pyrazinamide",
+    "generic": "ピラジナミド",
+    "english": "pyrazinamide",
+    "abbr": [
+      "PZA"
+    ],
+    "brands": [
+      "ピラマイド"
+    ],
+    "aliases": [],
+    "tags": [
+      "結核",
+      "抗結核薬"
+    ],
+    "class": "抗結核薬",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "ethambutol",
+    "generic": "エタンブトール",
+    "english": "ethambutol",
+    "abbr": [
+      "EB"
+    ],
+    "brands": [
+      "エサンブトール"
+    ],
+    "aliases": [],
+    "tags": [
+      "結核",
+      "抗結核薬"
+    ],
+    "class": "抗結核薬",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "colistin",
+    "generic": "コリスチン",
+    "english": "colistin",
+    "abbr": [
+      "CL"
+    ],
+    "brands": [
+      "オルドレブ"
+    ],
+    "aliases": [],
+    "tags": [
+      "多剤耐性GNR",
+      "ポリミキシン系"
+    ],
+    "class": "ポリミキシン系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "fidaxomicin",
+    "generic": "フィダキソマイシン",
+    "english": "fidaxomicin",
+    "abbr": [
+      "FDX"
+    ],
+    "brands": [
+      "ダフクリア"
+    ],
+    "aliases": [],
+    "tags": [
+      "CDI",
+      "マクロサイクリック系"
+    ],
+    "class": "マクロサイクリック系",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "fluconazole",
+    "generic": "フルコナゾール",
+    "english": "fluconazole",
+    "abbr": [
+      "FLCZ"
+    ],
+    "brands": [
+      "ジフルカン"
+    ],
+    "aliases": [],
+    "tags": [
+      "真菌",
+      "トリアゾール系抗真菌薬"
+    ],
+    "class": "トリアゾール系抗真菌薬",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "fosfluconazole",
+    "generic": "ホスフルコナゾール",
+    "english": "fosfluconazole",
+    "abbr": [
+      "F-FLCZ"
+    ],
+    "brands": [
+      "プロジフ"
+    ],
+    "aliases": [],
+    "tags": [
+      "真菌",
+      "トリアゾール系抗真菌薬"
+    ],
+    "class": "トリアゾール系抗真菌薬",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "itraconazole",
+    "generic": "イトラコナゾール",
+    "english": "itraconazole",
+    "abbr": [
+      "ITCZ"
+    ],
+    "brands": [
+      "イトリゾール"
+    ],
+    "aliases": [],
+    "tags": [
+      "真菌",
+      "トリアゾール系抗真菌薬"
+    ],
+    "class": "トリアゾール系抗真菌薬",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "voriconazole",
+    "generic": "ボリコナゾール",
+    "english": "voriconazole",
+    "abbr": [
+      "VRCZ"
+    ],
+    "brands": [
+      "ブイフェンド"
+    ],
+    "aliases": [],
+    "tags": [
+      "真菌",
+      "トリアゾール系抗真菌薬"
+    ],
+    "class": "トリアゾール系抗真菌薬",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "posaconazole",
+    "generic": "ポサコナゾール",
+    "english": "posaconazole",
+    "abbr": [
+      "PSCZ"
+    ],
+    "brands": [
+      "ノクサフィル"
+    ],
+    "aliases": [],
+    "tags": [
+      "真菌",
+      "トリアゾール系抗真菌薬"
+    ],
+    "class": "トリアゾール系抗真菌薬",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "isavuconazole",
+    "generic": "イサブコナゾール",
+    "english": "isavuconazole",
+    "abbr": [
+      "ISCZ"
+    ],
+    "brands": [
+      "クレセンバ"
+    ],
+    "aliases": [],
+    "tags": [
+      "真菌",
+      "トリアゾール系抗真菌薬"
+    ],
+    "class": "トリアゾール系抗真菌薬",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "micafungin",
+    "generic": "ミカファンギン",
+    "english": "micafungin",
+    "abbr": [
+      "MCFG"
+    ],
+    "brands": [
+      "ファンガード"
+    ],
+    "aliases": [],
+    "tags": [
+      "真菌",
+      "キャンディン系抗真菌薬"
+    ],
+    "class": "キャンディン系抗真菌薬",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "caspofungin",
+    "generic": "カスポファンギン",
+    "english": "caspofungin",
+    "abbr": [
+      "CPFG"
+    ],
+    "brands": [
+      "カンサイダス"
+    ],
+    "aliases": [],
+    "tags": [
+      "真菌",
+      "キャンディン系抗真菌薬"
+    ],
+    "class": "キャンディン系抗真菌薬",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "amphotericin-b",
+    "generic": "アムホテリシンB",
+    "english": "amphotericin B",
+    "abbr": [
+      "AMPH-B"
+    ],
+    "brands": [
+      "ファンギゾン"
+    ],
+    "aliases": [],
+    "tags": [
+      "真菌",
+      "ポリエン系抗真菌薬"
+    ],
+    "class": "ポリエン系抗真菌薬",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "liposomal-amphotericin-b",
+    "generic": "リポソームアムホテリシンB",
+    "english": "liposomal amphotericin B",
+    "abbr": [
+      "L-AMB"
+    ],
+    "brands": [
+      "アムビゾーム"
+    ],
+    "aliases": [],
+    "tags": [
+      "真菌",
+      "ポリエン系抗真菌薬"
+    ],
+    "class": "ポリエン系抗真菌薬",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "flucytosine",
+    "generic": "フルシトシン",
+    "english": "flucytosine",
+    "abbr": [
+      "5-FC"
+    ],
+    "brands": [
+      "アンコチル"
+    ],
+    "aliases": [],
+    "tags": [
+      "真菌",
+      "抗真菌薬"
+    ],
+    "class": "抗真菌薬",
+    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
+    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
   }
 ]

@@ -1,43 +1,1415 @@
 [
   {
-    "id":"stenotrophomonas-maltophilia",
-    "canonical":"Stenotrophomonas maltophilia",
-    "ja":"ステノトロフォモナス・マルトフィリア",
-    "short":"S. maltophilia",
-    "aliases":["マルトフィリア","マルトフィーリア","ステノトロフォモナス","ステノトロモナス","すてのとろふぉもなす","まるとふぃりあ","S maltophilia","S.maltophilia"],
-    "tags":["GNR","ST","高K"],
-    "note":"content/notes/stenotrophomonas-maltophilia.md"
+    "id": "stenotrophomonas-maltophilia",
+    "canonical": "Stenotrophomonas maltophilia",
+    "ja": "ステノトロフォモナス・マルトフィリア",
+    "short": "S. maltophilia",
+    "aliases": [
+      "マルトフィリア",
+      "マルトフィーリア",
+      "ステノトロフォモナス",
+      "ステノトロモナス",
+      "すてのとろふぉもなす",
+      "まるとふぃりあ",
+      "S maltophilia",
+      "S.maltophilia"
+    ],
+    "tags": [
+      "GNR",
+      "ST",
+      "高K"
+    ],
+    "note": "content/notes/stenotrophomonas-maltophilia.md",
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
   },
   {
-    "id":"staphylococcus-aureus",
-    "canonical":"Staphylococcus aureus",
-    "ja":"黄色ブドウ球菌",
-    "short":"S. aureus",
-    "aliases":["黄色ブドウ","おうしょくぶどうきゅうきん","スタフィロコッカスアウレウス","スタフアウレウス","MSSA","MRSA","S aureus"],
-    "tags":["GPC clusters","菌血症"]
+    "id": "staphylococcus-aureus",
+    "canonical": "Staphylococcus aureus",
+    "ja": "黄色ブドウ球菌",
+    "short": "S. aureus",
+    "aliases": [
+      "黄色ブドウ",
+      "おうしょくぶどうきゅうきん",
+      "スタフィロコッカスアウレウス",
+      "スタフアウレウス",
+      "MSSA",
+      "MRSA",
+      "S aureus"
+    ],
+    "tags": [
+      "GPC clusters",
+      "菌血症"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
   },
   {
-    "id":"enterococcus",
-    "canonical":"Enterococcus spp.",
-    "ja":"腸球菌",
-    "short":"Enterococcus",
-    "aliases":["エンテロコッカス","ちょうきゅうきん","GPC chains"],
-    "tags":["GPC chains","胆道感染"]
+    "id": "enterococcus",
+    "canonical": "Enterococcus spp.",
+    "ja": "腸球菌",
+    "short": "Enterococcus",
+    "aliases": [
+      "エンテロコッカス",
+      "ちょうきゅうきん",
+      "GPC chains"
+    ],
+    "tags": [
+      "GPC chains",
+      "胆道感染"
+    ],
+    "kind": "genus_group",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
   },
   {
-    "id":"candida",
-    "canonical":"Candida spp.",
-    "ja":"カンジダ",
-    "short":"Candida",
-    "aliases":["キャンディダ","カンディダ","酵母","yeast"],
-    "tags":["真菌","血流感染"]
+    "id": "candida",
+    "canonical": "Candida spp.",
+    "ja": "カンジダ",
+    "short": "Candida",
+    "aliases": [
+      "キャンディダ",
+      "カンディダ",
+      "酵母",
+      "yeast"
+    ],
+    "tags": [
+      "真菌",
+      "血流感染"
+    ],
+    "kind": "genus_group",
+    "source": "https://www.mycobank.org/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
   },
   {
-    "id":"pseudomonas-aeruginosa",
-    "canonical":"Pseudomonas aeruginosa",
-    "ja":"緑膿菌",
-    "short":"P. aeruginosa",
-    "aliases":["りょくのうきん","シュードモナス","シュードモナスアエルギノーサ","緑膿"],
-    "tags":["GNR","耐性"]
+    "id": "pseudomonas-aeruginosa",
+    "canonical": "Pseudomonas aeruginosa",
+    "ja": "緑膿菌",
+    "short": "P. aeruginosa",
+    "aliases": [
+      "りょくのうきん",
+      "シュードモナス",
+      "シュードモナスアエルギノーサ",
+      "緑膿"
+    ],
+    "tags": [
+      "GNR",
+      "耐性"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "staphylococcus-epidermidis",
+    "canonical": "Staphylococcus epidermidis",
+    "ja": "表皮ブドウ球菌",
+    "short": "S. epidermidis",
+    "aliases": [
+      "表皮ブドウ",
+      "コアグラーゼ陰性ブドウ球菌"
+    ],
+    "tags": [
+      "GPC",
+      "CoNS"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "staphylococcus-saprophyticus",
+    "canonical": "Staphylococcus saprophyticus",
+    "ja": "腐性ブドウ球菌",
+    "short": "S. saprophyticus",
+    "aliases": [
+      "サプロフィティカス"
+    ],
+    "tags": [
+      "GPC",
+      "CoNS",
+      "尿路感染"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "staphylococcus-lugdunensis",
+    "canonical": "Staphylococcus lugdunensis",
+    "ja": "ルグドゥネンシス菌",
+    "short": "S. lugdunensis",
+    "aliases": [
+      "ルグドネンシス"
+    ],
+    "tags": [
+      "GPC",
+      "CoNS"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "staphylococcus-haemolyticus",
+    "canonical": "Staphylococcus haemolyticus",
+    "ja": "溶血性ブドウ球菌",
+    "short": "S. haemolyticus",
+    "aliases": [
+      "ヘモリティカス"
+    ],
+    "tags": [
+      "GPC",
+      "CoNS"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "streptococcus-pyogenes",
+    "canonical": "Streptococcus pyogenes",
+    "ja": "化膿レンサ球菌",
+    "short": "S. pyogenes",
+    "aliases": [
+      "A群溶連菌",
+      "GAS"
+    ],
+    "tags": [
+      "GPC",
+      "chains"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "streptococcus-agalactiae",
+    "canonical": "Streptococcus agalactiae",
+    "ja": "B群レンサ球菌",
+    "short": "S. agalactiae",
+    "aliases": [
+      "GBS",
+      "B群溶連菌"
+    ],
+    "tags": [
+      "GPC",
+      "chains"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "streptococcus-pneumoniae",
+    "canonical": "Streptococcus pneumoniae",
+    "ja": "肺炎球菌",
+    "short": "S. pneumoniae",
+    "aliases": [
+      "ニューモコッカス"
+    ],
+    "tags": [
+      "GPC",
+      "肺炎"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "streptococcus-anginosus",
+    "canonical": "Streptococcus anginosus",
+    "ja": "アンギノーサス群レンサ球菌",
+    "short": "S. anginosus",
+    "aliases": [
+      "アンギノサス"
+    ],
+    "tags": [
+      "GPC",
+      "膿瘍"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "streptococcus-gallolyticus",
+    "canonical": "Streptococcus gallolyticus",
+    "ja": "ガロリティカス菌",
+    "short": "S. gallolyticus",
+    "aliases": [
+      "Streptococcus bovis"
+    ],
+    "tags": [
+      "GPC",
+      "菌血症"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "enterococcus-faecalis",
+    "canonical": "Enterococcus faecalis",
+    "ja": "フェカリス腸球菌",
+    "short": "E. faecalis",
+    "aliases": [
+      "エンテロコッカスフェカリス"
+    ],
+    "tags": [
+      "GPC",
+      "腸球菌"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "enterococcus-faecium",
+    "canonical": "Enterococcus faecium",
+    "ja": "フェシウム腸球菌",
+    "short": "E. faecium",
+    "aliases": [
+      "VRE",
+      "エンテロコッカスフェシウム"
+    ],
+    "tags": [
+      "GPC",
+      "腸球菌"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "enterococcus-gallinarum",
+    "canonical": "Enterococcus gallinarum",
+    "ja": "ガリナルム腸球菌",
+    "short": "E. gallinarum",
+    "aliases": [
+      "エンテロコッカスガリナルム"
+    ],
+    "tags": [
+      "GPC",
+      "腸球菌"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "enterococcus-casseliflavus",
+    "canonical": "Enterococcus casseliflavus",
+    "ja": "カセリフラブス腸球菌",
+    "short": "E. casseliflavus",
+    "aliases": [
+      "カセリフラバス"
+    ],
+    "tags": [
+      "GPC",
+      "腸球菌"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "escherichia-coli",
+    "canonical": "Escherichia coli",
+    "ja": "大腸菌",
+    "short": "E. coli",
+    "aliases": [
+      "E coli",
+      "エシェリキアコリ"
+    ],
+    "tags": [
+      "GNR",
+      "尿路感染"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "klebsiella-pneumoniae",
+    "canonical": "Klebsiella pneumoniae",
+    "ja": "肺炎桿菌",
+    "short": "K. pneumoniae",
+    "aliases": [
+      "クレブシエラニューモニエ"
+    ],
+    "tags": [
+      "GNR",
+      "腸内細菌目"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "klebsiella-oxytoca",
+    "canonical": "Klebsiella oxytoca",
+    "ja": "オキシトカ菌",
+    "short": "K. oxytoca",
+    "aliases": [
+      "クレブシエラオキシトカ"
+    ],
+    "tags": [
+      "GNR",
+      "腸内細菌目"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "klebsiella-aerogenes",
+    "canonical": "Klebsiella aerogenes",
+    "ja": "アエロゲネス菌",
+    "short": "K. aerogenes",
+    "aliases": [
+      "Enterobacter aerogenes"
+    ],
+    "tags": [
+      "GNR",
+      "AmpC"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "enterobacter-cloacae-complex",
+    "canonical": "Enterobacter cloacae complex",
+    "ja": "クロアカ複合体",
+    "short": "E. cloacae complex",
+    "aliases": [
+      "エンテロバクタークロアカ",
+      "Enterobacter cloacae"
+    ],
+    "tags": [
+      "GNR",
+      "AmpC"
+    ],
+    "kind": "complex",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "citrobacter-freundii",
+    "canonical": "Citrobacter freundii",
+    "ja": "フロインディ菌",
+    "short": "C. freundii",
+    "aliases": [
+      "シトロバクターフロインディ"
+    ],
+    "tags": [
+      "GNR",
+      "AmpC"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "citrobacter-koseri",
+    "canonical": "Citrobacter koseri",
+    "ja": "コセリ菌",
+    "short": "C. koseri",
+    "aliases": [
+      "シトロバクターコセリ"
+    ],
+    "tags": [
+      "GNR",
+      "腸内細菌目"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "serratia-marcescens",
+    "canonical": "Serratia marcescens",
+    "ja": "セラチア菌",
+    "short": "S. marcescens",
+    "aliases": [
+      "セラチアマルセッセンス"
+    ],
+    "tags": [
+      "GNR",
+      "腸内細菌目"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "proteus-mirabilis",
+    "canonical": "Proteus mirabilis",
+    "ja": "ミラビリス変形菌",
+    "short": "P. mirabilis",
+    "aliases": [
+      "プロテウスミラビリス"
+    ],
+    "tags": [
+      "GNR",
+      "尿路感染"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "proteus-vulgaris",
+    "canonical": "Proteus vulgaris",
+    "ja": "ブルガリス変形菌",
+    "short": "P. vulgaris",
+    "aliases": [
+      "プロテウスブルガリス"
+    ],
+    "tags": [
+      "GNR",
+      "腸内細菌目"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "morganella-morganii",
+    "canonical": "Morganella morganii",
+    "ja": "モルガネラ菌",
+    "short": "M. morganii",
+    "aliases": [
+      "モルガネラモルガニー"
+    ],
+    "tags": [
+      "GNR",
+      "腸内細菌目"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "providencia-stuartii",
+    "canonical": "Providencia stuartii",
+    "ja": "スチュアルティ菌",
+    "short": "P. stuartii",
+    "aliases": [
+      "プロビデンシアスチュアルティ"
+    ],
+    "tags": [
+      "GNR",
+      "腸内細菌目"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "salmonella-enterica",
+    "canonical": "Salmonella enterica",
+    "ja": "サルモネラ・エンテリカ",
+    "short": "S. enterica",
+    "aliases": [
+      "サルモネラ",
+      "サルモネラ菌"
+    ],
+    "tags": [
+      "GNR",
+      "腸管感染"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "shigella-spp",
+    "canonical": "Shigella spp.",
+    "ja": "赤痢菌属",
+    "short": "Shigella",
+    "aliases": [
+      "シゲラ",
+      "赤痢菌"
+    ],
+    "tags": [
+      "GNR",
+      "腸管感染"
+    ],
+    "kind": "genus_group",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "campylobacter-jejuni",
+    "canonical": "Campylobacter jejuni",
+    "ja": "カンピロバクター・ジェジュニ",
+    "short": "C. jejuni",
+    "aliases": [
+      "カンピロバクター",
+      "ジェジュニ"
+    ],
+    "tags": [
+      "GNR",
+      "腸管感染"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "vibrio-vulnificus",
+    "canonical": "Vibrio vulnificus",
+    "ja": "ビブリオ・バルニフィカス",
+    "short": "V. vulnificus",
+    "aliases": [
+      "ビブリオバルニフィカス"
+    ],
+    "tags": [
+      "GNR",
+      "海水関連"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "aeromonas-hydrophila",
+    "canonical": "Aeromonas hydrophila",
+    "ja": "エロモナス・ハイドロフィラ",
+    "short": "A. hydrophila",
+    "aliases": [
+      "エロモナス",
+      "エロモナスヒドロフィラ"
+    ],
+    "tags": [
+      "GNR",
+      "水系"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "acinetobacter-baumannii-complex",
+    "canonical": "Acinetobacter baumannii complex",
+    "ja": "アシネトバクター・バウマニ複合体",
+    "short": "A. baumannii complex",
+    "aliases": [
+      "Acinetobacter baumannii",
+      "CRAB"
+    ],
+    "tags": [
+      "GNR",
+      "非発酵菌"
+    ],
+    "kind": "complex",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "burkholderia-cepacia-complex",
+    "canonical": "Burkholderia cepacia complex",
+    "ja": "バークホルデリア・セパシア複合体",
+    "short": "B. cepacia complex",
+    "aliases": [
+      "Burkholderia cepacia",
+      "セパシア菌"
+    ],
+    "tags": [
+      "GNR",
+      "非発酵菌"
+    ],
+    "kind": "complex",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "achromobacter-xylosoxidans",
+    "canonical": "Achromobacter xylosoxidans",
+    "ja": "アクロモバクター・キシロソキシダンス",
+    "short": "A. xylosoxidans",
+    "aliases": [
+      "アルカリゲネスキシロソキシダンス"
+    ],
+    "tags": [
+      "GNR",
+      "非発酵菌"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "elizabethkingia-anophelis",
+    "canonical": "Elizabethkingia anophelis",
+    "ja": "エリザベスキンギア・アノフェリス",
+    "short": "E. anophelis",
+    "aliases": [
+      "エリザベスキンギア"
+    ],
+    "tags": [
+      "GNR",
+      "非発酵菌"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "haemophilus-influenzae",
+    "canonical": "Haemophilus influenzae",
+    "ja": "インフルエンザ菌",
+    "short": "H. influenzae",
+    "aliases": [
+      "ヘモフィルスインフルエンザ"
+    ],
+    "tags": [
+      "GNR",
+      "呼吸器"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "moraxella-catarrhalis",
+    "canonical": "Moraxella catarrhalis",
+    "ja": "モラクセラ・カタラーリス",
+    "short": "M. catarrhalis",
+    "aliases": [
+      "Branhamella catarrhalis",
+      "モラクセラ"
+    ],
+    "tags": [
+      "GNC",
+      "呼吸器"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "neisseria-meningitidis",
+    "canonical": "Neisseria meningitidis",
+    "ja": "髄膜炎菌",
+    "short": "N. meningitidis",
+    "aliases": [
+      "メニンゴコッカス"
+    ],
+    "tags": [
+      "GNC",
+      "髄膜炎"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "neisseria-gonorrhoeae",
+    "canonical": "Neisseria gonorrhoeae",
+    "ja": "淋菌",
+    "short": "N. gonorrhoeae",
+    "aliases": [
+      "ゴノコッカス"
+    ],
+    "tags": [
+      "GNC",
+      "性感染症"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "bordetella-pertussis",
+    "canonical": "Bordetella pertussis",
+    "ja": "百日咳菌",
+    "short": "B. pertussis",
+    "aliases": [
+      "ボルデテラパータシス"
+    ],
+    "tags": [
+      "GNR",
+      "呼吸器"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "legionella-pneumophila",
+    "canonical": "Legionella pneumophila",
+    "ja": "レジオネラ・ニューモフィラ",
+    "short": "L. pneumophila",
+    "aliases": [
+      "レジオネラ菌",
+      "レジオネラ"
+    ],
+    "tags": [
+      "非定型",
+      "肺炎"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "mycoplasma-pneumoniae",
+    "canonical": "Mycoplasma pneumoniae",
+    "ja": "肺炎マイコプラズマ",
+    "short": "M. pneumoniae",
+    "aliases": [
+      "マイコプラズマ"
+    ],
+    "tags": [
+      "非定型",
+      "肺炎"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "chlamydia-pneumoniae",
+    "canonical": "Chlamydia pneumoniae",
+    "ja": "肺炎クラミジア",
+    "short": "C. pneumoniae",
+    "aliases": [
+      "Chlamydophila pneumoniae"
+    ],
+    "tags": [
+      "非定型",
+      "肺炎"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "chlamydia-trachomatis",
+    "canonical": "Chlamydia trachomatis",
+    "ja": "トラコーマクラミジア",
+    "short": "C. trachomatis",
+    "aliases": [
+      "クラミジアトラコマチス"
+    ],
+    "tags": [
+      "非定型",
+      "性感染症"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "mycobacterium-tuberculosis",
+    "canonical": "Mycobacterium tuberculosis",
+    "ja": "結核菌",
+    "short": "M. tuberculosis",
+    "aliases": [
+      "TB",
+      "マイコバクテリウムツベルクローシス"
+    ],
+    "tags": [
+      "抗酸菌",
+      "結核"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "mycobacterium-avium-complex",
+    "canonical": "Mycobacterium avium complex",
+    "ja": "MAC",
+    "short": "MAC",
+    "aliases": [
+      "Mycobacterium avium",
+      "Mycobacterium intracellulare",
+      "非結核性抗酸菌"
+    ],
+    "tags": [
+      "抗酸菌",
+      "NTM"
+    ],
+    "kind": "complex",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "nocardia-farcinica",
+    "canonical": "Nocardia farcinica",
+    "ja": "ノカルジア・ファルシニカ",
+    "short": "N. farcinica",
+    "aliases": [
+      "ノカルジアファルシニカ",
+      "ノカルジア"
+    ],
+    "tags": [
+      "放線菌"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "listeria-monocytogenes",
+    "canonical": "Listeria monocytogenes",
+    "ja": "リステリア・モノサイトゲネス",
+    "short": "L. monocytogenes",
+    "aliases": [
+      "リステリア",
+      "リステリア菌"
+    ],
+    "tags": [
+      "GPR",
+      "髄膜炎"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "corynebacterium-striatum",
+    "canonical": "Corynebacterium striatum",
+    "ja": "コリネバクテリウム・ストリアタム",
+    "short": "C. striatum",
+    "aliases": [
+      "コリネバクテリウムストリアタム"
+    ],
+    "tags": [
+      "GPR"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "bacillus-cereus",
+    "canonical": "Bacillus cereus",
+    "ja": "セレウス菌",
+    "short": "B. cereus",
+    "aliases": [
+      "バチルスセレウス"
+    ],
+    "tags": [
+      "GPR"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "cutibacterium-acnes",
+    "canonical": "Cutibacterium acnes",
+    "ja": "アクネ菌",
+    "short": "C. acnes",
+    "aliases": [
+      "Propionibacterium acnes"
+    ],
+    "tags": [
+      "GPR",
+      "嫌気性菌"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "clostridioides-difficile",
+    "canonical": "Clostridioides difficile",
+    "ja": "クロストリジオイデス・ディフィシル",
+    "short": "C. difficile",
+    "aliases": [
+      "Clostridium difficile",
+      "CDI",
+      "ディフィシル"
+    ],
+    "tags": [
+      "GPR",
+      "嫌気性菌"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "clostridium-perfringens",
+    "canonical": "Clostridium perfringens",
+    "ja": "ウェルシュ菌",
+    "short": "C. perfringens",
+    "aliases": [
+      "クロストリジウムパーフリンゲンス"
+    ],
+    "tags": [
+      "GPR",
+      "嫌気性菌"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "bacteroides-fragilis",
+    "canonical": "Bacteroides fragilis",
+    "ja": "バクテロイデス・フラジリス",
+    "short": "B. fragilis",
+    "aliases": [
+      "バクテロイデスフラジリス"
+    ],
+    "tags": [
+      "GNR",
+      "嫌気性菌"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "prevotella-spp",
+    "canonical": "Prevotella spp.",
+    "ja": "プレボテラ属",
+    "short": "Prevotella",
+    "aliases": [
+      "プレボテラ"
+    ],
+    "tags": [
+      "嫌気性菌"
+    ],
+    "kind": "genus_group",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "fusobacterium-nucleatum",
+    "canonical": "Fusobacterium nucleatum",
+    "ja": "フソバクテリウム・ヌクレアタム",
+    "short": "F. nucleatum",
+    "aliases": [
+      "フソバクテリウムヌクレアタム"
+    ],
+    "tags": [
+      "GNR",
+      "嫌気性菌"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "peptostreptococcus-anaerobius",
+    "canonical": "Peptostreptococcus anaerobius",
+    "ja": "ペプトストレプトコッカス・アナエロビウス",
+    "short": "P. anaerobius",
+    "aliases": [
+      "ペプトストレプトコッカス"
+    ],
+    "tags": [
+      "GPC",
+      "嫌気性菌"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "actinomyces-israelii",
+    "canonical": "Actinomyces israelii",
+    "ja": "放線菌",
+    "short": "A. israelii",
+    "aliases": [
+      "アクチノマイセスイスラエリ"
+    ],
+    "tags": [
+      "GPR",
+      "嫌気性菌"
+    ],
+    "kind": "species",
+    "source": "https://lpsn.dsmz.de/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "candida-albicans",
+    "canonical": "Candida albicans",
+    "ja": "カンジダ・アルビカンス",
+    "short": "C. albicans",
+    "aliases": [
+      "カンジダアルビカンス"
+    ],
+    "tags": [
+      "真菌",
+      "酵母"
+    ],
+    "kind": "species",
+    "source": "https://www.mycobank.org/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "candida-glabrata",
+    "canonical": "Candida glabrata",
+    "ja": "カンジダ・グラブラータ",
+    "short": "C. glabrata",
+    "aliases": [
+      "Nakaseomyces glabratus"
+    ],
+    "tags": [
+      "真菌",
+      "酵母"
+    ],
+    "kind": "species",
+    "source": "https://www.mycobank.org/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "candida-parapsilosis",
+    "canonical": "Candida parapsilosis",
+    "ja": "カンジダ・パラプシローシス",
+    "short": "C. parapsilosis",
+    "aliases": [
+      "カンジダパラプシローシス"
+    ],
+    "tags": [
+      "真菌",
+      "酵母"
+    ],
+    "kind": "species",
+    "source": "https://www.mycobank.org/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "candida-tropicalis",
+    "canonical": "Candida tropicalis",
+    "ja": "カンジダ・トロピカリス",
+    "short": "C. tropicalis",
+    "aliases": [
+      "カンジダトロピカリス"
+    ],
+    "tags": [
+      "真菌",
+      "酵母"
+    ],
+    "kind": "species",
+    "source": "https://www.mycobank.org/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "candida-krusei",
+    "canonical": "Candida krusei",
+    "ja": "カンジダ・クルーセイ",
+    "short": "C. krusei",
+    "aliases": [
+      "Pichia kudriavzevii"
+    ],
+    "tags": [
+      "真菌",
+      "酵母"
+    ],
+    "kind": "species",
+    "source": "https://www.mycobank.org/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "candidozyma-auris",
+    "canonical": "Candidozyma auris",
+    "ja": "カンジダ・アウリス",
+    "short": "C. auris",
+    "aliases": [
+      "Candida auris",
+      "カンジダアウリス"
+    ],
+    "tags": [
+      "真菌",
+      "酵母",
+      "感染対策"
+    ],
+    "kind": "species",
+    "source": "https://www.mycobank.org/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "aspergillus-fumigatus",
+    "canonical": "Aspergillus fumigatus",
+    "ja": "アスペルギルス・フミガーツス",
+    "short": "A. fumigatus",
+    "aliases": [
+      "アスペルギルスフミガーツス"
+    ],
+    "tags": [
+      "真菌",
+      "糸状菌"
+    ],
+    "kind": "species",
+    "source": "https://www.mycobank.org/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "aspergillus-flavus",
+    "canonical": "Aspergillus flavus",
+    "ja": "アスペルギルス・フラバス",
+    "short": "A. flavus",
+    "aliases": [
+      "アスペルギルスフラバス"
+    ],
+    "tags": [
+      "真菌",
+      "糸状菌"
+    ],
+    "kind": "species",
+    "source": "https://www.mycobank.org/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "cryptococcus-neoformans",
+    "canonical": "Cryptococcus neoformans",
+    "ja": "クリプトコックス・ネオフォルマンス",
+    "short": "C. neoformans",
+    "aliases": [
+      "クリプトコッカスネオフォルマンス"
+    ],
+    "tags": [
+      "真菌",
+      "酵母"
+    ],
+    "kind": "species",
+    "source": "https://www.mycobank.org/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
+  },
+  {
+    "id": "pneumocystis-jirovecii",
+    "canonical": "Pneumocystis jirovecii",
+    "ja": "ニューモシスチス・イロベチイ",
+    "short": "P. jirovecii",
+    "aliases": [
+      "ニューモシスチス",
+      "PCP",
+      "PJP"
+    ],
+    "tags": [
+      "真菌",
+      "肺炎"
+    ],
+    "kind": "species",
+    "source": "https://www.mycobank.org/",
+    "source_note": "参考データベース（この個別項目との照合は未完了）",
+    "last_reviewed": null,
+    "status": "draft",
+    "added_on": "2026-10-10"
   }
 ]
