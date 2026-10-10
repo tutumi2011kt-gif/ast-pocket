@@ -11,6 +11,9 @@ let html=feature.html();
 assert.ok(html.includes('原典未確認・練習用'));
 assert.ok(html.includes('reviewReveal'));
 assert.ok(html.includes('reviewChoice'));
+assert.ok(html.includes('未学習 12問'));
+assert.ok(html.includes('医学的な理解確認・定着の認定ではありません'));
+
 assert.ok(html.includes('JSONを書き出す'));
 assert.ok(html.includes('JSONを読み込む'));
 assert.ok(!html.includes('学習内容を臨床で利用してよい'),'No clinical clearance');
