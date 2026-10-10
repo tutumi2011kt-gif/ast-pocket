@@ -43,6 +43,8 @@ const progress=getQuestionProgress(mcq,[e],'2026-10-11');
 assert.equal(progress.next_due_jst,'2026-10-11','first good => 1 day');
 assert.equal(progress.clinical_verified,false);
 assert.equal(progress.proficiency,'練習中・原典未確認');
+assert.equal(progress.practice_status,'練習済み');
+assert.equal(getQuestionProgress(mcq,[]).practice_status,'未学習');
 const after=selectDailyQuestions(bank,[e],saturday);
 assert.ok(!after.questions.some(q=>q.id===mcq.id),'Do not re-ask a question answered today');
 const again=eventFromAnswer({question:self,rating:'again',deviceId:'local-test-device',now:t});
