@@ -1,3 +1,5 @@
+import {ReviewFeature} from './review-feature.mjs';
+const reviewFeature=new ReviewFeature();
 const state={mode:'clinical',noteOrigin:'search',view:'home',query:'',filter:'all',notes:[],weekly:[],organisms:[],antibiotics:[],review:[],selectedNote:null,selectedWeeklyPath:null,organized:null,libraryCategory:'all',integrations:null,selectedTopicId:null};
 const $=s=>document.querySelector(s); const app=$('#app');
 try{const m=localStorage.getItem('astPocketModeV2');if(m==='clinical'||m==='study')state.mode=m;}catch(e){/* Private browsing may disable storage */}
@@ -26,9 +28,10 @@ function mdList(s=''){return s.split('\n').filter(x=>/^[-*]\s/.test(x)).map(x=>x
 function esc(s=''){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 
 async function load(){
-  const [org,abx,idx,review]=await Promise.all([
-    fetch('data/organisms.json').then(r=>r.json()),fetch('data/antibiotics.json').then(r=>r.json()),fetch('content/index.json').then(r=>r.json()),fetch('content/review/questions.json').then(r=>r.json())
+  const [org,abx,idx,review,reviewBank]=await Promise.all([
+    fetch('data/organisms.json').then(r=>r.json()),fetch('data/antibiotics.json').then(r=>r.json()),fetch('content/index.json').then(r=>r.json()),fetch('content/review/questions.json').then(r=>r.json()),fetch('content/review/bank-v2.json').then(r=>r.json())
   ]); state.organisms=org;state.antibiotics=abx;state.review=review;
+  await reviewFeature.init(reviewBank);
   state.notes=await Promise.all(idx.notes.map(async p=>parseMD(await fetch(p).then(r=>r.text()),p)));
   state.weekly=await Promise.all(idx.weekly.map(async p=>parseMD(await fetch(p).then(r=>r.text()),p)));
   state.weekly.sort((a,b)=>b.path.localeCompare(a.path));
@@ -177,7 +180,7 @@ function home(){
   const organizerCard=organizationIntro();
   const fcard=featured?`<section class="card featured-note"><div class="eyebrow">📖 分野別統合ノート・第1号</div><h2>${esc(featured.fm.title)}</h2><p>30秒要約／詳細学習／関連する菌・抗菌薬</p><span class="draft-label">学習用・原典確認待ち</span><button type="button" id="openFeaturedNote" class="primary-btn">MSSA菌血症ノートを開く ›</button></section>`:'';
   const weekCard=w?`<div class="section-title">🎓 今週の学習</div><section class="card weekly-card"><strong>📅 ${esc(w.fm.week||'今週')}</strong><ul>${mdList(w.sections['今週の学習']).slice(0,4).map(x=>`<li>${esc(x)}</li>`).join('')}</ul><button class="primary-btn" id="goWeekly">今週のまとめを見る ›</button></section>`:'';
-  if(state.mode==='study')return `<main class="screen">${brand('感染症を学び、ASTの判断力を育てる')}${searchBox()}<section class="hero-card study-hero"><div class="hero-title">🎓 学習モード</div><p>統合ノートで知識を整理し、復習で定着を目指す</p></section><section class="card study-landing"><div class="section-title compact">🧠 今日の復習</div><p>まずは既存の復習問題を確認できます。</p><button class="primary-btn" id="openReviewHome">Reviewを開く ›</button><p class="small-note">毎日5問・理解度保存は第2段階で実装予定です。</p></section>${organizerCard}${fcard}${weekCard}<section class="card notice">💾 回答履歴の保存とバックアップ案内は次の段階で追加します。</section></main>${nav()}`;
+  if(state.mode==='study')return `<main class="screen">${brand('感染症を学び、ASTの判断力を育てる')}${searchBox()}<section class="hero-card study-hero"><div class="hero-title">🎓 学習モード</div><p>統合ノートで知識を整理し、復習で定着を目指す</p></section><section class="card study-landing"><div class="section-title compact">🧠 今日の復習</div><p>平日5問・週末10問の復習、自己評価、端末内の回答履歴で学習を継続できます。</p><button class="primary-btn" id="openReviewHome">Reviewを開く ›</button><p class="small-note">現在の問題は原典未確認の練習用です。正式な理解度には算入しません。</p></section>${organizerCard}${fcard}${weekCard}<section class="card notice">💾 回答履歴は端末内に保存します。ReviewからJSONの書き出し・読み込みができます。</section></main>${nav()}`;
   return `<main class="screen">${brand()}${searchBox()}<section class="hero-card"><div class="hero-title">💡 AST重要ポイント</div><p>明日からの診療に役立つ<br>感染症診療・ASTのキーポイントを確認</p></section>${organizerCard}${fcard}<div class="grid"><button class="category" data-cat="菌"><span class="icon-bubble teal">🦠</span><strong>菌</strong></button><button class="category" data-cat="抗菌薬"><span class="icon-bubble">💊</span><strong>抗菌薬</strong></button></div><div class="grid three"><button class="category" data-cat="感染症"><span class="icon-bubble pink">🧫</span><strong>感染症</strong></button><button class="category" data-cat="血培"><span class="icon-bubble purple">🧪</span><strong>血培</strong></button><button class="category" data-cat="AST介入"><span class="icon-bubble teal">👥</span><strong>AST介入</strong></button></div>${weekCard}<section class="card notice">🔔 更新確認が必要 <strong>${staleCount()}件</strong></section></main>${nav()}`;
 }
 function organizationIntro(){
@@ -388,7 +391,10 @@ function weeklyView(){
     '</main>'+nav();
 }
 function parseQA(s=''){const lines=s.split('\n');const out=[];let cur=null;for(const line of lines){if(line.startsWith('- Q:')){cur={q:line.replace('- Q:','').trim(),a:''};out.push(cur)}else if(line.trim().startsWith('A:')&&cur)cur.a=line.trim().replace(/^A:\s*/,'')}return out}
-function reviewView(){return `<main class="screen">${brand('復習')}<div class="section-title">🧠 今日の復習</div><section class="card weekly-card">${state.review.map(x=>`<div class="q-row"><strong>Q ${esc(x.q)}</strong><div class="answer">${esc(x.a)}</div></div>`).join('')}</section></main>${nav()}`}
+function reviewView(){
+ if(state.mode!=='study')return `<main class="screen">${brand('復習')}<section class="card review-panel"><h2>📘 学習モードで復習します</h2><p>臨床モードには原典未確認の練習問題を表示しません。学習モードへ切り替えてください。</p><button class="primary-btn" type="button" data-mode="study">学習モードへ切り替える ›</button></section></main>${nav()}`;
+ return `<main class="screen">${brand('復習')}<div id="reviewFeature" aria-live="polite"><section class="card review-panel">復習問題を準備しています…</section></div></main>${nav()}`;
+}
 function openMemo(){document.body.insertAdjacentHTML('beforeend',`<div class="modal" id="memoModal"><div class="sheet"><h2>今日覚えたこと</h2><textarea id="memoText" placeholder="あとで整理したいことを短くメモ"></textarea><div class="sheet-actions"><button class="cancel" id="memoCancel">キャンセル</button><button class="save" id="memoSave">保存</button></div></div></div>`);$('#memoCancel').onclick=()=>$('#memoModal').remove();$('#memoSave').onclick=()=>{const t=$('#memoText').value.trim();if(t){const arr=JSON.parse(localStorage.getItem('astPocketInbox')||'[]');arr.unshift({text:t,at:new Date().toISOString()});localStorage.setItem('astPocketInbox',JSON.stringify(arr))}$('#memoModal').remove()}}
 function bindPage(){
   bindCommon();
@@ -415,6 +421,7 @@ function bindPage(){
   if(state.view==='search')bindSearchPanel();
   $('#latestBtn')?.addEventListener('click',()=>alert('Ver.1では「最新情報を確認」の導線まで実装。次段階でWeb検索・差分確認を接続します。'));
   document.querySelectorAll('.q-row').forEach(q=>q.onclick=()=>q.classList.toggle('open'));
+  if(state.view==='review'&&state.mode==='study')void reviewFeature.mount();
 }
 
 function render(scroll=true){let html='';if(state.view==='home')html=home();else if(state.view==='search')html=searchResults();else if(state.view==='note')html=noteView();else if(state.view==='library')html=libraryView();else if(state.view==='topic')html=dynamicTopicView();else if(state.view==='integration')html=integrationReviewView();else if(state.view==='weekly')html=weeklyView();else html=reviewView();app.innerHTML=html;
