@@ -24,6 +24,8 @@ jobs:
           node-version: 20
       - name: Auto-organize Weekly into draft topics
         run: node scripts/organize-weekly.mjs --write
+      - name: Build safe draft integration proposals
+        run: node scripts/propose-integrations.mjs --write
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .
