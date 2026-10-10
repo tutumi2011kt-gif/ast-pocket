@@ -7,7 +7,7 @@ function smokeTest(){
  execFileSync(process.execPath,['scripts/organize-weekly.mjs','--write'],{stdio:'ignore'});
  execFileSync(process.execPath,['scripts/propose-integrations.mjs','--write'],{stdio:'ignore'});
  const index=JSON.parse(fs.readFileSync('content/index.json','utf8'));
- const app=fs.readFileSync('app.js','utf8'),end=app.lastIndexOf('\nload().catch(');
+ const app=fs.readFileSync('app.js','utf8').replace(/^import .*;\n/gm,'').replace(/^const reviewFeature=new ReviewFeature\(\);\n/m,''),end=app.lastIndexOf('\nload().catch(');
  assert.ok(end>0,'Expected bootstrap');
  const data={
   notes:index.notes.map(p=>({path:p,text:fs.readFileSync(p,'utf8')})),
