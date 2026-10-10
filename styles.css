@@ -64,3 +64,23 @@ button,input{font:inherit}.app-shell{min-height:100vh;padding-bottom:92px}.scree
 .related-links{display:flex;flex-wrap:wrap;gap:9px}
 .related-link{border:1px solid #badbee;border-radius:14px;background:#eff8ff;color:#1069a9;padding:10px 12px;cursor:pointer;font-weight:750;font-size:14px}
 @media(max-width:520px){.mode-toggle button{font-size:14px}.integrated-heading h1{font-size:29px}.featured-note h2{font-size:21px}.integrated-card{padding:16px}}
+
+
+/* AST Pocket Ver.2: automated Weekly topic organization */
+.organizer-intro,.organizer-info{padding:18px;margin:16px 0}
+.organizer-intro h2{font-size:23px;margin:9px 0}
+.organizer-intro p,.organizer-info p{line-height:1.65;color:var(--muted)}
+.organizer-intro .primary-btn{margin:12px 0 4px}
+.organizer-intro .small-note,.organizer-info .small-note{font-size:12px}
+.organizer-tabs{gap:7px;overflow-x:auto;scrollbar-width:thin;padding-bottom:7px}
+.organizer-tabs .chip{font-size:14px;padding:10px 13px}
+.library-back{background:transparent;border:0;color:var(--blue);font-weight:750;font-size:16px;cursor:pointer;padding:0;margin:8px 0}
+.classified-item{padding:18px;margin:14px 0}
+.classified-item h3{font-size:20px;margin:8px 0;line-height:1.35}
+.classified-status{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0}
+.classified-item .primary-btn{margin-top:12px}
+.learning-snippet{margin:9px 0;padding:12px;border-radius:12px;background:#f4f9fd;overflow-wrap:anywhere}
+.learning-origin{font-size:12px;color:var(--muted);margin-bottom:6px}
+.learning-snippet p{font-size:14px;line-height:1.6;margin:5px 0}
+.open-weekly-ref{border:0;padding:6px 0;background:transparent;color:var(--blue);font-weight:700;cursor:pointer}
+@media(max-width:520px){.organizer-intro h2{font-size:21px}.classified-item{padding:15px}.organizer-tabs .chip{font-size:13px}}
