@@ -1,4 +1,4 @@
-const state={mode:'clinical',noteOrigin:'search',view:'home',query:'',filter:'all',notes:[],weekly:[],organisms:[],antibiotics:[],review:[],selectedNote:null,selectedWeeklyPath:null,organized:null,libraryCategory:'all',integrations:null,selectedTopicId:null};
+const state={mode:'clinical',noteOrigin:'search',view:'home',query:'',filter:'all',notes:[],weekly:[],organisms:[],antibiotics:[],review:[],selectedNote:null,selectedWeeklyPath:null,organized:null,libraryCategory:'all',integrations:null,selectedTopicId:null,weeklyReturn:null};
 const $=s=>document.querySelector(s); const app=$('#app');
 try{const m=localStorage.getItem('astPocketModeV2');if(m==='clinical'||m==='study')state.mode=m;}catch(e){/* Private browsing may disable storage */}
 
@@ -53,6 +53,7 @@ function bindCommon(){
   document.querySelectorAll('[data-nav]').forEach(b=>b.onclick=()=>{
     clearTimeout(searchTimer);
     state.view=b.dataset.nav;
+    state.weeklyReturn=null; // Weekly tab is a fresh entry, not a return trip.
     state.query='';
     render();
   });
@@ -316,6 +317,41 @@ function noteSection(title,items){return `<section class="card note-section"><h2
 function checkSection(title,items){return `<section class="card note-section"><h2>${title}</h2><div class="body"><ul class="checklist">${items.map(x=>`<li><input type="checkbox"/> ${esc(x)}</li>`).join('')}</ul></div></section>`}
 function noteText(title,text,cls=''){return `<section class="card note-section ${cls}"><h2>${title}</h2><div class="body">${esc(text||'')}</div></section>`}
 function sourceSection(n){return `<section class="card note-section"><h2>📚 根拠</h2><div class="body sources"><div>• ${esc(n.fm.source||'出典未設定')}</div><div>• 最終確認：${esc(n.fm.last_reviewed||'')}</div><br><button class="primary-btn" id="latestBtn">最新情報を確認 ›</button></div></section>`}
+
+function weeklyOriginLabel(view){
+ if(view==='note')return state.selectedNote?.fm?.title?state.selectedNote.fm.title+'ノート':'ノート';
+ if(view==='topic')return state.integrations?.topics?.find(t=>t.topic_id===state.selectedTopicId)?.title||'学習ノート';
+ if(view==='integration')return '原典確認待ち一覧';
+ if(view==='library')return '分野別ノート一覧';
+ if(view==='search')return '検索結果';
+ if(view==='home')return 'Home';
+ return '前の画面';
+}
+function openWeeklyFromSource(path){
+ // Restore the exact source page, including expanded sections and scroll position.
+ const view=state.view;
+ state.weeklyReturn={
+  view,
+  label:weeklyOriginLabel(view),
+  scrollY:window.scrollY||0,
+  openDetails:[...document.querySelectorAll('details')].flatMap((el,i)=>el.open?[i]:[])
+ };
+ state.selectedWeeklyPath=path;
+ state.view='weekly';
+ render();
+}
+function backFromWeekly(){
+ const origin=state.weeklyReturn;
+ if(!origin)return;
+ state.weeklyReturn=null;
+ state.view=origin.view;
+ render(false);
+ requestAnimationFrame(()=>{
+  document.querySelectorAll('details').forEach((el,i)=>{el.open=origin.openDetails.includes(i)});
+  window.scrollTo({top:origin.scrollY,behavior:'instant'});
+ });
+}
+
 function weeklyView(){
   const w=state.weekly.find(x=>x.path===state.selectedWeeklyPath)||state.weekly[0];
   if(!w)return '<main class="screen">'+brand('週間学習まとめ')+'<section class="card empty">Weeklyはまだありません。</section></main>'+nav();
@@ -324,13 +360,14 @@ function weeklyView(){
   const rev=parseQA(w.sections['今週の復習']);
   const candidates=mdList(w.sections['正式ノート候補']);
   const options=state.weekly.map(x=>'<option value="'+esc(x.path)+'" '+(x.path===w.path?'selected':'')+'>'+esc(x.fm.week||x.fm.title||x.path)+'</option>').join('');
-  return '<main class="screen">'+brand('週間学習まとめ')+
+  const backControl=state.weeklyReturn?'<div class="weekly-return-bar"><button type="button" class="weekly-return-button" data-weekly-return>‹ '+esc(state.weeklyReturn.label)+'へ戻る</button></div>':'';
+  return '<main class="screen">'+brand('週間学習まとめ')+backControl+
     '<section class="card weekly-picker-card"><label for="weeklyPicker">📅 表示する週を選択</label><select id="weeklyPicker" aria-label="表示する週">'+options+'</select><p class="weekly-disclaimer">学習履歴です。最新の診療推奨・出典確認済みKnowledgeとは異なります。</p></section>'+
     '<section class="card weekly-section"><h2>🎓 今週の学習</h2><div class="body"><strong>📅 '+esc(w.fm.week||'')+'</strong><ul>'+learning.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div></section>'+
     '<section class="card weekly-section"><h2>💡 今週の重要ポイント</h2><div class="body"><ol class="numbered">'+points.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol></div></section>'+
     '<section class="card weekly-section"><h2>📘 今週の復習</h2><div class="body">'+rev.map(x=>'<div class="q-row"><strong>Q '+esc(x.q)+'</strong><div class="answer">'+esc(x.a)+'</div></div>').join('')+'</div></section>'+
     '<section class="card weekly-section"><h2>📓 正式ノート候補</h2><div class="body">'+candidates.map(x=>'<div class="list-row"><span>'+esc(x)+'</span><span class="pill">要確認</span></div>').join('')+'</div></section>'+
-    '</main>'+nav();
+    +backControl+'</main>'+nav();
 }
 function parseQA(s=''){const lines=s.split('\n');const out=[];let cur=null;for(const line of lines){if(line.startsWith('- Q:')){cur={q:line.replace('- Q:','').trim(),a:''};out.push(cur)}else if(line.trim().startsWith('A:')&&cur)cur.a=line.trim().replace(/^A:\s*/,'')}return out}
 function reviewView(){return `<main class="screen">${brand('復習')}<div class="section-title">🧠 今日の復習</div><section class="card weekly-card">${state.review.map(x=>`<div class="q-row"><strong>Q ${esc(x.q)}</strong><div class="answer">${esc(x.a)}</div></div>`).join('')}</section></main>${nav()}`}
@@ -353,15 +390,16 @@ function bindPage(){
     if(note){state.selectedNote=note;state.noteOrigin='library';state.view='note';render();}
   }));
   document.querySelectorAll('.open-weekly-ref').forEach(b=>b.addEventListener('click',()=>{
-    state.selectedWeeklyPath=b.dataset.weeklyPath;state.view='weekly';render();
+    openWeeklyFromSource(b.dataset.weeklyPath);
   }));
+  document.querySelectorAll('[data-weekly-return]').forEach(b=>b.addEventListener('click',backFromWeekly));
   document.querySelectorAll('[data-related]').forEach(b=>b.addEventListener('click',()=>{state.query=b.dataset.related;state.filter='all';state.view='search';render();}));
   document.querySelectorAll('[data-cat]').forEach(b=>b.onclick=()=>{
     state.view='search';
     state.query=b.dataset.cat;
     render();
   });
-  $('#goWeekly')?.addEventListener('click',()=>{state.selectedWeeklyPath=null;state.view='weekly';render()});
+  $('#goWeekly')?.addEventListener('click',()=>{state.weeklyReturn=null;state.selectedWeeklyPath=null;state.view='weekly';render()});
   $('#weeklyPicker')?.addEventListener('change',e=>{state.selectedWeeklyPath=e.target.value;render(false)});
   if(state.view==='search')bindSearchPanel();
   $('#backSearch')?.addEventListener('click',()=>{state.view=state.noteOrigin||'search';render()});
