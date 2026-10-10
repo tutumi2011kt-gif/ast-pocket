@@ -1,4 +1,4 @@
-const state={mode:'clinical',noteOrigin:'search',view:'home',query:'',filter:'all',notes:[],weekly:[],organisms:[],antibiotics:[],review:[],selectedNote:null,selectedWeeklyPath:null,organized:null,libraryCategory:'all'};
+const state={mode:'clinical',noteOrigin:'search',view:'home',query:'',filter:'all',notes:[],weekly:[],organisms:[],antibiotics:[],review:[],selectedNote:null,selectedWeeklyPath:null,organized:null,libraryCategory:'all',integrations:null,selectedTopicId:null};
 const $=s=>document.querySelector(s); const app=$('#app');
 try{const m=localStorage.getItem('astPocketModeV2');if(m==='clinical'||m==='study')state.mode=m;}catch(e){/* Private browsing may disable storage */}
 
@@ -39,6 +39,10 @@ async function load(){
       if(data.schema_version===1&&Array.isArray(data.topics)&&Array.isArray(data.categories))state.organized=data;
     }
   }catch(e){console.warn('Organized Weekly index is not yet available',e);}
+  try{
+    const response=await fetch('content/integration-proposals.json',{cache:'no-store'});
+    if(response.ok){const data=await response.json();if(data.schema_version===1&&Array.isArray(data.topics)&&Array.isArray(data.facts)&&data.verified===false)state.integrations=data;}
+  }catch(e){console.warn('Integration drafts not yet available',e);}
   render();
 }
 function brand(sub='感染症ナレッジ'){return `<div class="brand"><div><h1><span class="ast">AST</span> Pocket</h1><p>${sub}</p></div><div class="brand-mark">🩺</div></div>${modeControl()}`}
@@ -178,6 +182,48 @@ function classifiedHistory(refs,limit=5){
    return text?`<div class="learning-snippet"><div class="learning-origin">${esc(date)} · ${esc(r.section)} · <span class="draft-label">学習ログ</span></div><p>${esc(text)}</p><button type="button" class="open-weekly-ref" data-weekly-path="${esc(r.weekly)}">元のWeeklyを見る ›</button></div>`:'';
  }).join('');
 }
+function integrationFact(id){return state.integrations?.facts?.find(f=>f.id===id)||null}
+function proposedSource(f){
+ const ref=f?.refs?.[0];if(!ref)return null;
+ const weekly=state.weekly.find(w=>w.path===ref.weekly);if(!weekly)return null;
+ if(ref.section==='今週の復習'){const q=parseQA(weekly.sections['今週の復習']||'')[ref.index];return q?{text:q.q,answer:q.a,ref}:null}
+ const text=extractWeeklyLines(weekly,ref.section)[ref.index];return text?{text,answer:'',ref}:null
+}
+function proposalSnippet(link){
+ const f=integrationFact(link.fact_id),src=proposedSource(f);if(!f||!src)return '';
+ const flagged=f.risk==='review_required';
+ const date=src.ref.weekly.match(/\d{4}-\d{2}-\d{2}/)?.[0]||'';
+ return `<div class="proposal-snippet ${flagged?'review-required':'draft-learning'}">
+ <div class="proposal-meta"><span class="draft-label">${flagged?'医学的内容：原典確認待ち':'学習メモ（未確認）'}</span>${link.already_present?'<span class="pill">既存内容との重複候補</span>':''}<small>${esc(date)} · ${esc(src.ref.section)}</small></div>
+ <p>${f.kind==='qa'?'<strong>Q. </strong>':''}${esc(src.text)}</p>
+ ${src.answer?`<p class="proposal-answer"><strong>学習時の回答：</strong>${esc(src.answer)}</p>`:''}
+ <button type="button" class="open-weekly-ref" data-weekly-path="${esc(src.ref.weekly)}">元のWeeklyを見る ›</button>
+ </div>`;
+}
+function topicIntegrationDetails(t,includeAll=false){
+ if(!t?.links?.length)return '';
+ const links=t.links.filter(l=>includeAll||!l.already_present);if(!links.length)return '<p class="small-note">既存内容と重複する候補のみです。</p>';
+ const grouped=new Map();for(const l of links){const k=l.target_section||'学習メモ';if(!grouped.has(k))grouped.set(k,[]);grouped.get(k).push(l)}
+ return [...grouped].map(([section,refs])=>`<div class="proposal-group"><h3>${esc(section)}</h3>${refs.map(l=>proposalSnippet(l)).join('')}</div>`).join('');
+}
+function dynamicTopicView(){
+ const t=state.integrations?.topics?.find(t=>t.topic_id===state.selectedTopicId);
+ if(!t)return `<main class="screen">${brand('学習ノート')}<section class="card empty">この学習ノートはまだ生成されていません。</section></main>${nav()}`;
+ const lab=state.organized?.categories?.find(c=>c.id===t.category)?.label||t.category;
+ return `<main class="screen integrated-screen"><button class="back library-back" id="backToOrganizer">‹ 分野別一覧へ</button>${brand('自動整理した学習ノート')}<header class="integrated-heading"><div class="eyebrow">${esc(lab)} ／ Weeklyから生成</div><h1>${esc(t.title)}</h1></header>
+ <section class="draft-alert"><strong>⚠️ 原典未確認の自動整理ノート</strong><p>Weeklyを項目別に整理した学習資料です。確認済みの治療推奨ではありません。</p></section>
+ ${state.mode==='clinical'?`<section class="card integrated-card"><h2>30秒要約</h2><p>このテーマに原典確認済みの要約はありません。学習内容は学習モードで確認できます。</p><button type="button" class="primary-btn" data-mode="study">学習モードで確認する ›</button></section>`:
+ `<section class="card integrated-card"><h2>📚 自動統合した学習メモ</h2><p class="small-note">同じ知識は1件にまとめ、元のWeeklyと紐付けています。</p>${topicIntegrationDetails(t,true)||'<p>学習メモはまだありません。</p>'}</section>`}
+ <section class="card integrated-card"><h2>🔗 学習履歴</h2>${classifiedHistory(t.weekly_refs||[],6)||'<p class="small-note">関連Weeklyはありません。</p>'}</section></main>${nav()}`;
+}
+function integrationReviewView(){
+ const all=state.integrations;
+ if(!all)return `<main class="screen">${brand('原典確認待ち')}<section class="card empty">統合候補のデータがまだありません。公開後に画面を再読み込みしてください。</section></main>${nav()}`;
+ const flagged=all.facts.filter(f=>f.risk==='review_required');
+ return `<main class="screen">${brand('学習内容の確認待ち')}<button id="backFromReviewQueue" class="back library-back" type="button">‹ Homeへ戻る</button>
+ <section class="card organizer-info"><h2>🔎 原典確認待ち ${flagged.length}件</h2><p>医学的判断に関係する学習内容を整理しました。確認済みKnowledgeへの自動反映は行いません。</p><p class="small-note">原典確認・承認操作は今後の機能です。ここでは元のWeeklyを確認できます。</p></section>
+ ${flagged.map(f=>{const links=all.topics.filter(t=>t.links.some(x=>x.fact_id===f.id));return `<article class="card classified-item"><div class="proposal-meta"><span class="draft-label">原典照合待ち</span><small>関連：${esc(links.map(t=>t.title).slice(0,4).join('／'))}</small></div>${proposalSnippet({fact_id:f.id})}</article>`}).join('')||'<section class="card empty">確認待ちの学習項目はありません。</section>'}</main>${nav()}`;
+}
 function libraryView(){
  const data=state.organized;
  if(!data)return `<main class="screen">${brand('分野別の学習ノート')}<button class="back" id="backLibrary">‹ Homeに戻る</button><section class="card empty">自動整理データを読み込めませんでした。Pagesへの反映後、画面を再読み込みしてください。</section></main>${nav()}`;
@@ -308,5 +354,5 @@ function bindPage(){
   document.querySelectorAll('.q-row').forEach(q=>q.onclick=()=>q.classList.toggle('open'));
 }
 
-function render(scroll=true){let html='';if(state.view==='home')html=home();else if(state.view==='search')html=searchResults();else if(state.view==='note')html=noteView();else if(state.view==='library')html=libraryView();else if(state.view==='weekly')html=weeklyView();else html=reviewView();app.innerHTML=html;bindPage();if(scroll)window.scrollTo({top:0,behavior:'instant'})}
+function render(scroll=true){let html='';if(state.view==='home')html=home();else if(state.view==='search')html=searchResults();else if(state.view==='note')html=noteView();else if(state.view==='library')html=libraryView();else if(state.view==='topic')html=dynamicTopicView();else if(state.view==='integration')html=integrationReviewView();else if(state.view==='weekly')html=weeklyView();else html=reviewView();app.innerHTML=html;bindPage();if(scroll)window.scrollTo({top:0,behavior:'instant'})}
 load().catch(err=>{console.error(err);app.innerHTML='<div class="screen"><div class="card empty">AST Pocketの読み込みに失敗しました。ローカルではHTTPサーバー経由で開いてください。</div></div>'});
