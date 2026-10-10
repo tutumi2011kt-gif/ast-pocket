@@ -25,5 +25,7 @@ jobs:
         run: node scripts/organize-weekly.mjs --write && node scripts/propose-integrations.mjs --write && node scripts/test-integrations.mjs
       - name: Smoke test integration views and clinical safety
         run: node scripts/test-integration-ui.mjs
+      - name: Test return navigation from Weekly to source note
+        run: node scripts/test-weekly-return.mjs
       - name: Check required files
         run: test -f index.html && test -f app.js && test -f styles.css
