@@ -1,5 +1,6 @@
-const state={view:'home',query:'',filter:'all',notes:[],weekly:[],organisms:[],antibiotics:[],review:[],selectedNote:null,selectedWeeklyPath:null};
+const state={mode:'clinical',noteOrigin:'search',view:'home',query:'',filter:'all',notes:[],weekly:[],organisms:[],antibiotics:[],review:[],selectedNote:null,selectedWeeklyPath:null};
 const $=s=>document.querySelector(s); const app=$('#app');
+try{const m=localStorage.getItem('astPocketModeV2');if(m==='clinical'||m==='study')state.mode=m;}catch(e){/* Private browsing may disable storage */}
 
 const icons={home:'⌂',search:'⌕',weekly:'▣',review:'▤',bug:'🦠',drug:'💊',infection:'🧫',culture:'🧪',ast:'👥'};
 let searchTimer=null;
@@ -33,7 +34,8 @@ async function load(){
   state.weekly.sort((a,b)=>b.path.localeCompare(a.path));
   render();
 }
-function brand(sub='感染症ナレッジ'){return `<div class="brand"><div><h1><span class="ast">AST</span> Pocket</h1><p>${sub}</p></div><div class="brand-mark">🩺</div></div>`}
+function brand(sub='感染症ナレッジ'){return `<div class="brand"><div><h1><span class="ast">AST</span> Pocket</h1><p>${sub}</p></div><div class="brand-mark">🩺</div></div>${modeControl()}`}
+function modeControl(){return `<div class="mode-toggle" role="group" aria-label="AST Pocket表示モード"><button type="button" data-mode="clinical" class="${state.mode==='clinical'?'selected':''}" aria-pressed="${state.mode==='clinical'}">🩺 臨床モード</button><button type="button" data-mode="study" class="${state.mode==='study'?'selected':''}" aria-pressed="${state.mode==='study'}">📘 学習モード</button></div>`}
 function searchBox(){return `<div class="searchbox"><span class="search-icon">⌕</span><input id="searchInput" value="${esc(state.query)}" placeholder="菌・抗菌薬・感染症を検索" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"/><button class="clear-btn ${state.query?'':'hidden'}" id="clearSearch" type="button">×</button></div>`}
 function nav(){return `<nav class="bottom-nav"><div class="inner">${[['home','Home'],['search','Search'],['weekly','Weekly'],['review','Review']].map(([v,l])=>`<button class="nav-btn ${state.view===v?'active':''}" data-nav="${v}"><span class="nav-icon">${icons[v]}</span>${l}</button>`).join('')}</div></nav><button class="fab" id="fab">＋</button>`}
 function bindCommon(){
@@ -101,11 +103,12 @@ function updateClearButton(){
 }
 
 function home(){
-  const w=state.weekly[0];return `<main class="screen">${brand()}${searchBox()}<section class="hero-card"><div class="hero-title">💡 AST重要ポイント</div><p>明日からの診療に役立つ<br>感染症診療・ASTのキーポイントを確認</p></section>
-  <div class="grid"><button class="category" data-cat="菌"><span class="icon-bubble teal">🦠</span><strong>菌</strong></button><button class="category" data-cat="抗菌薬"><span class="icon-bubble">💊</span><strong>抗菌薬</strong></button></div>
-  <div class="grid three"><button class="category" data-cat="感染症"><span class="icon-bubble pink">🧫</span><strong>感染症</strong></button><button class="category" data-cat="血培"><span class="icon-bubble purple">🧪</span><strong>血培</strong></button><button class="category" data-cat="AST介入"><span class="icon-bubble teal">👥</span><strong>AST介入</strong></button></div>
-  <div class="section-title">🎓 今週の学習</div><section class="card weekly-card"><strong>📅 ${esc(w.fm.week||'今週')}</strong><ul>${mdList(w.sections['今週の学習']).slice(0,4).map(x=>`<li>${esc(x)}</li>`).join('')}</ul><button class="primary-btn" id="goWeekly">今週のまとめを見る ›</button></section>
-  <section class="card notice">🔔 更新確認が必要 <strong>${staleCount()}件</strong></section></main>${nav()}`
+  const w=state.weekly[0];
+  const featured=state.notes.find(n=>n.fm.layout==='integrated');
+  const fcard=featured?`<section class="card featured-note"><div class="eyebrow">📖 分野別統合ノート・第1号</div><h2>${esc(featured.fm.title)}</h2><p>30秒要約／詳細学習／関連する菌・抗菌薬</p><span class="draft-label">学習用・原典確認待ち</span><button type="button" id="openFeaturedNote" class="primary-btn">MSSA菌血症ノートを開く ›</button></section>`:'';
+  const weekCard=w?`<div class="section-title">🎓 今週の学習</div><section class="card weekly-card"><strong>📅 ${esc(w.fm.week||'今週')}</strong><ul>${mdList(w.sections['今週の学習']).slice(0,4).map(x=>`<li>${esc(x)}</li>`).join('')}</ul><button class="primary-btn" id="goWeekly">今週のまとめを見る ›</button></section>`:'';
+  if(state.mode==='study')return `<main class="screen">${brand('感染症を学び、ASTの判断力を育てる')}${searchBox()}<section class="hero-card study-hero"><div class="hero-title">🎓 学習モード</div><p>統合ノートで知識を整理し、復習で定着を目指す</p></section><section class="card study-landing"><div class="section-title compact">🧠 今日の復習</div><p>まずは既存の復習問題を確認できます。</p><button class="primary-btn" id="openReviewHome">Reviewを開く ›</button><p class="small-note">毎日5問・理解度保存は第2段階で実装予定です。</p></section>${fcard}${weekCard}<section class="card notice">💾 回答履歴の保存とバックアップ案内は次の段階で追加します。</section></main>${nav()}`;
+  return `<main class="screen">${brand()}${searchBox()}<section class="hero-card"><div class="hero-title">💡 AST重要ポイント</div><p>明日からの診療に役立つ<br>感染症診療・ASTのキーポイントを確認</p></section>${fcard}<div class="grid"><button class="category" data-cat="菌"><span class="icon-bubble teal">🦠</span><strong>菌</strong></button><button class="category" data-cat="抗菌薬"><span class="icon-bubble">💊</span><strong>抗菌薬</strong></button></div><div class="grid three"><button class="category" data-cat="感染症"><span class="icon-bubble pink">🧫</span><strong>感染症</strong></button><button class="category" data-cat="血培"><span class="icon-bubble purple">🧪</span><strong>血培</strong></button><button class="category" data-cat="AST介入"><span class="icon-bubble teal">👥</span><strong>AST介入</strong></button></div>${weekCard}<section class="card notice">🔔 更新確認が必要 <strong>${staleCount()}件</strong></section></main>${nav()}`;
 }
 function staleCount(){const now=new Date();return state.notes.filter(n=>{const d=new Date(n.fm.last_reviewed);return isFinite(d)&&((now-d)/86400000)>365}).length}
 function getSearchResults(){
@@ -117,6 +120,11 @@ function getSearchResults(){
   for(const a of state.antibiotics){
     const s=bestScore(q,[a.generic,a.english,...a.abbr,...a.brands,...a.aliases,...a.tags]);
     if(s>38)results.push({type:'抗菌薬',score:s,title:a.generic,sub:[a.english,...a.abbr].join(' / '),obj:a});
+  }
+  for(const n of state.notes){
+    if(n.fm.layout!=='integrated')continue;
+    const s=bestScore(q,[n.fm.title,n.fm.ja,n.fm.aliases,n.fm.category,...(n.fm.tags||'').split(','),...mdList(n.sections['30秒要約'])]);
+    if(s>38)results.push({type:'ノート',score:s,title:n.fm.title,sub:n.fm.ja||n.fm.category,obj:n});
   }
   for(const w of state.weekly){
     const s=bestScore(q,[w.fm.title,w.fm.week,w.fm.tags,...w.body.split('\n').filter(Boolean).slice(0,80)]);
@@ -136,7 +144,7 @@ function getSearchResults(){
 function searchPanelHtml(){
   const q=state.query.trim();
   const results=getSearchResults();
-  return `<div class="tabs">${[['all','すべて'],['菌','菌'],['抗菌薬','抗菌薬'],['Weekly','Weekly']].map(([k,l])=>`<button class="chip ${state.filter===k?'active':''}" data-filter="${k}">${l}</button>`).join('')}</div>
+  return `<div class="tabs">${[['all','すべて'],['菌','菌'],['抗菌薬','抗菌薬'],['ノート','ノート'],['Weekly','Weekly']].map(([k,l])=>`<button class="chip ${state.filter===k?'active':''}" data-filter="${k}">${l}</button>`).join('')}</div>
     <div class="suggest">${q?'もしかして？':'検索候補'}</div>
     ${results.length?results.slice(0,8).map((r,i)=>resultCard(r,i===0&&q)).join(''):'<div class="card empty">候補が見つかりません。別名・略語・商品名でも検索できます。</div>'}`;
 }
@@ -159,6 +167,7 @@ function bindSearchPanel(){
   });
   document.querySelectorAll('.open-note').forEach(b=>b.onclick=()=>{
     state.selectedNote=state.notes.find(n=>n.path===b.dataset.note);
+    state.noteOrigin='search';
     state.view='note';
     render();
   });
@@ -170,16 +179,39 @@ function bindSearchPanel(){
 }
 
 function resultCard(r,top){
+  if(r.type==='ノート')return `<section class="card result-card"><div class="result-head"><span class="icon-bubble pink">📖</span><div class="result-title"><h3>${esc(r.title)}</h3><p>${esc(r.sub||'')} · 統合ノート</p><span class="draft-label">原典確認待ち</span></div></div><button class="primary-btn open-note" data-note="${esc(r.obj.path)}">統合ノートを開く ›</button></section>`;
   if(r.type==='菌')return `<section class="card result-card"><div class="result-head"><span class="icon-bubble teal">🦠</span><div class="result-title"><h3>${esc(r.title)} ${top?'<span class="verified">✓ 候補</span>':''}</h3><p>${esc(r.sub||'')}</p><div class="tags">${(r.obj.tags||[]).map(t=>`<span class="tag">#${esc(t)}</span>`).join('')}</div></div></div><div class="summary">${r.obj.id==='stenotrophomonas-maltophilia'?'カルバペネムは基本的に期待しにくい / ST使用時はK・腎機能を確認':'菌名・別名・関連タグから一致しました。'}</div>${r.obj.note?'<button class="primary-btn open-note" data-note="'+r.obj.note+'">菌ノートを開く ›</button>':''}</section>`;
   if(r.type==='抗菌薬')return `<section class="card result-card"><div class="result-head"><span class="icon-bubble">💊</span><div class="result-title"><h3>${esc(r.title)}</h3><p>${esc(r.sub)}</p><div class="tags">${[...(r.obj.brands||[]),...(r.obj.abbr||[])].slice(0,4).map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div></div></div><div class="summary">一般名・商品名・略語・入力ゆれから検索できます。</div></section>`;
   return `<section class="card result-card"><div class="result-head"><span class="icon-bubble purple">📅</span><div class="result-title"><h3>${esc(r.title)}</h3><p>${esc(r.sub||'')}</p></div></div><button class="primary-btn" data-weekly-open="${esc(r.obj.path)}">Weeklyを開く ›</button></section>`
 }
-function noteView(){const n=state.selectedNote||state.notes[0];const tags=(n.fm.tags||'').split(',').map(x=>x.trim()).filter(Boolean);const imp=Number(n.fm.importance||0);return `<main class="screen"><div class="note-head"><button class="back" id="backSearch">‹ 戻る</button><div style="text-align:center;font-weight:800">菌のノート</div><h1>${esc(n.fm.title)}</h1><div class="meta"><span class="verified">✓ ${n.fm.status==='verified'?'確認済み':esc(n.fm.status)}</span><span class="pill stars">${'★'.repeat(imp)}${'☆'.repeat(Math.max(0,5-imp))}</span><span class="pill">最終確認：${esc(n.fm.last_reviewed||'')}</span></div><div class="tags">${tags.map(t=>`<span class="tag">#${esc(t)}</span>`).join('')}</div></div>
+function noteView(){const n=state.selectedNote||state.notes[0];if(n?.fm.layout==='integrated')return integratedNoteView(n);const tags=(n.fm.tags||'').split(',').map(x=>x.trim()).filter(Boolean);const imp=Number(n.fm.importance||0);return `<main class="screen"><div class="note-head"><button class="back" id="backSearch">‹ 戻る</button>${modeControl()}<div style="text-align:center;font-weight:800">菌のノート</div><h1>${esc(n.fm.title)}</h1><div class="meta"><span class="verified">✓ ${n.fm.status==='verified'?'確認済み':esc(n.fm.status)}</span><span class="pill stars">${'★'.repeat(imp)}${'☆'.repeat(Math.max(0,5-imp))}</span><span class="pill">最終確認：${esc(n.fm.last_reviewed||'')}</span></div><div class="tags">${tags.map(t=>`<span class="tag">#${esc(t)}</span>`).join('')}</div></div>
   ${noteSection('💡 まず覚える',mdList(n.sections['まず覚える']))}
   ${checkSection('📋 ASTで確認',mdList(n.sections['ASTで確認']))}
   ${noteText('⚠️ 落とし穴',n.sections['落とし穴'],'warning')}
   ${sourceSection(n)}
   </main>${nav()}`}
+function integratedNoteView(n){
+  const clinical=state.mode==='clinical';
+  const sections=['初期評価・感染源','再血培と持続菌血症','感染性心内膜炎・深部感染','抗菌薬の評価','治療期間とフォロー'];
+  const related=mdList(n.sections['関連ノート']);
+  const summary=mdList(n.sections['30秒要約']);
+  const check=mdList(n.sections['ASTで確認']);
+  const qa=parseQA(n.sections['ミニ復習']);
+  const tags=(n.fm.tags||'').split(',').map(t=>t.trim()).filter(Boolean).slice(0,6);
+  const details=sections.map(s=>`<details class="detail-panel"><summary>${esc(s)}</summary><ul>${mdList(n.sections[s]).map(t=>`<li>${esc(t)}</li>`).join('')}</ul></details>`).join('');
+  return `<main class="screen integrated-screen"><div class="note-head"><button class="back" id="backSearch" type="button">‹ 戻る</button></div>${modeControl()}<header class="integrated-heading"><div class="eyebrow">感染症 ＞ 血流感染</div><h1>${esc(n.fm.title)}</h1><p>${esc(n.fm.ja||'')}</p><div class="tags">${tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div></header><div class="draft-alert" role="note"><strong>⚠️ 学習用ノート・原典確認待ち（draft）</strong><p>治療推奨の確定版ではありません。具体的な投与量・期間は原典や施設基準を別途確認してください。</p></div>
+  ${clinical?`
+  <section class="card integrated-card"><h2>⚡ 30秒で確認</h2><ol class="brief-points">${summary.map(t=>`<li>${esc(t)}</li>`).join('')}</ol></section>
+  <section class="card integrated-card"><h2>📋 ASTチェックリスト</h2><p class="small-note">この画面内だけの確認欄です。患者情報は入力しないでください。</p><ul class="quick-checks">${check.map(t=>`<li><label><input type="checkbox"/> <span>${esc(t)}</span></label></li>`).join('')}</ul></section>
+  <section class="card integrated-card"><h2>🔎 判断に迷ったら</h2><p>持続菌血症の評価・感染源コントロール・投与設計を、詳細ノートで確認できます。</p><button type="button" class="primary-btn" data-mode="study">詳細ノートで学ぶ ›</button></section>`
+  :`
+  <section class="card integrated-card"><h2>📚 詳細ノート</h2><p class="small-note">学習内容を整理した下書きです。タップすると各項目を表示します。</p>${details}</section>
+  <section class="card integrated-card"><h2>🧠 ミニ復習</h2><p class="small-note">練習用・回答記録なし。正式な採点と理解度管理は次の段階で実装します。</p>${qa.map(x=>`<details class="detail-panel"><summary>Q. ${esc(x.q)}</summary><p class="model-answer">A. ${esc(x.a)}</p></details>`).join('')}</section>
+  <section class="card integrated-card"><h2>⚡ 30秒要約も確認</h2><ul>${summary.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></section>`
+  }
+  <section class="card integrated-card"><h2>🔗 関連ノート・検索</h2><div class="related-links">${related.map(t=>`<button type="button" class="related-link" data-related="${esc(t)}">${esc(t)} ›</button>`).join('')}</div><p class="small-note">関連項目から辞書・既存ノートの検索へ移動します。</p></section>
+  <section class="card integrated-card"><h2>📚 根拠・更新状況</h2><p>${esc(n.fm.source||'未設定')}</p><p class="small-note">最終原典確認：${esc(n.fm.last_reviewed||'未確認')} ／ 状態：${esc(n.fm.status||'draft')}</p></section></main>${nav()}`;
+}
 function noteSection(title,items){return `<section class="card note-section"><h2>${title}</h2><div class="body"><ul>${items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></section>`}
 function checkSection(title,items){return `<section class="card note-section"><h2>${title}</h2><div class="body"><ul class="checklist">${items.map(x=>`<li><input type="checkbox"/> ${esc(x)}</li>`).join('')}</ul></div></section>`}
 function noteText(title,text,cls=''){return `<section class="card note-section ${cls}"><h2>${title}</h2><div class="body">${esc(text||'')}</div></section>`}
@@ -205,6 +237,10 @@ function reviewView(){return `<main class="screen">${brand('復習')}<div class=
 function openMemo(){document.body.insertAdjacentHTML('beforeend',`<div class="modal" id="memoModal"><div class="sheet"><h2>今日覚えたこと</h2><textarea id="memoText" placeholder="あとで整理したいことを短くメモ"></textarea><div class="sheet-actions"><button class="cancel" id="memoCancel">キャンセル</button><button class="save" id="memoSave">保存</button></div></div></div>`);$('#memoCancel').onclick=()=>$('#memoModal').remove();$('#memoSave').onclick=()=>{const t=$('#memoText').value.trim();if(t){const arr=JSON.parse(localStorage.getItem('astPocketInbox')||'[]');arr.unshift({text:t,at:new Date().toISOString()});localStorage.setItem('astPocketInbox',JSON.stringify(arr))}$('#memoModal').remove()}}
 function bindPage(){
   bindCommon();
+  document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{const m=b.dataset.mode;if(m!==state.mode&&(m==='clinical'||m==='study')){state.mode=m;try{localStorage.setItem('astPocketModeV2',m)}catch(e){}render(false)}}));
+  $('#openFeaturedNote')?.addEventListener('click',()=>{state.selectedNote=state.notes.find(n=>n.fm.layout==='integrated');state.noteOrigin='home';if(state.selectedNote){state.view='note';render();}});
+  $('#openReviewHome')?.addEventListener('click',()=>{state.view='review';render();});
+  document.querySelectorAll('[data-related]').forEach(b=>b.addEventListener('click',()=>{state.query=b.dataset.related;state.filter='all';state.view='search';render();}));
   document.querySelectorAll('[data-cat]').forEach(b=>b.onclick=()=>{
     state.view='search';
     state.query=b.dataset.cat;
@@ -213,7 +249,7 @@ function bindPage(){
   $('#goWeekly')?.addEventListener('click',()=>{state.selectedWeeklyPath=null;state.view='weekly';render()});
   $('#weeklyPicker')?.addEventListener('change',e=>{state.selectedWeeklyPath=e.target.value;render(false)});
   if(state.view==='search')bindSearchPanel();
-  $('#backSearch')?.addEventListener('click',()=>{state.view='search';render()});
+  $('#backSearch')?.addEventListener('click',()=>{state.view=state.noteOrigin||'search';render()});
   $('#latestBtn')?.addEventListener('click',()=>alert('Ver.1では「最新情報を確認」の導線まで実装。次段階でWeb検索・差分確認を接続します。'));
   document.querySelectorAll('.q-row').forEach(q=>q.onclick=()=>q.classList.toggle('open'));
 }
