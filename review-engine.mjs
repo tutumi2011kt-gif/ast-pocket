@@ -26,10 +26,10 @@ export function getQuestionProgress(question,events=[],today=jstDayKey()){
  const history=events.filter(e=>e.question_id===question.id&&e.question_version===question.version
   &&['again','hard','good','easy'].includes(e.rating))
   .sort((a,b)=>a.recorded_at_utc.localeCompare(b.recorded_at_utc)||a.event_uuid.localeCompare(b.event_uuid));
- let streak=0,step=0,due=today,lastRating=null,lastDay=null;
+ let streak=0,step=-1,due=today,lastRating=null,lastDay=null;
  for(const e of history){
   const day=jstDayKey(new Date(e.recorded_at_utc));
-  if(e.rating==='again'){step=0;streak=0;due=nextDayKey(day,1);}
+  if(e.rating==='again'){step=-1;streak=0;due=nextDayKey(day,1);}
   if(e.rating==='hard'){step=Math.max(0,step-1);streak=0;due=nextDayKey(day,1);}
   if(e.rating==='good'){step=Math.min(INTERVALS.length-1,step+1);streak++;due=nextDayKey(day,INTERVALS[step]);}
   if(e.rating==='easy'){step=Math.min(INTERVALS.length-1,step+2);streak++;due=nextDayKey(day,INTERVALS[step]);}
