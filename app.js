@@ -125,7 +125,13 @@ function home(){
 function organizationIntro(){
  const count=state.organized?.topics?.length||0;
  const weeks=state.organized?.stats?.weekly_count||0;
- return `<section class="card organizer-intro"><div class="eyebrow">🗂 学習ログの自動分類</div><h2>分野別に学習を整理</h2><p>菌・抗菌薬・感染症・検査・AST実務・横断テーマの6分類。${count?`現在 ${count} テーマ／${weeks} 週分を分類済み`:'分類データを準備しています。'}</p><button id="openOrganizer" type="button" class="primary-btn">自動整理したノートを見る ›</button><p class="small-note">学習履歴からの機械的な分類です。臨床推奨の確認済み情報ではありません。</p></section>`;
+ const total=state.integrations?.stats?.facts||0;
+ const pending=state.integrations?.stats?.review_required||0;
+ return `<section class="card organizer-intro"><div class="eyebrow">🗂 学習ログの自動分類・統合</div><h2>分野別に学習を整理</h2>
+  <p>6分類で整理し、Weeklyから統合ノートの学習メモを自動生成します。${count?`現在 ${count} テーマ／${weeks} 週分を分類済み`:'分類データを準備しています。'}</p>
+  <button id="openOrganizer" type="button" class="primary-btn">自動整理したノートを見る ›</button>
+  ${state.integrations?`<div class="queue-preview"><strong>📘 新しい学習候補 ${total}件</strong><p>医学的内容の原典確認待ち：${pending}件</p><button id="openReviewQueue" type="button" class="review-queue-button">確認待ちの内容を見る ›</button></div>`:''}
+  <p class="small-note">ルールによる自動分類・重複整理です。未確認の情報は確定した臨床推奨には加えません。</p></section>`;
 }
 function staleCount(){const now=new Date();return state.notes.filter(n=>{const d=new Date(n.fm.last_reviewed);return isFinite(d)&&((now-d)/86400000)>365}).length}
 function getSearchResults(){
@@ -226,16 +232,19 @@ function integrationReviewView(){
 }
 function libraryView(){
  const data=state.organized;
- if(!data)return `<main class="screen">${brand('分野別の学習ノート')}<button class="back" id="backLibrary">‹ Homeに戻る</button><section class="card empty">自動整理データを読み込めませんでした。Pagesへの反映後、画面を再読み込みしてください。</section></main>${nav()}`;
- const cat=state.libraryCategory;
- const topics=data.topics.filter(t=>cat==='all'||t.category===cat);
+ if(!data)return `<main class="screen">${brand('分野別学習ノート')}<section class="card empty">自動分類データを取得できませんでした。</section></main>${nav()}`;
+ const cat=state.libraryCategory,topics=data.topics.filter(t=>cat==='all'||t.category===cat);
  const categoryControls=[{id:'all',label:'すべて',icon:'📚'},...data.categories].map(c=>`<button type="button" data-library-cat="${esc(c.id)}" class="chip ${cat===c.id?'active':''}">${c.icon} ${esc(c.label)}${c.id==='all'?'':` (${data.topics.filter(t=>t.category===c.id).length})`}</button>`).join('');
- const entries=topics.map(t=>{
-   const hasNote=t.note&&state.notes.some(n=>n.path===t.note);
-   const label=data.categories.find(c=>c.id===t.category)?.label||t.category;
-   return `<article class="card classified-item"><div class="eyebrow">${esc(label)} · ${t.refs.length}件の学習記録</div><h3>${esc(t.title)}</h3><div class="classified-status"><span class="draft-label">自動分類・未検証</span>${hasNote?'<span class="pill">統合ノートあり</span>':'<span class="pill">ノート候補</span>'}</div><details class="detail-panel"><summary>どの学習から分類された？</summary>${classifiedHistory(t.refs,6)}</details>${hasNote?`<button type="button" class="primary-btn open-classified-note" data-note="${esc(t.note)}">統合ノートを開く ›</button>`:''}</article>`;
+ const cards=topics.map(t=>{
+  const hasNote=t.note&&state.notes.some(n=>n.path===t.note);
+  const integrated=state.integrations?.topics?.find(x=>x.topic_id===t.id);
+  const label=data.categories.find(c=>c.id===t.category)?.label||t.category;
+  return `<article class="card classified-item"><div class="eyebrow">${esc(label)} · ${t.refs.length}件の学習記録</div><h3>${esc(t.title)}</h3><div class="classified-status"><span class="draft-label">自動分類・未検証</span><span class="pill">${hasNote?'統合ノートあり':'自動学習ノート'}</span>${integrated?.links?.length?`<span class="pill">追記候補 ${integrated.links.length}件</span>`:''}</div><details class="detail-panel"><summary>どの学習から分類された？</summary>${classifiedHistory(t.refs,6)}</details>
+ ${hasNote?`<button type="button" class="primary-btn open-classified-note" data-note="${esc(t.note)}">統合ノートを開く ›</button>`:`<button type="button" class="primary-btn open-generated-topic" data-topic-id="${esc(t.id)}">学習ノートを開く ›</button>`}</article>`;
  }).join('');
- return `<main class="screen">${brand('6分類で学習を蓄積')}<button class="back library-back" id="backLibrary">‹ Homeに戻る</button><section class="card organizer-info"><strong>🗂 Weeklyの自動整理</strong><p>公開済みのWeekly ${data.stats.weekly_count}週分から、${data.stats.classified_topics}テーマを検出。元の学習を参照する仕組みです。</p><p class="small-note">辞書・分類ルールによる仕分けです。AIによる内容の統合、治療推奨の更新・原典照合は行っていません。</p></section><div class="tabs organizer-tabs">${categoryControls}</div><p class="small-note">分類されたテーマ ${topics.length}件</p>${entries||'<section class="card empty">この分類の学習記録はまだありません。</section>'}</main>${nav()}`;
+ return `<main class="screen">${brand('6分類で学習を蓄積')}<button class="back library-back" id="backLibrary">‹ Homeに戻る</button>
+ <section class="card organizer-info"><strong>🗂 Weeklyの自動整理と追記候補</strong><p>${data.stats.weekly_count}週分から${data.stats.classified_topics}テーマを検出。学習メモの追記候補は自動作成します。</p><p class="small-note">ルールによる処理です。臨床推奨の原典照合・自動更新は行いません。</p>${state.integrations?`<button id="openReviewQueue" class="review-queue-button">医学的な確認待ち ${state.integrations.stats.review_required}件を見る ›</button>`:''}</section>
+ <div class="tabs organizer-tabs">${categoryControls}</div><p class="small-note">分類されたテーマ ${topics.length}件</p>${cards||'<section class="card empty">この分類に学習記録はありません。</section>'}</main>${nav()}`;
 }
 function searchResults(){
   return `<main class="screen">${brand()}${searchBox()}<div id="searchPanel">${searchPanelHtml()}</div></main>${nav()}`;
@@ -285,6 +294,7 @@ function integratedNoteView(n){
   const summary=mdList(n.sections['30秒要約']);
   const check=mdList(n.sections['ASTで確認']);
   const qa=parseQA(n.sections['ミニ復習']);
+  const integratedTopic=state.integrations?.topics?.find(t=>t.note_path===n.path);
   const tags=(n.fm.tags||'').split(',').map(t=>t.trim()).filter(Boolean).slice(0,6);
   const details=sections.map(s=>`<details class="detail-panel"><summary>${esc(s)}</summary><ul>${mdList(n.sections[s]).map(t=>`<li>${esc(t)}</li>`).join('')}</ul></details>`).join('');
   return `<main class="screen integrated-screen"><div class="note-head"><button class="back" id="backSearch" type="button">‹ 戻る</button></div>${modeControl()}<header class="integrated-heading"><div class="eyebrow">感染症 ＞ 血流感染</div><h1>${esc(n.fm.title)}</h1><p>${esc(n.fm.ja||'')}</p><div class="tags">${tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div></header><div class="draft-alert" role="note"><strong>⚠️ 学習用ノート・原典確認待ち（draft）</strong><p>治療推奨の確定版ではありません。具体的な投与量・期間は原典や施設基準を別途確認してください。</p></div>
@@ -295,6 +305,7 @@ function integratedNoteView(n){
   :`
   <section class="card integrated-card"><h2>📚 詳細ノート</h2><p class="small-note">学習内容を整理した下書きです。タップすると各項目を表示します。</p>${details}</section>
   <section class="card integrated-card"><h2>🧠 ミニ復習</h2><p class="small-note">練習用・回答記録なし。正式な採点と理解度管理は次の段階で実装します。</p>${qa.map(x=>`<details class="detail-panel"><summary>Q. ${esc(x.q)}</summary><p class="model-answer">A. ${esc(x.a)}</p></details>`).join('')}</section>
+  ${integratedTopic?.links?.length?`<section class="card integrated-card"><h2>🗂 Weeklyからの学習メモ</h2><p class="small-note">既存の本文は保持したまま、学習内容を項目ごとに整理して追加表示します。原典確認前の内容です。</p>${topicIntegrationDetails(integratedTopic)}</section>`:''}
   <section class="card integrated-card"><h2>⚡ 30秒要約も確認</h2><ul>${summary.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></section>`
   }
   ${(state.organized?.topics||[]).some(t=>t.note===n.path)?`<section class="card integrated-card"><h2>🗂 Weeklyから自動整理した学習</h2><p class="small-note">機械的な分類結果です。未確認の学習メモを臨床上の推奨として扱わないでください。</p>${classifiedHistory(state.organized.topics.filter(t=>t.note===n.path).flatMap(t=>t.refs),8)}<button type="button" class="primary-btn" id="openOrganizerFromNote">分野別一覧を見る ›</button></section>`:''}
@@ -330,6 +341,10 @@ function bindPage(){
   $('#openFeaturedNote')?.addEventListener('click',()=>{state.selectedNote=state.notes.find(n=>n.fm.layout==='integrated');state.noteOrigin='home';if(state.selectedNote){state.view='note';render();}});
   $('#openReviewHome')?.addEventListener('click',()=>{state.view='review';render();});
   $('#openOrganizer')?.addEventListener('click',()=>{state.libraryCategory='all';state.view='library';render();});
+  $('#openReviewQueue')?.addEventListener('click',()=>{state.view='integration';render();});
+  $('#backFromReviewQueue')?.addEventListener('click',()=>{state.view='home';render();});
+  $('#backToOrganizer')?.addEventListener('click',()=>{state.view='library';render();});
+  document.querySelectorAll('.open-generated-topic').forEach(b=>b.addEventListener('click',()=>{state.selectedTopicId=b.dataset.topicId;state.view='topic';render();}));
   $('#openOrganizerFromNote')?.addEventListener('click',()=>{state.libraryCategory='all';state.view='library';render();});
   $('#backLibrary')?.addEventListener('click',()=>{state.view='home';render();});
   document.querySelectorAll('[data-library-cat]').forEach(b=>b.addEventListener('click',()=>{state.libraryCategory=b.dataset.libraryCat;render(false);}));
