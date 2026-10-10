@@ -17,5 +17,7 @@ jobs:
         run: node --check app.js
       - name: Validate dictionary and Weekly index
         run: node scripts/validate-content.mjs
+      - name: Validate six-category Weekly auto-organizer
+        run: node scripts/organize-weekly.mjs --check
       - name: Check required files
         run: test -f index.html && test -f app.js && test -f styles.css
