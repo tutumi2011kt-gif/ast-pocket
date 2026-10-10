@@ -1,4 +1,4 @@
-import {jstDayKey,jstTargetCount,selectDailyQuestions,validateQuestionBank,assessAnswer,eventFromAnswer} from './review-engine.mjs';
+import {jstDayKey,jstTargetCount,getQuestionProgress,selectDailyQuestions,validateQuestionBank,assessAnswer,eventFromAnswer} from './review-engine.mjs';
 import {getReviewEvents,addReviewEvent,getDeviceId,readDailySession,storeDailySession,getReviewSetting,prepareReviewExport,importReviewEvents,acknowledgeReviewBackup,backupIsDue} from './review-store.mjs';
 
 const h=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -36,9 +36,14 @@ export class ReviewFeature {
  html(){
   if(!this.ready)return '<section class="card review-panel"><h2>復習を開始できません</h2><p class="draft-alert">'+h(this.error)+'</p><button type="button" id="reviewRetry" class="primary-btn">再試行する</button></section>';
   const q=this.current(),done=this.complete(),target=jstTargetCount();
+  const statuses=this.bank.map(q=>getQuestionProgress(q,this.events,this.day).practice_status);
+  const notLearned=statuses.filter(s=>s==='未学習').length;
+  const weak=statuses.filter(s=>s==='復習が必要').length;
+  const practised=statuses.filter(s=>s==='練習済み').length;
   let out='<section class="card review-panel"><h2>今日の復習：'+done+' / '+this.ids.length+'問</h2>'+
     '<div class="review-progress"><div style="width:'+(this.ids.length?Math.floor(100*done/this.ids.length):0)+'%"></div></div>'+
     '<p class="small-note">日本時間 '+h(this.day)+'：'+(target===10?'週末10問':'平日5問')+'を目標に出題。現在の問題は原典未確認の練習用で、正式な医学的理解度には算入しません。</p></section>';
+  out+='<section class="card review-panel"><div class="review-mastery-strip"><span>未学習 '+notLearned+'問</span><span>復習が必要 '+weak+'問</span><span>練習済み '+practised+'問</span></div><p class="small-note">これは練習状況です。医学的な理解確認・定着の認定ではありません。</p></section>';
   if(!q)out+='<section class="card review-panel"><h2>本日の復習は終了です</h2><p>次回の復習で学習内容を定着させましょう。</p></section>';
   else{
    out+='<section class="card review-panel"><div class="draft-label">原典未確認・練習用</div><h2>'+h(q.prompt)+'</h2>'+
