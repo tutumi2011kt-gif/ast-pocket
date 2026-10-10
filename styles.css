@@ -118,3 +118,25 @@ button,input{font:inherit}.app-shell{min-height:100vh;padding-bottom:92px}.scree
 .global-back-button:focus-visible{outline:3px solid #1688d7;outline-offset:2px}
 .global-back-button:active{background:#d8eeff}
 @media(max-width:520px){.global-back-button{font-size:15px}}
+
+/* Review V2: isolated to learning mode (draft questions, no clinical recommendations). */
+.review-panel,.review-dashboard{margin:16px 0;padding:20px}
+.review-panel h2,.review-dashboard h2{font-size:21px;line-height:1.48;margin:8px 0 12px}
+.review-panel p{line-height:1.7}
+.review-progress{height:11px;background:#e8f0f6;border-radius:99px;overflow:hidden;margin:12px 0}
+.review-progress div{background:#128c9d;height:100%;border-radius:99px;transition:width .2s}
+.review-options{display:grid;gap:10px;margin:14px 0}
+.review-option{display:flex;gap:12px;align-items:flex-start;background:#f5faff;border:1px solid #cde2f4;border-radius:14px;padding:13px;line-height:1.5;cursor:pointer}
+.review-option:has(input:checked){background:#e8f5ff;border-color:#1686d4}
+.review-option input{flex:none;margin-top:4px;width:20px;height:20px}
+.review-feedback{margin-top:18px;padding:15px;border:1px solid #bfe0e1;border-radius:14px;background:#f4fbfb}
+.review-feedback h3{font-size:18px;margin:5px 0 12px}
+.review-rating{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:10px}
+.review-rating button,.review-backup-buttons button,.review-import-label,.review-backup-ack{border:1px solid #c8deef;border-radius:12px;background:#eaf5ff;color:#0f619e;font-weight:750;padding:12px;min-height:44px;cursor:pointer;font-size:14px}
+.review-rating button:disabled{opacity:.6;cursor:wait}
+.review-backup-buttons{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0}
+.review-import-label{text-align:center;display:grid;place-items:center}
+.review-backup-ack{width:100%;background:#fff;border-color:#e1eaf3}
+.review-backup-notice{background:#fff4e5;color:#8b5318;border:1px solid #f0d5aa;padding:11px;border-radius:12px}
+.review-message{padding:12px 14px;border-radius:12px;background:#eaf5ff;color:#0c608c;line-height:1.6}
+@media(max-width:520px){.review-panel,.review-dashboard{padding:16px}.review-rating button{font-size:13px}}
