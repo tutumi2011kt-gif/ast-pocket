@@ -1,4 +1,4 @@
-const state={mode:'clinical',noteOrigin:'search',view:'home',query:'',filter:'all',notes:[],weekly:[],organisms:[],antibiotics:[],review:[],selectedNote:null,selectedWeeklyPath:null};
+const state={mode:'clinical',noteOrigin:'search',view:'home',query:'',filter:'all',notes:[],weekly:[],organisms:[],antibiotics:[],review:[],selectedNote:null,selectedWeeklyPath:null,organized:null,libraryCategory:'all'};
 const $=s=>document.querySelector(s); const app=$('#app');
 try{const m=localStorage.getItem('astPocketModeV2');if(m==='clinical'||m==='study')state.mode=m;}catch(e){/* Private browsing may disable storage */}
 
@@ -32,6 +32,13 @@ async function load(){
   state.notes=await Promise.all(idx.notes.map(async p=>parseMD(await fetch(p).then(r=>r.text()),p)));
   state.weekly=await Promise.all(idx.weekly.map(async p=>parseMD(await fetch(p).then(r=>r.text()),p)));
   state.weekly.sort((a,b)=>b.path.localeCompare(a.path));
+  try{
+    const response=await fetch('content/organized.json',{cache:'no-store'});
+    if(response.ok){
+      const data=await response.json();
+      if(data.schema_version===1&&Array.isArray(data.topics)&&Array.isArray(data.categories))state.organized=data;
+    }
+  }catch(e){console.warn('Organized Weekly index is not yet available',e);}
   render();
 }
 function brand(sub='感染症ナレッジ'){return `<div class="brand"><div><h1><span class="ast">AST</span> Pocket</h1><p>${sub}</p></div><div class="brand-mark">🩺</div></div>${modeControl()}`}
@@ -105,10 +112,16 @@ function updateClearButton(){
 function home(){
   const w=state.weekly[0];
   const featured=state.notes.find(n=>n.fm.layout==='integrated');
+  const organizerCard=organizationIntro();
   const fcard=featured?`<section class="card featured-note"><div class="eyebrow">📖 分野別統合ノート・第1号</div><h2>${esc(featured.fm.title)}</h2><p>30秒要約／詳細学習／関連する菌・抗菌薬</p><span class="draft-label">学習用・原典確認待ち</span><button type="button" id="openFeaturedNote" class="primary-btn">MSSA菌血症ノートを開く ›</button></section>`:'';
   const weekCard=w?`<div class="section-title">🎓 今週の学習</div><section class="card weekly-card"><strong>📅 ${esc(w.fm.week||'今週')}</strong><ul>${mdList(w.sections['今週の学習']).slice(0,4).map(x=>`<li>${esc(x)}</li>`).join('')}</ul><button class="primary-btn" id="goWeekly">今週のまとめを見る ›</button></section>`:'';
-  if(state.mode==='study')return `<main class="screen">${brand('感染症を学び、ASTの判断力を育てる')}${searchBox()}<section class="hero-card study-hero"><div class="hero-title">🎓 学習モード</div><p>統合ノートで知識を整理し、復習で定着を目指す</p></section><section class="card study-landing"><div class="section-title compact">🧠 今日の復習</div><p>まずは既存の復習問題を確認できます。</p><button class="primary-btn" id="openReviewHome">Reviewを開く ›</button><p class="small-note">毎日5問・理解度保存は第2段階で実装予定です。</p></section>${fcard}${weekCard}<section class="card notice">💾 回答履歴の保存とバックアップ案内は次の段階で追加します。</section></main>${nav()}`;
-  return `<main class="screen">${brand()}${searchBox()}<section class="hero-card"><div class="hero-title">💡 AST重要ポイント</div><p>明日からの診療に役立つ<br>感染症診療・ASTのキーポイントを確認</p></section>${fcard}<div class="grid"><button class="category" data-cat="菌"><span class="icon-bubble teal">🦠</span><strong>菌</strong></button><button class="category" data-cat="抗菌薬"><span class="icon-bubble">💊</span><strong>抗菌薬</strong></button></div><div class="grid three"><button class="category" data-cat="感染症"><span class="icon-bubble pink">🧫</span><strong>感染症</strong></button><button class="category" data-cat="血培"><span class="icon-bubble purple">🧪</span><strong>血培</strong></button><button class="category" data-cat="AST介入"><span class="icon-bubble teal">👥</span><strong>AST介入</strong></button></div>${weekCard}<section class="card notice">🔔 更新確認が必要 <strong>${staleCount()}件</strong></section></main>${nav()}`;
+  if(state.mode==='study')return `<main class="screen">${brand('感染症を学び、ASTの判断力を育てる')}${searchBox()}<section class="hero-card study-hero"><div class="hero-title">🎓 学習モード</div><p>統合ノートで知識を整理し、復習で定着を目指す</p></section><section class="card study-landing"><div class="section-title compact">🧠 今日の復習</div><p>まずは既存の復習問題を確認できます。</p><button class="primary-btn" id="openReviewHome">Reviewを開く ›</button><p class="small-note">毎日5問・理解度保存は第2段階で実装予定です。</p></section>${organizerCard}${fcard}${weekCard}<section class="card notice">💾 回答履歴の保存とバックアップ案内は次の段階で追加します。</section></main>${nav()}`;
+  return `<main class="screen">${brand()}${searchBox()}<section class="hero-card"><div class="hero-title">💡 AST重要ポイント</div><p>明日からの診療に役立つ<br>感染症診療・ASTのキーポイントを確認</p></section>${organizerCard}${fcard}<div class="grid"><button class="category" data-cat="菌"><span class="icon-bubble teal">🦠</span><strong>菌</strong></button><button class="category" data-cat="抗菌薬"><span class="icon-bubble">💊</span><strong>抗菌薬</strong></button></div><div class="grid three"><button class="category" data-cat="感染症"><span class="icon-bubble pink">🧫</span><strong>感染症</strong></button><button class="category" data-cat="血培"><span class="icon-bubble purple">🧪</span><strong>血培</strong></button><button class="category" data-cat="AST介入"><span class="icon-bubble teal">👥</span><strong>AST介入</strong></button></div>${weekCard}<section class="card notice">🔔 更新確認が必要 <strong>${staleCount()}件</strong></section></main>${nav()}`;
+}
+function organizationIntro(){
+ const count=state.organized?.topics?.length||0;
+ const weeks=state.organized?.stats?.weekly_count||0;
+ return `<section class="card organizer-intro"><div class="eyebrow">🗂 学習ログの自動分類</div><h2>分野別に学習を整理</h2><p>菌・抗菌薬・感染症・検査・AST実務・横断テーマの6分類。${count?`現在 ${count} テーマ／${weeks} 週分を分類済み`:'分類データを準備しています。'}</p><button id="openOrganizer" type="button" class="primary-btn">自動整理したノートを見る ›</button><p class="small-note">学習履歴からの機械的な分類です。臨床推奨の確認済み情報ではありません。</p></section>`;
 }
 function staleCount(){const now=new Date();return state.notes.filter(n=>{const d=new Date(n.fm.last_reviewed);return isFinite(d)&&((now-d)/86400000)>365}).length}
 function getSearchResults(){
@@ -149,6 +162,35 @@ function searchPanelHtml(){
     ${results.length?results.slice(0,8).map((r,i)=>resultCard(r,i===0&&q)).join(''):'<div class="card empty">候補が見つかりません。別名・略語・商品名でも検索できます。</div>'}`;
 }
 
+function extractWeeklyLines(w,section){
+ const body=w?.sections?.[section]||'';
+ return body.split('\n').filter(s=>/^\s*(?:[-*]\s+|\d+\.\s+)/.test(s))
+   .map(s=>s.replace(/^\s*(?:[-*]\s+|\d+\.\s+)/,'').trim());
+}
+function excerptForRef(ref){
+ const week=state.weekly.find(w=>w.path===ref.weekly);
+ return extractWeeklyLines(week,ref.section)[ref.index]||null;
+}
+function classifiedHistory(refs,limit=5){
+ return refs.slice(0,limit).map(r=>{
+   const text=excerptForRef(r);
+   const date=r.weekly.match(/\d{4}-\d{2}-\d{2}/)?.[0]||'';
+   return text?`<div class="learning-snippet"><div class="learning-origin">${esc(date)} · ${esc(r.section)} · <span class="draft-label">学習ログ</span></div><p>${esc(text)}</p><button type="button" class="open-weekly-ref" data-weekly-path="${esc(r.weekly)}">元のWeeklyを見る ›</button></div>`:'';
+ }).join('');
+}
+function libraryView(){
+ const data=state.organized;
+ if(!data)return `<main class="screen">${brand('分野別の学習ノート')}<button class="back" id="backLibrary">‹ Homeに戻る</button><section class="card empty">自動整理データを読み込めませんでした。Pagesへの反映後、画面を再読み込みしてください。</section></main>${nav()}`;
+ const cat=state.libraryCategory;
+ const topics=data.topics.filter(t=>cat==='all'||t.category===cat);
+ const categoryControls=[{id:'all',label:'すべて',icon:'📚'},...data.categories].map(c=>`<button type="button" data-library-cat="${esc(c.id)}" class="chip ${cat===c.id?'active':''}">${c.icon} ${esc(c.label)}${c.id==='all'?'':` (${data.topics.filter(t=>t.category===c.id).length})`}</button>`).join('');
+ const entries=topics.map(t=>{
+   const hasNote=t.note&&state.notes.some(n=>n.path===t.note);
+   const label=data.categories.find(c=>c.id===t.category)?.label||t.category;
+   return `<article class="card classified-item"><div class="eyebrow">${esc(label)} · ${t.refs.length}件の学習記録</div><h3>${esc(t.title)}</h3><div class="classified-status"><span class="draft-label">自動分類・未検証</span>${hasNote?'<span class="pill">統合ノートあり</span>':'<span class="pill">ノート候補</span>'}</div><details class="detail-panel"><summary>どの学習から分類された？</summary>${classifiedHistory(t.refs,6)}</details>${hasNote?`<button type="button" class="primary-btn open-classified-note" data-note="${esc(t.note)}">統合ノートを開く ›</button>`:''}</article>`;
+ }).join('');
+ return `<main class="screen">${brand('6分類で学習を蓄積')}<button class="back library-back" id="backLibrary">‹ Homeに戻る</button><section class="card organizer-info"><strong>🗂 Weeklyの自動整理</strong><p>公開済みのWeekly ${data.stats.weekly_count}週分から、${data.stats.classified_topics}テーマを検出。元の学習を参照する仕組みです。</p><p class="small-note">辞書・分類ルールによる仕分けです。AIによる内容の統合、治療推奨の更新・原典照合は行っていません。</p></section><div class="tabs organizer-tabs">${categoryControls}</div><p class="small-note">分類されたテーマ ${topics.length}件</p>${entries||'<section class="card empty">この分類の学習記録はまだありません。</section>'}</main>${nav()}`;
+}
 function searchResults(){
   return `<main class="screen">${brand()}${searchBox()}<div id="searchPanel">${searchPanelHtml()}</div></main>${nav()}`;
 }
@@ -209,6 +251,7 @@ function integratedNoteView(n){
   <section class="card integrated-card"><h2>🧠 ミニ復習</h2><p class="small-note">練習用・回答記録なし。正式な採点と理解度管理は次の段階で実装します。</p>${qa.map(x=>`<details class="detail-panel"><summary>Q. ${esc(x.q)}</summary><p class="model-answer">A. ${esc(x.a)}</p></details>`).join('')}</section>
   <section class="card integrated-card"><h2>⚡ 30秒要約も確認</h2><ul>${summary.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></section>`
   }
+  ${(state.organized?.topics||[]).some(t=>t.note===n.path)?`<section class="card integrated-card"><h2>🗂 Weeklyから自動整理した学習</h2><p class="small-note">機械的な分類結果です。未確認の学習メモを臨床上の推奨として扱わないでください。</p>${classifiedHistory(state.organized.topics.filter(t=>t.note===n.path).flatMap(t=>t.refs),8)}<button type="button" class="primary-btn" id="openOrganizerFromNote">分野別一覧を見る ›</button></section>`:''}
   <section class="card integrated-card"><h2>🔗 関連ノート・検索</h2><div class="related-links">${related.map(t=>`<button type="button" class="related-link" data-related="${esc(t)}">${esc(t)} ›</button>`).join('')}</div><p class="small-note">関連項目から辞書・既存ノートの検索へ移動します。</p></section>
   <section class="card integrated-card"><h2>📚 根拠・更新状況</h2><p>${esc(n.fm.source||'未設定')}</p><p class="small-note">最終原典確認：${esc(n.fm.last_reviewed||'未確認')} ／ 状態：${esc(n.fm.status||'draft')}</p></section></main>${nav()}`;
 }
@@ -240,6 +283,17 @@ function bindPage(){
   document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{const m=b.dataset.mode;if(m!==state.mode&&(m==='clinical'||m==='study')){state.mode=m;try{localStorage.setItem('astPocketModeV2',m)}catch(e){}render(false)}}));
   $('#openFeaturedNote')?.addEventListener('click',()=>{state.selectedNote=state.notes.find(n=>n.fm.layout==='integrated');state.noteOrigin='home';if(state.selectedNote){state.view='note';render();}});
   $('#openReviewHome')?.addEventListener('click',()=>{state.view='review';render();});
+  $('#openOrganizer')?.addEventListener('click',()=>{state.libraryCategory='all';state.view='library';render();});
+  $('#openOrganizerFromNote')?.addEventListener('click',()=>{state.libraryCategory='all';state.view='library';render();});
+  $('#backLibrary')?.addEventListener('click',()=>{state.view='home';render();});
+  document.querySelectorAll('[data-library-cat]').forEach(b=>b.addEventListener('click',()=>{state.libraryCategory=b.dataset.libraryCat;render(false);}));
+  document.querySelectorAll('.open-classified-note').forEach(b=>b.addEventListener('click',()=>{
+    const note=state.notes.find(n=>n.path===b.dataset.note);
+    if(note){state.selectedNote=note;state.noteOrigin='library';state.view='note';render();}
+  }));
+  document.querySelectorAll('.open-weekly-ref').forEach(b=>b.addEventListener('click',()=>{
+    state.selectedWeeklyPath=b.dataset.weeklyPath;state.view='weekly';render();
+  }));
   document.querySelectorAll('[data-related]').forEach(b=>b.addEventListener('click',()=>{state.query=b.dataset.related;state.filter='all';state.view='search';render();}));
   document.querySelectorAll('[data-cat]').forEach(b=>b.onclick=()=>{
     state.view='search';
@@ -254,5 +308,5 @@ function bindPage(){
   document.querySelectorAll('.q-row').forEach(q=>q.onclick=()=>q.classList.toggle('open'));
 }
 
-function render(scroll=true){let html='';if(state.view==='home')html=home();else if(state.view==='search')html=searchResults();else if(state.view==='note')html=noteView();else if(state.view==='weekly')html=weeklyView();else html=reviewView();app.innerHTML=html;bindPage();if(scroll)window.scrollTo({top:0,behavior:'instant'})}
+function render(scroll=true){let html='';if(state.view==='home')html=home();else if(state.view==='search')html=searchResults();else if(state.view==='note')html=noteView();else if(state.view==='library')html=libraryView();else if(state.view==='weekly')html=weeklyView();else html=reviewView();app.innerHTML=html;bindPage();if(scroll)window.scrollTo({top:0,behavior:'instant'})}
 load().catch(err=>{console.error(err);app.innerHTML='<div class="screen"><div class="card empty">AST Pocketの読み込みに失敗しました。ローカルではHTTPサーバー経由で開いてください。</div></div>'});
