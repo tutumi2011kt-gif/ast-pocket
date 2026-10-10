@@ -27,5 +27,12 @@ jobs:
         run: node scripts/test-integration-ui.mjs
       - name: Test return navigation from Weekly to source note
         run: node scripts/test-weekly-return.mjs
+      - name: Check review modules syntax
+        run: |
+          node --check review-engine.mjs
+          node --check review-store.mjs
+          node --check review-feature.mjs
+      - name: Test JST review scheduler, draft safety and backup import
+        run: node scripts/test-review-v2.mjs
       - name: Check required files
         run: test -f index.html && test -f app.js && test -f styles.css
