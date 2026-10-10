@@ -1,0 +1,249 @@
+[
+  {
+    "version": 1,
+    "status": "draft",
+    "reviewed_at": null,
+    "evidence_url": null,
+    "id": "saur-source",
+    "type": "mcq",
+    "prompt": "S. aureusの血液培養が陽性になったとき、まず確認したい観点は？",
+    "choices": [
+      "感染源と全身状態",
+      "細菌培養の結果を見ずに終了",
+      "菌種を問わず抗菌薬は不要",
+      "他の情報なしで治療期間を決める"
+    ],
+    "correct_index": 0,
+    "explanation": "血液培養陽性の評価に加え、感染源・全身状態の確認が重要と整理されている。",
+    "source_path": "content/notes/mssa-bacteremia.md",
+    "source_section": "30秒要約",
+    "tags": [
+      "MSSA",
+      "菌血症"
+    ],
+    "integrative": false
+  },
+  {
+    "version": 1,
+    "status": "draft",
+    "reviewed_at": null,
+    "evidence_url": null,
+    "id": "mssa-persistent",
+    "type": "mcq",
+    "prompt": "MSSA菌血症で再血培が持続陽性の場合、学習ノートに記された再評価項目は？",
+    "choices": [
+      "感染源コントロール、深部感染、抗菌薬の適切性",
+      "採血した時間だけ",
+      "年齢のみ",
+      "菌血症の陰性化確認は不要"
+    ],
+    "correct_index": 0,
+    "explanation": "持続陽性では原因の再評価が重要とされている（原典未照合）。",
+    "source_path": "content/notes/mssa-bacteremia.md",
+    "source_section": "再血培と持続菌血症",
+    "tags": [
+      "MSSA",
+      "再血培"
+    ],
+    "integrative": true
+  },
+  {
+    "version": 1,
+    "status": "draft",
+    "reviewed_at": null,
+    "evidence_url": null,
+    "id": "mssa-target",
+    "type": "mcq",
+    "prompt": "MSSAの標的治療を検討する際、学習ノートに挙がるβラクタム薬は？",
+    "choices": [
+      "CEZ",
+      "VCMのみ",
+      "ST合剤のみ",
+      "抗菌薬不要"
+    ],
+    "correct_index": 0,
+    "explanation": "ノートではCEZなどが標的治療の選択肢とされている。感受性や臨床条件の確認が前提。",
+    "source_path": "content/notes/mssa-bacteremia.md",
+    "source_section": "抗菌薬の評価",
+    "tags": [
+      "MSSA",
+      "CEZ"
+    ],
+    "integrative": false
+  },
+  {
+    "version": 1,
+    "status": "draft",
+    "reviewed_at": null,
+    "evidence_url": null,
+    "id": "st-potassium",
+    "type": "mcq",
+    "prompt": "ST合剤投与中に特に確認したい電解質として、Weeklyに記載されたものは？",
+    "choices": [
+      "K",
+      "Naのみ",
+      "Caのみ",
+      "確認不要"
+    ],
+    "correct_index": 0,
+    "explanation": "WeeklyにはK・腎機能を確認する旨が記載されている。",
+    "source_path": "content/weekly/2026-10-09.md",
+    "source_section": "今週の重要ポイント",
+    "tags": [
+      "ST",
+      "高K"
+    ],
+    "integrative": false
+  },
+  {
+    "version": 1,
+    "status": "draft",
+    "reviewed_at": null,
+    "evidence_url": null,
+    "id": "steno-infection",
+    "type": "mcq",
+    "prompt": "S. maltophiliaが培養から検出された際の解釈で重要なのは？",
+    "choices": [
+      "感染か保菌・定着かの判定",
+      "検出＝常に感染症",
+      "必ずカルバペネム単独投与",
+      "検体採取部位は問わない"
+    ],
+    "correct_index": 0,
+    "explanation": "培養陽性と感染症を区別して考える必要がある（原典未照合）。",
+    "source_path": "content/notes/stenotrophomonas-maltophilia.md",
+    "source_section": "落とし穴",
+    "tags": [
+      "S. maltophilia",
+      "colonization"
+    ],
+    "integrative": true
+  },
+  {
+    "version": 1,
+    "status": "draft",
+    "reviewed_at": null,
+    "evidence_url": null,
+    "id": "candida-repeat",
+    "type": "mcq",
+    "prompt": "Candida血症で再度血培陽性となった症例の学習Q&Aで挙げられた再評価対象は？",
+    "choices": [
+      "感染源と深部病変、持続菌血症の原因",
+      "好中球数だけ",
+      "発熱の有無だけ",
+      "患者背景はすべて無視"
+    ],
+    "correct_index": 0,
+    "explanation": "Weeklyの復習では原因、カテーテルなどの感染源、深部病変を評価すると記載。",
+    "source_path": "content/weekly/2026-10-09.md",
+    "source_section": "今週の復習",
+    "tags": [
+      "Candida",
+      "血流感染"
+    ],
+    "integrative": true
+  },
+  {
+    "version": 1,
+    "status": "draft",
+    "reviewed_at": null,
+    "evidence_url": null,
+    "id": "mssa-followup-self",
+    "type": "self",
+    "prompt": "MSSA菌血症で再血培を実施し、陰性化を追う目的を説明してください。",
+    "model_answer": "菌血症の持続・陰性化を確認し、感染源や合併症の評価、治療期間の判断材料とする。",
+    "source_path": "content/notes/mssa-bacteremia.md",
+    "source_section": "再血培と持続菌血症",
+    "tags": [
+      "MSSA",
+      "再血培"
+    ],
+    "integrative": true
+  },
+  {
+    "version": 1,
+    "status": "draft",
+    "reviewed_at": null,
+    "evidence_url": null,
+    "id": "mssa-focus-self",
+    "type": "self",
+    "prompt": "黄色ブドウ球菌菌血症の初期評価で、感染源に関して確認する事項を列挙してください。",
+    "model_answer": "血管内カテーテル・人工物・局所症状などを確認し、必要な感染源コントロールを検討する。",
+    "source_path": "content/notes/mssa-bacteremia.md",
+    "source_section": "初期評価・感染源",
+    "tags": [
+      "MSSA",
+      "感染源コントロール"
+    ],
+    "integrative": true
+  },
+  {
+    "version": 1,
+    "status": "draft",
+    "reviewed_at": null,
+    "evidence_url": null,
+    "id": "mssa-ie-self",
+    "type": "self",
+    "prompt": "持続するMSSA菌血症で、感染性心内膜炎や深部感染を考える際の観点を説明してください。",
+    "model_answer": "臨床経過・リスク、心エコー検討、背部痛・関節痛・人工物などの情報を確認する。",
+    "source_path": "content/notes/mssa-bacteremia.md",
+    "source_section": "感染性心内膜炎・深部感染",
+    "tags": [
+      "MSSA",
+      "心内膜炎"
+    ],
+    "integrative": true
+  },
+  {
+    "version": 1,
+    "status": "draft",
+    "reviewed_at": null,
+    "evidence_url": null,
+    "id": "mssa-duration-self",
+    "type": "self",
+    "prompt": "MSSA菌血症の治療期間を考える前に確認する項目は？",
+    "model_answer": "陰性化の確認、感染源コントロール、深部感染・合併症の有無、臨床経過など。",
+    "source_path": "content/notes/mssa-bacteremia.md",
+    "source_section": "治療期間とフォロー",
+    "tags": [
+      "MSSA",
+      "治療期間"
+    ],
+    "integrative": true
+  },
+  {
+    "version": 1,
+    "status": "draft",
+    "reviewed_at": null,
+    "evidence_url": null,
+    "id": "mssa-antibiotic-self",
+    "type": "self",
+    "prompt": "CEZ投与中に再血培が陽性であった場合、抗菌薬だけに限定せず何を再評価しますか？",
+    "model_answer": "感受性・投与設計・感染源・深部感染・合併症や感染源コントロールを再評価する。",
+    "source_path": "content/notes/mssa-bacteremia.md",
+    "source_section": "抗菌薬の評価",
+    "tags": [
+      "MSSA",
+      "CEZ",
+      "VCM"
+    ],
+    "integrative": true
+  },
+  {
+    "version": 1,
+    "status": "draft",
+    "reviewed_at": null,
+    "evidence_url": null,
+    "id": "steno-risk-self",
+    "type": "self",
+    "prompt": "S. maltophilia感染症への抗菌薬を評価する際、ASTで確認することを挙げてください。",
+    "model_answer": "感染とcolonizationの区別、感染部位、感受性、腎機能、K値、現在の抗菌薬。",
+    "source_path": "content/notes/stenotrophomonas-maltophilia.md",
+    "source_section": "ASTで確認",
+    "tags": [
+      "S. maltophilia",
+      "ST"
+    ],
+    "integrative": true
+  }
+]
