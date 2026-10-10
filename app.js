@@ -1,4 +1,4 @@
-const state={view:'home',query:'',filter:'all',notes:[],weekly:[],organisms:[],antibiotics:[],review:[],selectedNote:null};
+const state={view:'home',query:'',filter:'all',notes:[],weekly:[],organisms:[],antibiotics:[],review:[],selectedNote:null,selectedWeeklyPath:null};
 const $=s=>document.querySelector(s); const app=$('#app');
 
 const icons={home:'⌂',search:'⌕',weekly:'▣',review:'▤',bug:'🦠',drug:'💊',infection:'🧫',culture:'🧪',ast:'👥'};
@@ -30,6 +30,7 @@ async function load(){
   ]); state.organisms=org;state.antibiotics=abx;state.review=review;
   state.notes=await Promise.all(idx.notes.map(async p=>parseMD(await fetch(p).then(r=>r.text()),p)));
   state.weekly=await Promise.all(idx.weekly.map(async p=>parseMD(await fetch(p).then(r=>r.text()),p)));
+  state.weekly.sort((a,b)=>b.path.localeCompare(a.path));
   render();
 }
 function brand(sub='感染症ナレッジ'){return `<div class="brand"><div><h1><span class="ast">AST</span> Pocket</h1><p>${sub}</p></div><div class="brand-mark">🩺</div></div>`}
@@ -118,7 +119,7 @@ function getSearchResults(){
     if(s>38)results.push({type:'抗菌薬',score:s,title:a.generic,sub:[a.english,...a.abbr].join(' / '),obj:a});
   }
   for(const w of state.weekly){
-    const s=bestScore(q,[w.fm.title,w.fm.tags,w.body]);
+    const s=bestScore(q,[w.fm.title,w.fm.week,w.fm.tags,...w.body.split('\n').filter(Boolean).slice(0,80)]);
     if(s>36)results.push({type:'Weekly',score:s,title:w.fm.title,sub:w.fm.week,obj:w});
   }
   if(!q){
@@ -162,6 +163,7 @@ function bindSearchPanel(){
     render();
   });
   document.querySelectorAll('[data-weekly-open]').forEach(b=>b.onclick=()=>{
+    state.selectedWeeklyPath=b.dataset.weeklyOpen;
     state.view='weekly';
     render();
   });
@@ -170,7 +172,7 @@ function bindSearchPanel(){
 function resultCard(r,top){
   if(r.type==='菌')return `<section class="card result-card"><div class="result-head"><span class="icon-bubble teal">🦠</span><div class="result-title"><h3>${esc(r.title)} ${top?'<span class="verified">✓ 候補</span>':''}</h3><p>${esc(r.sub||'')}</p><div class="tags">${(r.obj.tags||[]).map(t=>`<span class="tag">#${esc(t)}</span>`).join('')}</div></div></div><div class="summary">${r.obj.id==='stenotrophomonas-maltophilia'?'カルバペネムは基本的に期待しにくい / ST使用時はK・腎機能を確認':'菌名・別名・関連タグから一致しました。'}</div>${r.obj.note?'<button class="primary-btn open-note" data-note="'+r.obj.note+'">菌ノートを開く ›</button>':''}</section>`;
   if(r.type==='抗菌薬')return `<section class="card result-card"><div class="result-head"><span class="icon-bubble">💊</span><div class="result-title"><h3>${esc(r.title)}</h3><p>${esc(r.sub)}</p><div class="tags">${[...(r.obj.brands||[]),...(r.obj.abbr||[])].slice(0,4).map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div></div></div><div class="summary">一般名・商品名・略語・入力ゆれから検索できます。</div></section>`;
-  return `<section class="card result-card"><div class="result-head"><span class="icon-bubble purple">📅</span><div class="result-title"><h3>${esc(r.title)}</h3><p>${esc(r.sub||'')}</p></div></div><button class="primary-btn" data-weekly-open="1">Weeklyを開く ›</button></section>`
+  return `<section class="card result-card"><div class="result-head"><span class="icon-bubble purple">📅</span><div class="result-title"><h3>${esc(r.title)}</h3><p>${esc(r.sub||'')}</p></div></div><button class="primary-btn" data-weekly-open="${esc(r.obj.path)}">Weeklyを開く ›</button></section>`
 }
 function noteView(){const n=state.selectedNote||state.notes[0];const tags=(n.fm.tags||'').split(',').map(x=>x.trim()).filter(Boolean);const imp=Number(n.fm.importance||0);return `<main class="screen"><div class="note-head"><button class="back" id="backSearch">‹ 戻る</button><div style="text-align:center;font-weight:800">菌のノート</div><h1>${esc(n.fm.title)}</h1><div class="meta"><span class="verified">✓ ${n.fm.status==='verified'?'確認済み':esc(n.fm.status)}</span><span class="pill stars">${'★'.repeat(imp)}${'☆'.repeat(Math.max(0,5-imp))}</span><span class="pill">最終確認：${esc(n.fm.last_reviewed||'')}</span></div><div class="tags">${tags.map(t=>`<span class="tag">#${esc(t)}</span>`).join('')}</div></div>
   ${noteSection('💡 まず覚える',mdList(n.sections['まず覚える']))}
@@ -182,7 +184,22 @@ function noteSection(title,items){return `<section class="card note-section"><h2
 function checkSection(title,items){return `<section class="card note-section"><h2>${title}</h2><div class="body"><ul class="checklist">${items.map(x=>`<li><input type="checkbox"/> ${esc(x)}</li>`).join('')}</ul></div></section>`}
 function noteText(title,text,cls=''){return `<section class="card note-section ${cls}"><h2>${title}</h2><div class="body">${esc(text||'')}</div></section>`}
 function sourceSection(n){return `<section class="card note-section"><h2>📚 根拠</h2><div class="body sources"><div>• ${esc(n.fm.source||'出典未設定')}</div><div>• 最終確認：${esc(n.fm.last_reviewed||'')}</div><br><button class="primary-btn" id="latestBtn">最新情報を確認 ›</button></div></section>`}
-function weeklyView(){const w=state.weekly[0];const learning=mdList(w.sections['今週の学習']);const points=(w.sections['今週の重要ポイント']||'').split('\n').filter(Boolean).map(x=>x.replace(/^\d+\.\s*/,''));const rev=parseQA(w.sections['今週の復習']);const candidates=mdList(w.sections['正式ノート候補']);return `<main class="screen">${brand('週間学習まとめ')}<section class="card weekly-section"><h2>🎓 今週の学習</h2><div class="body"><strong>📅 ${esc(w.fm.week||'')}</strong><ul>${learning.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></section><section class="card weekly-section"><h2>💡 今週の重要ポイント</h2><div class="body"><ol class="numbered">${points.map(x=>`<li>${esc(x)}</li>`).join('')}</ol></div></section><section class="card weekly-section"><h2>📘 今週の復習</h2><div class="body">${rev.map(x=>`<div class="q-row"><strong>Q ${esc(x.q)}</strong><div class="answer">${esc(x.a)}</div></div>`).join('')}</div></section><section class="card weekly-section"><h2>📓 正式ノート候補</h2><div class="body">${candidates.map(x=>`<div class="list-row"><span>${esc(x)}</span><button class="chip">ノートに追加</button></div>`).join('')}</div></section></main>${nav()}`}
+function weeklyView(){
+  const w=state.weekly.find(x=>x.path===state.selectedWeeklyPath)||state.weekly[0];
+  if(!w)return '<main class="screen">'+brand('週間学習まとめ')+'<section class="card empty">Weeklyはまだありません。</section></main>'+nav();
+  const learning=mdList(w.sections['今週の学習']);
+  const points=(w.sections['今週の重要ポイント']||'').split('\n').filter(Boolean).map(x=>x.replace(/^\d+\.\s*/,''));
+  const rev=parseQA(w.sections['今週の復習']);
+  const candidates=mdList(w.sections['正式ノート候補']);
+  const options=state.weekly.map(x=>'<option value="'+esc(x.path)+'" '+(x.path===w.path?'selected':'')+'>'+esc(x.fm.week||x.fm.title||x.path)+'</option>').join('');
+  return '<main class="screen">'+brand('週間学習まとめ')+
+    '<section class="card weekly-picker-card"><label for="weeklyPicker">📅 表示する週を選択</label><select id="weeklyPicker" aria-label="表示する週">'+options+'</select><p class="weekly-disclaimer">学習履歴です。最新の診療推奨・出典確認済みKnowledgeとは異なります。</p></section>'+
+    '<section class="card weekly-section"><h2>🎓 今週の学習</h2><div class="body"><strong>📅 '+esc(w.fm.week||'')+'</strong><ul>'+learning.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div></section>'+
+    '<section class="card weekly-section"><h2>💡 今週の重要ポイント</h2><div class="body"><ol class="numbered">'+points.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol></div></section>'+
+    '<section class="card weekly-section"><h2>📘 今週の復習</h2><div class="body">'+rev.map(x=>'<div class="q-row"><strong>Q '+esc(x.q)+'</strong><div class="answer">'+esc(x.a)+'</div></div>').join('')+'</div></section>'+
+    '<section class="card weekly-section"><h2>📓 正式ノート候補</h2><div class="body">'+candidates.map(x=>'<div class="list-row"><span>'+esc(x)+'</span><span class="pill">要確認</span></div>').join('')+'</div></section>'+
+    '</main>'+nav();
+}
 function parseQA(s=''){const lines=s.split('\n');const out=[];let cur=null;for(const line of lines){if(line.startsWith('- Q:')){cur={q:line.replace('- Q:','').trim(),a:''};out.push(cur)}else if(line.trim().startsWith('A:')&&cur)cur.a=line.trim().replace(/^A:\s*/,'')}return out}
 function reviewView(){return `<main class="screen">${brand('復習')}<div class="section-title">🧠 今日の復習</div><section class="card weekly-card">${state.review.map(x=>`<div class="q-row"><strong>Q ${esc(x.q)}</strong><div class="answer">${esc(x.a)}</div></div>`).join('')}</section></main>${nav()}`}
 function openMemo(){document.body.insertAdjacentHTML('beforeend',`<div class="modal" id="memoModal"><div class="sheet"><h2>今日覚えたこと</h2><textarea id="memoText" placeholder="あとで整理したいことを短くメモ"></textarea><div class="sheet-actions"><button class="cancel" id="memoCancel">キャンセル</button><button class="save" id="memoSave">保存</button></div></div></div>`);$('#memoCancel').onclick=()=>$('#memoModal').remove();$('#memoSave').onclick=()=>{const t=$('#memoText').value.trim();if(t){const arr=JSON.parse(localStorage.getItem('astPocketInbox')||'[]');arr.unshift({text:t,at:new Date().toISOString()});localStorage.setItem('astPocketInbox',JSON.stringify(arr))}$('#memoModal').remove()}}
@@ -193,7 +210,8 @@ function bindPage(){
     state.query=b.dataset.cat;
     render();
   });
-  $('#goWeekly')?.addEventListener('click',()=>{state.view='weekly';render()});
+  $('#goWeekly')?.addEventListener('click',()=>{state.selectedWeeklyPath=null;state.view='weekly';render()});
+  $('#weeklyPicker')?.addEventListener('change',e=>{state.selectedWeeklyPath=e.target.value;render(false)});
   if(state.view==='search')bindSearchPanel();
   $('#backSearch')?.addEventListener('click',()=>{state.view='search';render()});
   $('#latestBtn')?.addEventListener('click',()=>alert('Ver.1では「最新情報を確認」の導線まで実装。次段階でWeb検索・差分確認を接続します。'));
