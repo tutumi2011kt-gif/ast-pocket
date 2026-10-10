@@ -19,8 +19,9 @@ let scroll=0;
 let details=[],questions=[];
 const goToScroll=y=>{scroll=y};
 function fakeRender(){
- details=details.map(()=>({open:false}));
- questions=questions.map(()=>({classList:{contains(){return false},toggle(){}}}));
+ const detailCounts={library:2,topic:3,note:3,weekly:0,search:0,home:0,integration:0};
+ details=Array.from({length:detailCounts[state.view]||0},()=>({open:false}));
+ questions=[];
  scroll=0;
 }
 const ctx={
