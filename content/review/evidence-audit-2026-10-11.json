@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "reviewed_date": "2026-10-11",
+  "review_type": "editorial_primary_guideline_crosscheck",
+  "status": "source_crosschecked_pending_human_approval",
+  "medical_approval_count": 0,
+  "scope": "Six high-priority draft questions: answer and guideline scope checked against public authoritative guideline pages; no changes to their verified statuses.",
+  "limitations": [
+    "AI-assisted textual cross-check is not a credentialed clinical review or attestation.",
+    "Guideline dates and scope must be confirmed against current full text and applicable Japanese regulatory/institutional guidance before approval.",
+    "No question is promoted to status verified; actual clinician/source-review sign-off is still required."
+  ],
+  "items": [
+    {
+      "question_id": "mssa-persistent",
+      "source_url": "https://www.idsociety.org/practice-guideline/staphylococcus-aureus-bacteremia/",
+      "source_name": "IDSA/ESCMID S. aureus bacteremia consensus (2026)",
+      "source_locator": "Consensus Statement 2: Follow-up Blood Cultures, adult remarks; Consensus Statement 1: Risk Stratification",
+      "target_population": "Adults with S. aureus bloodstream infection",
+      "answer_crosscheck": "consistent_with_source_at_general_level",
+      "caution": "FUBC positive at ≥48 h triggers more diagnostic workup and source-control reassessment. Antibiotic susceptibility, dose, and antimicrobial choice should be reviewed separately; the linked consensus has stated that future manuscripts will cover MSSA/MRSA drug selection.",
+      "pending_clinician_review": "Confirm wording for adult patients, interpretation of positive cultures at ≥48 h and actual need for source control."
+    },
+    {
+      "question_id": "mssa-followup-self",
+      "source_url": "https://www.idsociety.org/practice-guideline/staphylococcus-aureus-bacteremia/",
+      "source_name": "IDSA/ESCMID S. aureus bacteremia consensus (2026)",
+      "source_locator": "Consensus Statement 2: Follow-up Blood Cultures; duration remarks",
+      "target_population": "Adults with S. aureus bloodstream infection",
+      "answer_crosscheck": "consistent_with_source_at_general_level",
+      "caution": "Consensus suggests ≥2 sets of follow-up cultures at 48h and then every 24–48h until negative; bacteremia treatment duration is generally counted from culture clearance, with source-control caveat.",
+      "pending_clinician_review": "Check that model answer distinguishes bacteremia clearance from other duration determinants; confirm pediatric differences if used."
+    },
+    {
+      "question_id": "infection-candida-follow",
+      "source_url": "https://www.idsociety.org/practice-guideline/candidiasis/",
+      "source_name": "IDSA Clinical Practice Guideline for Candidiasis (2016)",
+      "source_locator": "Candidemia in Nonneutropenic Patients, Recommendation 11",
+      "target_population": "Patients with candidemia (nonneutropenic section; guidance also addresses neutropenic hosts separately)",
+      "answer_crosscheck": "supported_by_explicit_recommendation",
+      "caution": "Recommendation 11 advises blood cultures every day or every other day until clearance is established. This is a 2016 guideline; verify whether newer relevant domestic or international guidance changes recommendations.",
+      "pending_clinician_review": "Confirm whether the question should explicitly identify nonneutropenic candidemia and cite the recommendation number."
+    },
+    {
+      "question_id": "infection-candida-duration",
+      "source_url": "https://www.idsociety.org/practice-guideline/candidiasis/",
+      "source_name": "IDSA Clinical Practice Guideline for Candidiasis (2016)",
+      "source_locator": "Candidemia in Nonneutropenic Patients, Recommendation 12",
+      "target_population": "Candidemia without obvious metastatic complications",
+      "answer_crosscheck": "supported_with_important_missing_detail",
+      "caution": "A complete teaching answer must explicitly state ≥2 weeks after documented blood culture clearance AND resolution of attributable symptoms, assuming no metastatic complications. Existing choice names both factors but omits the 2-week minimum, so retain draft until teaching answer is improved and signed off.",
+      "pending_clinician_review": "Consider revising explanation/answer to state the ≥14-day condition without suggesting that all candidemia can be treated this way."
+    },
+    {
+      "question_id": "tdm-vcm-auc",
+      "source_url": "https://www.idsociety.org/practice-guideline/vancomycin/",
+      "source_name": "ASHP/PIDS/SIDP/IDSA VCM TDM consensus guideline (2020)",
+      "source_locator": "Executive Summary: AUC/MIC monitoring recommendations for serious MRSA infections",
+      "target_population": "Serious/invasive MRSA infections, assuming MIC by broth microdilution of 1 mg/L",
+      "answer_crosscheck": "supported_by_explicit_recommendation",
+      "caution": "AUC24 400–600 mg·h/L is an exposure target for serious MRSA infections with stated MIC assumption; do not extrapolate mechanically to all pathogens, uncomplicated infections, or unstable renal function without separate consideration.",
+      "pending_clinician_review": "Check units, chosen dosing model/monitoring tool and Japanese context; avoid implying sole reliance on trough concentrations."
+    },
+    {
+      "question_id": "infection-cuti-oral",
+      "source_url": "https://www.idsociety.org/practice-guideline/complicated-urinary-tract-infections/",
+      "source_name": "IDSA Clinical Practice Guideline for Complicated UTI (2025)",
+      "source_locator": "Recommendations on the Timing of Intravenous to Oral Antibiotics Transition, Recommendation I",
+      "target_population": "Patients with complicated UTI, including pyelonephritis, initially treated parenterally who are improving and can take oral therapy",
+      "answer_crosscheck": "supported_with_conditions",
+      "caution": "Recommendation is conditional, low-certainty evidence; requires clinical improvement, ability to take oral antibiotics, and availability of an effective oral agent. Source control and relevant exclusions should be evaluated before using it as a universal rule.",
+      "pending_clinician_review": "Confirm inclusion/exclusion criteria from full guidance, severity, bacteremia, obstruction and available oral alternatives."
+    }
+  ]
+}
