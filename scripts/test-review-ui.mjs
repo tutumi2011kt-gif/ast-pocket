@@ -11,8 +11,17 @@ let html=feature.html();
 assert.ok(html.includes('原典未確認・練習用'));
 assert.ok(html.includes('reviewReveal'));
 assert.ok(html.includes('reviewChoice'));
-assert.ok(html.includes('未学習 12問'));
+assert.ok(html.includes('未学習 50問'));
 assert.ok(html.includes('医学的な理解確認・定着の認定ではありません'));
+assert.ok(html.includes('出題分野（全50問）'));
+assert.ok(html.includes('血液培養・菌：11問'));
+assert.ok(html.includes('抗菌薬：12問'));
+assert.ok(html.includes('感染症：11問'));
+assert.ok(html.includes('AST実務：10問'));
+assert.ok(html.includes('TDM・PK/PD：6問'));
+assert.ok(html.includes('参考ガイドライン候補（照合前）'));
+assert.ok(html.includes('rel="noopener noreferrer"'));
+assert.ok(html.includes('医学的に確認済みであることを意味しません'));
 
 assert.ok(html.includes('JSONを書き出す'));
 assert.ok(html.includes('JSONを読み込む'));
