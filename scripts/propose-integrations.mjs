@@ -7,6 +7,7 @@
  */
 import fs from 'node:fs';
 import crypto from 'node:crypto';
+import {routeLearningChapter,getChapters} from '../notebook-templates.mjs';
 
 const readJSON=p=>JSON.parse(fs.readFileSync(p,'utf8'));
 const index=readJSON('content/index.json');
@@ -127,7 +128,10 @@ for(const w of index.weekly){
    const previous=existingNoteText(t);
    // Conservative overlap flag: exact knowledge sentence already present.
    const alreadyPresent=entry.kind==='point'&&normalize(previous).includes(normalize(entry.text));
-   t.links.push({fact_id:f.id,target_section:targetSection(t,entry.text),already_present:alreadyPresent});
+   const section=targetSection(t,entry.text);
+   const routed=routeLearningChapter(t.category,entry.text,{notePath:t.note_path||'',targetSection:section});
+   t.links.push({fact_id:f.id,target_section:section,target_chapter:routed.chapter_id,
+    routing:routed.routing,already_present:alreadyPresent});
   }
  }
 }
@@ -138,7 +142,8 @@ const knowledge=[...facts.values()].filter(f=>retained.has(f.id)).map(f=>({
 allTopics=allTopics.filter(t=>t.links.length||t.weekly_refs.length);
 const result={
  schema_version:1,
- generator:'rule-based-draft-integration-v1',
+ generator:'rule-based-draft-integration-v2',
+ chapter_schema_version:1,
  description:'Non-AI, source-linked automatic proposals; no verified content modified',
  verified:false,
  stats:{
@@ -157,7 +162,11 @@ for(const f of result.facts){
 }
 for(const t of result.topics){
  if(t.note_path&&!noteSet.has(t.note_path))throw Error('Unknown note path');
- for(const link of t.links)if(!retained.has(link.fact_id))throw Error('Missing fact');
+ for(const link of t.links){
+  if(!retained.has(link.fact_id))throw Error('Missing fact');
+  if(!getChapters(t.category).some(c=>c.id===link.target_chapter)&&link.target_chapter!=='unclassified')throw Error('Unsafe chapter '+t.topic_id);
+  if(!['keyword_rule_v1','section_rule_v1','needs_classification'].includes(link.routing))throw Error('Unknown routing method');
+ }
 }
 if(process.argv.includes('--write')){
  fs.writeFileSync('content/integration-proposals.json',JSON.stringify(result,null,2)+'\n');

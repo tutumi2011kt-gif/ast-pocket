@@ -11,7 +11,7 @@ const testStorage={
 };
 assert.equal(MSSA_PATH,'content/notes/mssa-bacteremia.md');
 const app=fs.readFileSync('app.js','utf8');
-assert.ok(app.includes('stopMssaReader();let html='),'Old note scroll listeners must be removed on navigation');
+assert.ok(app.includes('stopMssaReader();stopTemplateReader();let html='),'Old note scroll listeners must be removed on navigation');
 assert.ok(app.indexOf("if(scroll)window.scrollTo({top:0,behavior:'instant'});") < app.lastIndexOf(' bindPage()}'),'Initial scroll reset must happen before new bookmark listener binds');
 assert.equal(MSSA_CHAPTERS.length,8);
 assert.equal(new Set(MSSA_CHAPTERS.map(c=>c.id)).size,8);
