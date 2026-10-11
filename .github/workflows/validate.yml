@@ -15,6 +15,15 @@ jobs:
           node -e "JSON.parse(require('fs').readFileSync('data/organisms.json','utf8')); JSON.parse(require('fs').readFileSync('data/antibiotics.json','utf8')); JSON.parse(require('fs').readFileSync('content/index.json','utf8')); JSON.parse(require('fs').readFileSync('content/review/questions.json','utf8')); console.log('JSON OK')"
       - name: Check JavaScript syntax
         run: node --check app.js
+      - name: Validate nightly learning intake core and CLI
+        run: |
+          node --check scripts/daily-ingest-core.mjs
+          node --check scripts/import-daily-learning.mjs
+          node --check scripts/check-weekly-safety.mjs
+      - name: Test daily ChatGPT learning draft conversion, duplicate and privacy checks
+        run: node scripts/test-daily-ingest.mjs
+      - name: Screen indexed Weekly for privacy red flags
+        run: node scripts/check-weekly-safety.mjs
       - name: Validate dictionary and Weekly index
         run: node scripts/validate-content.mjs
       - name: Validate six-category Weekly auto-organizer
