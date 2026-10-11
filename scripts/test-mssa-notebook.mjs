@@ -46,7 +46,7 @@ try{
  assert.ok(html.includes('id="mssaResume"'));
  assert.ok(html.includes('前回の続きから再開'));
  assert.ok(html.includes('id="mssa-antibiotics"'));
- assert.ok(html.includes('mssa-compare'),'Comparison table in detailed mode must be available');
+ assert.ok(!html.includes('mssa-compare'),'Simple mode should hide deep comparison table');
  assert.ok(html.includes('Weeklyからの学習メモ'),'Existing Weekly drafts must remain visible');
  assert.ok(html.includes('分野別一覧へ'));
  assert.ok(html.includes('テストWeekly候補'));
