@@ -17,6 +17,21 @@ const badPatterns=[
  [/[<>\x60]|\r|\n/,'HTML, code or newline']
 ];
 const insist=(test,msg)=>{if(!test)throw Error('AST daily intake: '+msg)};
+/** Heuristic public safety check, not a guarantee: human review is still required. */
+export function assertPublicWeekly(markdown){
+ insist(typeof markdown==='string'&&markdown.length<=30000,'Weekly missing or too long');
+ const lines=markdown.split('\n');
+ for(const [i,line] of lines.entries()){
+  insist(line.length<=1200,'Weekly line too long: '+(i+1));
+  for(const [re,reason] of badPatterns){
+   if(re.source.includes('\\r|\\n'))continue; // multiline check in the input field only
+   insist(!re.test(line),'Weekly line '+(i+1)+' may contain '+reason);
+  }
+  insist(!/^\s*(?:user|assistant|system|ユーザー|アシスタント)[：:]\s*/i.test(line),'Raw conversation transcript is not publishable');
+ }
+ return true;
+}
+
 function textField(s,max,label){
  insist(typeof s==='string'&&s.length>=2&&s.length<=max&&s.trim()===s,label+' invalid length/whitespace');
  insist(!/^(?:[-*]|\d+\.|#)/.test(s),label+' contains Markdown structure');
@@ -125,6 +140,7 @@ export function prepareDailyFromFile(inputFile,{root=process.cwd(),write=false}=
  const existing=fs.existsSync(dest)?fs.readFileSync(dest,'utf8'):null;
  const result=appendDailyRecord(input,{index,weeklyByPath:existing?{[weeklyPath]:existing}:{}});
  if(write&&result.changed){
+  assertPublicWeekly(result.weekly);
   fs.mkdirSync(path.dirname(dest),{recursive:true});
   fs.writeFileSync(dest,result.weekly,'utf8');
   fs.writeFileSync(indexFile,JSON.stringify(result.index,null,2)+'\n','utf8');
