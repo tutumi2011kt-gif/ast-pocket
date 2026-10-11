@@ -133,8 +133,13 @@ export function bindMssaReader(root,{rerender,win=globalThis.window,storage=glob
   node.open=true;prefs.lastChapter=name;save();
   node.scrollIntoView({block:'start',behavior:'smooth'});
  };
+ const previouslyOpen=new Set(prefs.open);
  root.querySelectorAll('[data-mssa-chapter]').forEach(el=>el.addEventListener('toggle',()=>{
-  if(el.open)prefs.lastChapter=el.dataset.mssaChapter;
+  const chapterId=el.dataset.mssaChapter;
+  // Initial <details open> can dispatch a toggle event. It must not overwrite a bookmark.
+  if(previouslyOpen.has(chapterId)===el.open)return;
+  if(el.open)previouslyOpen.add(chapterId);else previouslyOpen.delete(chapterId);
+  if(el.open)prefs.lastChapter=chapterId;
   save();
  }));
  root.querySelectorAll('[data-mssa-jump]').forEach(el=>el.addEventListener('click',()=>jump(el.dataset.mssaJump)));
