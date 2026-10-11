@@ -96,15 +96,16 @@ export function appendDailyRecord(raw,{index,weeklyByPath={}}={}){
  const candidates=bullets(extract(previous,'正式ノート候補'));
  const qlines=extract(previous,'今週の復習');
  const sources=extract(previous,'原典候補（未確認）');
- let added=0,addedQA=0;
+ let added=0,addedQA=0,addedMetadata=0;
  for(const e of input.learning){
-  uniqPush(topics,e.topic);uniqPush(candidates,e.topic);
-  if(uniqPush(points,e.point)){
-   added++;
-   for(const url of e.source_urls){
-    const line='- 重要ポイント'+points.length+'の出典候補: '+url;
-    uniqPush(sources,line);
-   }
+  if(uniqPush(topics,e.topic))addedMetadata++;
+  if(uniqPush(candidates,e.topic))addedMetadata++;
+  const isNew=uniqPush(points,e.point);
+  if(isNew)added++;
+  const pointNumber=points.findIndex(x=>norm(x)===norm(e.point))+1;
+  for(const url of e.source_urls){
+   const line='- 重要ポイント'+pointNumber+'の出典候補: '+url;
+   if(uniqPush(sources,line))addedMetadata++;
   }
   if(e.question&&e.answer){
    const qi=qlines.findIndex(s=>norm(s.replace(/^[-*]\s*Q:\s*/,''))===norm(e.question));
@@ -116,18 +117,21 @@ export function appendDailyRecord(raw,{index,weeklyByPath={}}={}){
    }
   }
  }
- if(!added&&!addedQA)return {changed:false,reason:previous?'no_new_content':'no_learning',weeklyPath,weekly:previous||null,index,added,addedQA};
+ if(!added&&!addedQA&&!addedMetadata)return {changed:false,reason:previous?'no_new_content':'no_learning',weeklyPath,weekly:previous||null,index,added,addedQA};
  const front=previous?previous.slice(0,previous.indexOf('\n---\n',4)+5):
   '---\ntitle: AST Weekly '+input.date+'\nweek: '+input.window_start_jst+'〜'+input.window_end_jst+
   '\nstatus: learning-log\nlast_reviewed:\nsource_coverage: '+input.coverage+'\ntags: 学習記録, 原典未確認\n---';
  const known=new Set(['今週の学習','今週の重要ポイント','今週の復習','正式ノート候補','原典候補（未確認）','安全上の注意']);
+ const previousSafety=extract(previous,'安全上の注意');
+ const safety=['- 取得できた学習内容のみを記録した原典未確認の学習メモです。臨床推奨ではありません。'];
+ for(const line of previousSafety)uniqPush(safety,line);
  const other=previous.split('\n# ').slice(1).filter(x=>!known.has(x.split('\n')[0].trim())).map(s=>'# '+s.trim()).join('\n\n');
  const weekly=front+'\n# 今週の学習\n'+topics.map(x=>'- '+x).join('\n')+
  '\n\n# 今週の重要ポイント\n'+points.map((x,i)=>(i+1)+'. '+x).join('\n')+
  '\n\n# 今週の復習\n'+qlines.join('\n')+
  '\n\n# 正式ノート候補\n'+candidates.map(x=>'- '+x).join('\n')+
  '\n\n# 原典候補（未確認）\n'+sources.join('\n')+
- '\n\n# 安全上の注意\n- 取得できた学習内容のみを記録した原典未確認の学習メモです。臨床推奨ではありません。\n'+
+ '\n\n# 安全上の注意\n'+safety.join('\n')+'\n'+
  (other?'\n'+other+'\n':'');
  const next={...index,weekly:[...new Set([...index.weekly,weeklyPath])].sort().reverse()};
  return {changed:true,reason:'added',weeklyPath,weekly,index:next,added,addedQA};
