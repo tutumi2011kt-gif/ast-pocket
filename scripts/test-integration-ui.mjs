@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
+import {MSSA_PATH,renderMssaNotebook} from '../mssa-notebook.mjs';
 
 function smokeTest(){
  execFileSync(process.execPath,['scripts/organize-weekly.mjs','--write'],{stdio:'ignore'});
@@ -15,7 +16,7 @@ function smokeTest(){
   organized:JSON.parse(fs.readFileSync('content/organized.json','utf8')),
   integrations:JSON.parse(fs.readFileSync('content/integration-proposals.json','utf8'))
  };
- const context={console,Date,setTimeout(){return 1},clearTimeout(){},localStorage:{getItem(){return null},setItem(){}},document:{querySelector(){return {innerHTML:''}},querySelectorAll(){return []}},window:{scrollTo(){}}};
+ const context={console,Date,setTimeout(){return 1},clearTimeout(){},MSSA_PATH,renderMssaNotebook,localStorage:{getItem(){return null},setItem(){}},document:{querySelector(){return {innerHTML:''}},querySelectorAll(){return []}},window:{scrollTo(){}}};
  vm.createContext(context);
  const setup=[
   `state.notes=${JSON.stringify(data.notes)}.map(x=>parseMD(x.text,x.path));`,

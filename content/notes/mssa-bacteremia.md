@@ -7,6 +7,7 @@ layout: integrated
 status: draft
 importance: 5
 last_reviewed:
+last_structural_update: 2026-10-11
 source: 原典照合待ち（IDSA/ESCMID、関連学会ガイドライン等）
 tags: MSSA, 黄色ブドウ球菌, 菌血症, 血液培養, CEZ, 再血培, AST
 aliases: MSSA, S. aureus bacteremia, SAB, 黄色ブドウ球菌菌血症, ぶどう球菌菌血症
