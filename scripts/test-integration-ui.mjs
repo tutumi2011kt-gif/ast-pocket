@@ -36,11 +36,21 @@ function smokeTest(){
  assert.ok(html.note.includes('Weeklyからの学習メモ'),'Existing note draft additions');
  assert.ok(html.note.includes('原典確認待ち'),'Medical review gate');
  assert.ok(html.topic.includes('Candida血症'),'Candida candidate');
+ assert.ok(html.topic.includes('data-template-reader'),'Candidate topics must use shared reader');
+ assert.equal((html.topic.match(/data-template-chapter=/g)||[]).length,8,'Eight chapters in Candida topic');
  assert.ok(html.topic.includes('open-weekly-ref'),'Provenance links');
  assert.ok(html.queue.includes('原典確認待ち'),'Medical review queue');
+ vm.runInContext("state.view='note';state.selectedNote=state.notes.find(n=>n.path.includes('stenotrophomonas'));globalThis.stenoNote=noteView();",context);
+ assert.ok(context.stenoNote.includes('data-template-reader'),'Existing organism note uses reusable eight-chapter layout');
+ assert.ok(context.stenoNote.includes('未分類・確認待ち'),'Unmapped existing note sections are retained');
+ assert.ok(context.stenoNote.includes('原典確認待ち'),'Existing unsubstantiated verified flag is not clinical clearance');
+ vm.runInContext("state.selectedNote=state.notes.find(n=>n.fm.layout==='integrated');",context);
  vm.runInContext(`state.mode='clinical';globalThis.clinicalNote=integratedNoteView(state.selectedNote);globalThis.clinicalTopic=dynamicTopicView();`,context);
  assert.ok(!context.clinicalNote.includes('Weeklyからの学習メモ'),'No unverified integration in clinical note');
  assert.ok(!context.clinicalTopic.includes('学習時の回答'),'No draft claims in clinical topic');
+ assert.ok(!context.clinicalTopic.includes('open-weekly-ref'),'No candidate source snippets in clinical mode');
+ vm.runInContext("state.selectedNote=state.notes.find(n=>n.path.includes('stenotrophomonas'));globalThis.clinicalSteno=noteView();",context);
+ assert.ok(!context.clinicalSteno.includes('カルバペネムは基本的に期待しにくい'),'Unverified organism content cannot be clinical advice');
  console.log('Integration UI smoke tests OK: all views and clinical safety');
 }
 smokeTest();
