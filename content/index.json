@@ -1,9 +1,11 @@
 {
   "notes": [
     "content/notes/stenotrophomonas-maltophilia.md",
-    "content/notes/mssa-bacteremia.md"
+    "content/notes/mssa-bacteremia.md",
+    "content/notes/pseudomonas-antipseudomonal-beta-lactams.md"
   ],
   "weekly": [
-    "content/weekly/2026-10-09.md"
+    "content/weekly/2026-10-09.md",
+    "content/weekly/2026-10-11.md"
   ]
 }
