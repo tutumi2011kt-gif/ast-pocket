@@ -4,7 +4,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
-const validDate=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s)&&new Date(s+'T00:00:00Z').toISOString().startsWith(s);
+const validDate=s=>{if(typeof s!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(s))return false;const d=new Date(s+'T00:00:00Z');return Number.isFinite(d.valueOf())&&d.toISOString().startsWith(s)};
 const norm=s=>String(s).normalize('NFKC').toLowerCase().replace(/[\s。、.,:：()（）「」・･\-_\/]/g,'');
 const badPatterns=[
  [/[\w.+-]+@[\w.-]+\.[a-z]{2,}/i,'email'],
@@ -23,6 +23,7 @@ export function assertPublicWeekly(markdown){
  const lines=markdown.split('\n');
  for(const [i,line] of lines.entries()){
   insist(line.length<=1200,'Weekly line too long: '+(i+1));
+  insist(!/[<>\x60]/.test(line),'Weekly contains HTML or code markup');
   for(const [re,reason] of badPatterns){
    if(re.source.includes('\\r|\\n'))continue; // multiline check in the input field only
    insist(!re.test(line),'Weekly line '+(i+1)+' may contain '+reason);
