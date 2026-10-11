@@ -189,3 +189,14 @@ button,input{font:inherit}.app-shell{min-height:100vh;padding-bottom:92px}.scree
 .mssa-case p,.mssa-evidence p{margin:8px 0}
 .mssa-evidence a{color:#176f9f;text-decoration:underline}
 @media(max-width:500px){.mssa-toc{grid-template-columns:1fr}.mssa-toc-button{min-height:44px}.mssa-chapter-body{padding:12px 14px}}
+
+/* Reusable detailed learning notebook for all six topic categories. */
+.template-screen .integrated-heading h1{overflow-wrap:anywhere}
+.template-controls .mssa-toc-button{font-size:13px;line-height:1.45}
+.template-screen .template-source-note{border-left:3px solid #d8e8f3;margin:9px 0;padding:4px 0 4px 12px;overflow-wrap:anywhere}
+.template-screen .template-sourced-item{padding:10px 0;border-top:1px solid #edf3f8;overflow-wrap:anywhere}
+.template-screen .template-sourced-item:first-of-type{border-top:0}
+.template-screen .mssa-chapter-body h4{margin:8px 0;font-size:14px;color:#22638d}
+.template-screen .mssa-chapter-body .small-note{font-size:13px;line-height:1.6}
+.template-screen .template-source-note li{margin:7px 0}
+.template-screen .mssa-resume{margin-top:6px}
