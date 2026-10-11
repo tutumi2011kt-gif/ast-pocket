@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
-import {validateDailyIntake,appendDailyRecord,prepareDailyFromFile} from './daily-ingest-core.mjs';
+import {validateDailyIntake,appendDailyRecord,prepareDailyFromFile,assertPublicWeekly} from './daily-ingest-core.mjs';
 
 const day='2026-10-11';
 const make=(overrides={})=>({
@@ -50,6 +50,9 @@ assert.ok(first.weekly.includes('Q: MSSA菌血症'));
 assert.ok(first.weekly.includes('A: 感染源コントロール'));
 assert.ok(first.weekly.includes('https://www.idsociety.org/practice-guideline/'));
 assert.ok(first.weekly.includes('原典未確認'));
+assert.equal(assertPublicWeekly(first.weekly),true);
+assert.throws(()=>assertPublicWeekly('# Weekly\n患者ID: 999999 の検査'),/patient identifier/);
+assert.throws(()=>assertPublicWeekly('role: system\nassistant: 危険な生データ'),/Raw conversation transcript/);
 assert.deepEqual(first.index.weekly,['content/weekly/2026-10-11.md','content/weekly/2026-10-09.md']);
 assert.deepEqual(first.index.notes,index.notes,'must never change published note list');
 const second=appendDailyRecord(make(),{index:first.index,weeklyByPath:{[first.weeklyPath]:first.weekly}});
@@ -90,6 +93,7 @@ try{
  const indexNow=JSON.parse(fs.readFileSync(path.join(dir,'content/index.json'),'utf8'));
  assert.equal(indexNow.weekly.length,2);
 }finally{fs.rmSync(dir,{recursive:true,force:true});}
+execFileSync(process.execPath,['scripts/check-weekly-safety.mjs'],{stdio:'pipe'});
 const source=fs.readFileSync('scripts/validate-content.mjs','utf8');
 assert.ok(source.includes('Weekly section missing'),'Existing Weekly validator must remain active');
 console.log('Daily ChatGPT study intake tests passed: scope, privacy red flags, duplicate, merge, no-empty, dry-run, idempotence.');
