@@ -53,7 +53,7 @@ try{
  assert.ok(html.includes('原典確認待ち'));
  assert.ok(!html.includes('確認済みの臨床用要約'),'Study mode can show clearly labelled draft overview');
  assert.equal((html.match(/class="mssa-simple"/g)||[]).length,0,'Simple mode may use no redundant card wrapper');
- assert.ok(saveMssaPrefs(id,{depth:'deep',open:['source'],lastChapter:'source',scrollY:150},testStorage));
+ assert.ok(saveMssaPrefs(id,{depth:'deep',open:['INVALID'],lastChapter:'INVALID',scrollY:150},testStorage));
  html=renderMssaNotebook(n,config);
  assert.ok(html.includes('mssa-flow'),'Learning flow must render in deep mode');
  assert.ok(html.includes('mssa-compare'),'Comparison table visible in deep mode');
