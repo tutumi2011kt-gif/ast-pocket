@@ -25,6 +25,7 @@
     "domain": "blood",
     "evidence_state": "candidate_linked",
     "candidate_evidence_urls": [
+      "https://www.idsociety.org/practice-guideline/staphylococcus-aureus-bacteremia/",
       "https://www.cdc.gov/lab-quality/php/prevent-adult-blood-culture-contamination/primary-measure.html"
     ]
   },
@@ -54,6 +55,7 @@
     "domain": "blood",
     "evidence_state": "candidate_linked",
     "candidate_evidence_urls": [
+      "https://www.idsociety.org/practice-guideline/staphylococcus-aureus-bacteremia/",
       "https://www.cdc.gov/lab-quality/php/prevent-adult-blood-culture-contamination/primary-measure.html"
     ]
   },
@@ -83,6 +85,7 @@
     "domain": "antibiotic",
     "evidence_state": "candidate_linked",
     "candidate_evidence_urls": [
+      "https://www.idsociety.org/practice-guideline/staphylococcus-aureus-bacteremia/",
       "https://www.idsociety.org/practice-guideline/amr-guidance/"
     ]
   },
@@ -192,6 +195,7 @@
     "domain": "blood",
     "evidence_state": "candidate_linked",
     "candidate_evidence_urls": [
+      "https://www.idsociety.org/practice-guideline/staphylococcus-aureus-bacteremia/",
       "https://www.cdc.gov/lab-quality/php/prevent-adult-blood-culture-contamination/primary-measure.html"
     ]
   },
@@ -214,6 +218,7 @@
     "domain": "ast",
     "evidence_state": "candidate_linked",
     "candidate_evidence_urls": [
+      "https://www.idsociety.org/practice-guideline/staphylococcus-aureus-bacteremia/",
       "https://www.cdc.gov/antibiotic-use/hcp/core-elements/hospital.html"
     ]
   },
@@ -236,6 +241,7 @@
     "domain": "blood",
     "evidence_state": "candidate_linked",
     "candidate_evidence_urls": [
+      "https://www.idsociety.org/practice-guideline/staphylococcus-aureus-bacteremia/",
       "https://www.cdc.gov/lab-quality/php/prevent-adult-blood-culture-contamination/primary-measure.html"
     ]
   },
@@ -258,6 +264,7 @@
     "domain": "ast",
     "evidence_state": "candidate_linked",
     "candidate_evidence_urls": [
+      "https://www.idsociety.org/practice-guideline/staphylococcus-aureus-bacteremia/",
       "https://www.cdc.gov/antibiotic-use/hcp/core-elements/hospital.html"
     ]
   },
@@ -281,6 +288,7 @@
     "domain": "ast",
     "evidence_state": "candidate_linked",
     "candidate_evidence_urls": [
+      "https://www.idsociety.org/practice-guideline/staphylococcus-aureus-bacteremia/",
       "https://www.cdc.gov/antibiotic-use/hcp/core-elements/hospital.html"
     ]
   },
