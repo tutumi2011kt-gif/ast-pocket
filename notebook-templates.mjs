@@ -118,6 +118,7 @@ export function renderTemplateNotebook({
  const matched=chapters.map(c=>({...c,sourceSections:Object.keys(sections).filter(name=>sectionChapter(kind,name)===c.id),
   assignments:links.filter(l=>l.chapter_id===c.id)}));
  const unknown=links.filter(l=>l.chapter_id==='unclassified'||!chapters.some(c=>c.id===l.chapter_id));
+ const unknownSections=Object.keys(sections).filter(name=>!matched.some(c=>c.sourceSections.includes(name)));
  const warning='<div class="draft-alert" role="note"><strong>⚠️ 原典確認待ち・学習用</strong>'+
   '<p>自動分類はルールベースです。内容の正しさ、引用先との一致、国内での適用は未確認です。</p></div>';
  let out='<main class="screen integrated-screen template-screen" data-template-reader="'+h(id)+'" data-template-category="'+h(kind)+'">'+
@@ -159,8 +160,9 @@ export function renderTemplateNotebook({
   out+='</div></details>';
  }
  out+='</section>';
- if(unknown.length)out+='<section class="card integrated-card"><h2>🗂 未分類・確認待ち '+unknown.length+'件</h2>'+
-  '<p class="small-note">安全な章の推定ができないため、無理に分類せず保留しました。</p>'+
+ if(unknown.length||unknownSections.length)out+='<section class="card integrated-card"><h2>🗂 未分類・確認待ち '+(unknown.length+unknownSections.length)+'件</h2>'+
+  '<p class="small-note">分類できない学習項目は、失わずに確認待ちとして残します。</p>'+
+  unknownSections.map(name=>'<div class="template-source-note"><h4>'+h(name)+'</h4>'+ordered(bullets(sections[name]))+'</div>').join('')+
   unknown.map(l=>'<div class="template-sourced-item">'+fragmentForLink(l)+'</div>').join('')+'</section>';
  if(historyHtml)out+='<section class="card integrated-card"><h2>🗓 元の学習履歴</h2>'+historyHtml+'</section>';
  return out+'</main>';
