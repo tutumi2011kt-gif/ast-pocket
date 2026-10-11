@@ -5,6 +5,7 @@
 # 血液培養・微生物
 血液培養陽性の意味は菌種、陽性セット数、採血手技、採血部位、臨床像、血管内デバイスの有無などと合わせて評価する。CoNSの単一セット陽性は汚染を示唆することがあるが、医療機器関連感染や複数セット陽性など、真の感染もあり得る。グラム染色の形態は暫定情報であり、菌名確定と混同しない。
 
+- IDSA/ESCMID（2026年9月S. aureus菌血症の診断・リスク層別化・再血培に関する最新コンセンサス）：https://www.idsociety.org/practice-guideline/staphylococcus-aureus-bacteremia/
 - CDC（血液培養汚染率、CoNSの解釈）：https://www.cdc.gov/lab-quality/php/prevent-adult-blood-culture-contamination/primary-measure.html
 - IDSA（カテーテル関連血流感染、2009年版、更新作業中）：https://www.idsociety.org/practice-guideline/iv-catheter/
 - IDSA（Candida血症）：https://www.idsociety.org/practice-guideline/candidiasis/
