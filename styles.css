@@ -153,3 +153,39 @@ button,input{font:inherit}.app-shell{min-height:100vh;padding-bottom:92px}.scree
 .review-evidence ul{margin:8px 0;padding-left:18px;line-height:1.8}
 .review-evidence a{color:#0d67a7;text-decoration:underline;text-underline-offset:2px;font-size:14px}
 .review-evidence a:focus-visible{outline:3px solid #2d8ed9;outline-offset:2px}
+
+
+/* MSSA detailed notebook — responsive layered reading with local bookmark state. */
+.mssa-screen .integrated-heading h1{letter-spacing:-.4px}
+.mssa-reading-controls h2,.mssa-chapters h2{margin-bottom:8px}
+.mssa-depth{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:15px 0}
+.mssa-depth button{min-height:44px;padding:11px;border:1px solid #c2dcea;border-radius:12px;background:#f2f8fd;color:#285e83;font-size:15px;font-weight:750;cursor:pointer}
+.mssa-depth button.selected{background:#d7f3ef;border-color:#0c927d;color:#075f56}
+.mssa-depth button:focus-visible,.mssa-resume:focus-visible,.mssa-toc-button:focus-visible,.mssa-chapter summary:focus-visible{outline:3px solid #1885d4;outline-offset:2px}
+.mssa-resume{width:100%;padding:12px;margin-bottom:12px;border:1px solid #94c4e6;border-radius:12px;background:#ecf7ff;color:#0d6b9e;cursor:pointer;font-size:15px;font-weight:700;min-height:44px}
+.mssa-resume:disabled{cursor:default;color:#7a8e9b;background:#f3f6f8;border-color:#d7e2e8}
+.mssa-toc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.mssa-toc-button{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:11px;border:1px solid #d2e5f2;border-radius:12px;background:#f7fbff;color:#1b638e;text-align:left;font-weight:700;font-size:13px;cursor:pointer;min-height:50px}
+.mssa-toc-button span{color:#2880b2}
+.mssa-chapter{border:1px solid #d4e5f1;border-radius:14px;margin:12px 0;background:#fff;overflow:hidden;scroll-margin-top:18px}
+.mssa-chapter[open]{border-color:#b1d7e9}
+.mssa-chapter>summary{cursor:pointer;padding:16px;list-style:none;position:relative;padding-right:34px;background:#f6fbff}
+.mssa-chapter>summary::-webkit-details-marker{display:none}
+.mssa-chapter>summary:after{content:"⌄";position:absolute;right:14px;top:17px;color:#126e9a}
+.mssa-chapter[open]>summary:after{content:"⌃"}
+.mssa-chapter>summary strong{display:block;font-size:16px;color:#1f5b85}
+.mssa-chapter>summary small{display:block;font-size:12px;color:#60788b;margin-top:5px;line-height:1.6}
+.mssa-chapter-body{padding:15px 18px;line-height:1.8;overflow-wrap:anywhere}
+.mssa-chapter-body h4{font-size:15px;margin:16px 0 7px;color:#1b567d}
+.mssa-chapter-body ul{padding-left:21px}
+.mssa-chapter-body li{margin-bottom:8px}
+.mssa-table-wrap{overflow-x:auto}
+.mssa-compare{width:100%;border-collapse:collapse;font-size:13px;min-width:310px}
+.mssa-compare th,.mssa-compare td{text-align:left;padding:10px;border:1px solid #d6e6f0;vertical-align:top}
+.mssa-compare th{background:#f2f9ff}
+.mssa-flow{margin:10px 0;padding-left:23px;border-left:3px solid #b8e0ef}
+.mssa-flow li{padding:5px}
+.mssa-case{background:#f1f9ff;border:1px solid #d4e7f6;border-radius:14px;padding:14px}
+.mssa-case p,.mssa-evidence p{margin:8px 0}
+.mssa-evidence a{color:#176f9f;text-decoration:underline}
+@media(max-width:500px){.mssa-toc{grid-template-columns:1fr}.mssa-toc-button{min-height:44px}.mssa-chapter-body{padding:12px 14px}}
