@@ -71,7 +71,7 @@ export function validateDailyIntake(raw){
   const source_urls=[...new Set((e.source_urls||[]).map(publicSource))];
   insist(source_urls.length<=3,'too many source URLs');
   const key=norm(point)+'|'+norm(question||'');
-  if(!seen.has(key)){learning.push({topic,point,question,answer,source_urls});seen.add(key)}
+  if(!seen.has(key)){learning.push({topic,point,...(hasQ?{question,answer}:{}),source_urls});seen.add(key)}
  }
  return {schema_version:1,date:raw.date,coverage:raw.coverage,public_release_reviewed:true,
   window_start_jst:raw.window_start_jst,window_end_jst:raw.window_end_jst,learning};
