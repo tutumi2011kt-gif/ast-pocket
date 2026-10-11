@@ -36,6 +36,8 @@ export class ReviewFeature {
  html(){
   if(!this.ready)return '<section class="card review-panel"><h2>復習を開始できません</h2><p class="draft-alert">'+h(this.error)+'</p><button type="button" id="reviewRetry" class="primary-btn">再試行する</button></section>';
   const q=this.current(),done=this.complete(),target=jstTargetCount();
+  const domainNames={blood:'血液培養・菌',antibiotic:'抗菌薬',infection:'感染症',ast:'AST実務',tdm:'TDM・PK/PD'};
+  const domainCounts=Object.keys(domainNames).map(k=>[domainNames[k],this.bank.filter(x=>x.domain===k).length]);
   const statuses=this.bank.map(q=>getQuestionProgress(q,this.events,this.day).practice_status);
   const notLearned=statuses.filter(s=>s==='未学習').length;
   const weak=statuses.filter(s=>s==='復習が必要').length;
@@ -43,11 +45,19 @@ export class ReviewFeature {
   let out='<section class="card review-panel"><h2>今日の復習：'+done+' / '+this.ids.length+'問</h2>'+
     '<div class="review-progress"><div style="width:'+(this.ids.length?Math.floor(100*done/this.ids.length):0)+'%"></div></div>'+
     '<p class="small-note">日本時間 '+h(this.day)+'：'+(target===10?'週末10問':'平日5問')+'を目標に出題。現在の問題は原典未確認の練習用で、正式な医学的理解度には算入しません。</p></section>';
+  out+='<section class="card review-panel"><h3>出題分野（全'+this.bank.length+'問）</h3><div class="review-domain-list">'+domainCounts.map(([name,n])=>'<span>'+h(name)+'：'+n+'問</span>').join('')+'</div><p class="small-note">追加された問題は全て学習用の下書きです。原典確認が完了した問題のみ、将来の正式な習熟度判定へ移行します。</p></section>';
   out+='<section class="card review-panel"><div class="review-mastery-strip"><span>未学習 '+notLearned+'問</span><span>復習が必要 '+weak+'問</span><span>練習済み '+practised+'問</span></div><p class="small-note">これは練習状況です。医学的な理解確認・定着の認定ではありません。</p></section>';
   if(!q)out+='<section class="card review-panel"><h2>本日の復習は終了です</h2><p>次回の復習で学習内容を定着させましょう。</p></section>';
   else{
    out+='<section class="card review-panel"><div class="draft-label">原典未確認・練習用</div><h2>'+h(q.prompt)+'</h2>'+
     '<p class="small-note">出典：'+h(q.source_path.split('/').pop())+' ＞ '+h(q.source_section)+'</p>';
+   if(Array.isArray(q.candidate_evidence_urls)&&q.candidate_evidence_urls.length){
+    out+='<details class="review-evidence"><summary>📚 参考ガイドライン候補（照合前）</summary><p class="small-note">リンク先の存在は、この問題・正答が医学的に確認済みであることを意味しません。</p><ul>';
+    q.candidate_evidence_urls.forEach((url,i)=>{
+     if(typeof url==='string'&&url.startsWith('https://'))out+='<li><a href="'+h(url)+'" target="_blank" rel="noopener noreferrer">一次資料候補 '+(i+1)+'を開く ↗</a></li>';
+    });
+    out+='</ul></details>';
+   }
    if(q.type==='mcq'){
     out+='<div class="review-options">';
     q.choices.forEach((choice,i)=>{
