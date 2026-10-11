@@ -1,13 +1,23 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {webcrypto} from 'node:crypto';
-import {jstDayKey,jstTargetCount,validateQuestionBank,selectDailyQuestions,getQuestionProgress,assessAnswer,eventFromAnswer} from '../review-engine.mjs';
+import {jstDayKey,jstTargetCount,validateQuestionBank,selectDailyQuestions,getQuestionProgress,assessAnswer,eventFromAnswer,isMedicallyVerified} from '../review-engine.mjs';
 import {validateImport,backupIsDue} from '../review-store.mjs';
 
 if(!globalThis.crypto)globalThis.crypto=webcrypto;
 const bank=JSON.parse(fs.readFileSync('content/review/bank-v2.json','utf8'));
 assert.ok(validateQuestionBank(bank));
-assert.equal(bank.length,12);
+assert.equal(bank.length,50);
+const byDomain=Object.fromEntries(['blood','antibiotic','infection','ast','tdm'].map(d=>[d,bank.filter(q=>q.domain===d).length]));
+assert.deepEqual(byDomain,{blood:11,antibiotic:12,infection:11,ast:10,tdm:6});
+const existingIds=['saur-source','mssa-persistent','mssa-target','st-potassium','steno-infection','candida-repeat','mssa-followup-self','mssa-focus-self','mssa-ie-self','mssa-duration-self','mssa-antibiotic-self','steno-risk-self'];
+for(const id of existingIds){
+ const original=bank.find(x=>x.id===id);
+ assert.ok(original&&original.version===1,'Keep original question ID/version so local progress persists: '+id);
+}
+assert.ok(bank.every(q=>q.evidence_state==='candidate_linked'&&q.candidate_evidence_urls?.length>0));
+assert.ok(bank.some(q=>q.candidate_evidence_urls.includes('https://www.idsociety.org/practice-guideline/staphylococcus-aureus-bacteremia/')),'2026 SAB reference');
+assert.ok(bank.some(q=>q.candidate_evidence_urls.includes('https://www.idsociety.org/practice-guideline/amr-guidance/')),'2026 AMR reference');
 assert.ok(bank.every(q=>q.status==='draft'&&!q.reviewed_at&&!q.evidence_url),'No clinical verification claims in test bank');
 for(const q of bank){
  assert.ok(fs.existsSync(q.source_path),'Missing reference: '+q.id);
@@ -59,5 +69,16 @@ assert.equal(backupIsDue([e],null),true);
 assert.equal(backupIsDue([e],'2026-10-08T00:00:00.000Z',t),false);
 assert.equal(backupIsDue([e],'2026-10-01T00:00:00.000Z',t),true);
 const bad=[...bank,{...mcq,id:'fake-verified',status:'verified'}];
-assert.throws(()=>validateQuestionBank(bad),/Verified question requires/);
-console.log('Review engine tests passed: JST 5/10 scheduling, dedup, grade gating, interval, provenance and backup validation.');
+assert.throws(()=>validateQuestionBank(bad),/Verified question requires human original-source review/);
+assert.equal(isMedicallyVerified(mcq),false);
+const unsafeUpgrade={...mcq,status:'verified',evidence_state:'human_reviewed',
+ reviewed_at:'2026-10-11',evidence_url:'https://www.idsociety.org/practice-guideline/vancomycin/'};
+assert.equal(isMedicallyVerified(unsafeUpgrade),false,'A bare URL and date must not count as human verified');
+assert.throws(()=>validateQuestionBank([...bank.filter(x=>x.id!==mcq.id),unsafeUpgrade]),/Verified question requires human original-source review/);
+const approvedExample={...unsafeUpgrade,verification:{
+ method:'human_original_review',reviewer:'確認担当薬剤師',evidence_locator:'Recommendations section 1',
+ review_note:'Original guideline and Japanese practice applicability individually checked.'
+}};
+assert.equal(isMedicallyVerified(approvedExample),true,'Future manual approval can be represented with provenance');
+assert.ok(validateQuestionBank([...bank.filter(x=>x.id!==mcq.id),approvedExample]));
+console.log('Review bank 50 tests passed: 5 domains, original IDs, JST scheduler, evidence gating, provenance and backup.');
