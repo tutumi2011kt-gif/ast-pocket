@@ -1,4 +1,5 @@
 import {ReviewFeature} from './review-feature.mjs';
+import {MSSA_PATH,renderMssaNotebook,bindMssaReader,stopMssaReader} from './mssa-notebook.mjs';
 const reviewFeature=new ReviewFeature();
 const state={mode:'clinical',noteOrigin:'search',view:'home',query:'',filter:'all',notes:[],weekly:[],organisms:[],antibiotics:[],review:[],selectedNote:null,selectedWeeklyPath:null,organized:null,libraryCategory:'all',integrations:null,selectedTopicId:null};
 const $=s=>document.querySelector(s); const app=$('#app');
@@ -345,6 +346,20 @@ function noteView(){const n=state.selectedNote||state.notes[0];if(n?.fm.layout==
   ${sourceSection(n)}
   </main>${nav()}`}
 function integratedNoteView(n){
+  if(n.path===MSSA_PATH){
+    const integratedTopic=state.integrations?.topics?.find(t=>t.note_path===n.path);
+    const linkedTopics=(state.organized?.topics||[]).filter(t=>t.note===n.path);
+    const related=mdList(n.sections['関連ノート']);
+    const study=state.mode==='study';
+    const weeklyHtml=study&&integratedTopic?.links?.length?topicIntegrationDetails(integratedTopic):'';
+    const classifiedHtml=study&&linkedTopics.length?classifiedHistory(linkedTopics.flatMap(t=>t.refs),8)+
+      '<button type="button" class="primary-btn" id="openOrganizerFromNote">分野別一覧を見る ›</button>':'';
+    const relatedHtml=study?'<div class="related-links">'+related.map(t=>
+      '<button type="button" class="related-link" data-related="'+esc(t)+'">'+esc(t)+' ›</button>').join('')+'</div>':'';
+    return renderMssaNotebook(n,{
+      mode:state.mode,modeHtml:modeControl(),weeklyHtml,classifiedHtml,relatedHtml
+    })+nav();
+  }
   const clinical=state.mode==='clinical';
   const sections=['初期評価・感染源','再血培と持続菌血症','感染性心内膜炎・深部感染','抗菌薬の評価','治療期間とフォロー'];
   const related=mdList(n.sections['関連ノート']);
@@ -422,9 +437,12 @@ function bindPage(){
   $('#latestBtn')?.addEventListener('click',()=>alert('Ver.1では「最新情報を確認」の導線まで実装。次段階でWeb検索・差分確認を接続します。'));
   document.querySelectorAll('.q-row').forEach(q=>q.onclick=()=>q.classList.toggle('open'));
   if(state.view==='review'&&state.mode==='study')void reviewFeature.mount();
+  if(state.view==='note'&&state.selectedNote?.path===MSSA_PATH&&state.mode==='study'){
+    bindMssaReader(document.querySelector('.mssa-screen'),{rerender:()=>render(false)});
+  }
 }
 
-function render(scroll=true){let html='';if(state.view==='home')html=home();else if(state.view==='search')html=searchResults();else if(state.view==='note')html=noteView();else if(state.view==='library')html=libraryView();else if(state.view==='topic')html=dynamicTopicView();else if(state.view==='integration')html=integrationReviewView();else if(state.view==='weekly')html=weeklyView();else html=reviewView();app.innerHTML=html;
+function render(scroll=true){stopMssaReader();let html='';if(state.view==='home')html=home();else if(state.view==='search')html=searchResults();else if(state.view==='note')html=noteView();else if(state.view==='library')html=libraryView();else if(state.view==='topic')html=dynamicTopicView();else if(state.view==='integration')html=integrationReviewView();else if(state.view==='weekly')html=weeklyView();else html=reviewView();app.innerHTML=html;
  const main=app.querySelector('main.screen');
  if(main && navigationStack.length){
   const place=main.querySelector('.mode-toggle');
