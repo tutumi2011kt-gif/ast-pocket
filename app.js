@@ -450,6 +450,7 @@ function render(scroll=true){stopMssaReader();let html='';if(state.view==='home'
   else main.insertAdjacentHTML('afterbegin',backMarkup());
   if(state.view==='weekly')main.insertAdjacentHTML('beforeend',backMarkup());
  }
- bindPage();
- if(scroll)window.scrollTo({top:0,behavior:'instant'})}
+ if(scroll)window.scrollTo({top:0,behavior:'instant'});
+ // Reset scrolling before reader listeners attach, or opening the page could overwrite the prior bookmark.
+ bindPage()}
 load().catch(err=>{console.error(err);app.innerHTML='<div class="screen"><div class="card empty">AST Pocketの読み込みに失敗しました。ローカルではHTTPサーバー経由で開いてください。</div></div>'});
