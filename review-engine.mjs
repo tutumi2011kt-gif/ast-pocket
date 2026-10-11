@@ -22,6 +22,17 @@ function nextDayKey(key,days){
  const [year,month,day]=key.split('-').map(Number);
  return new Date(Date.UTC(year,month-1,day+days)).toISOString().slice(0,10);
 }
+export function isMedicallyVerified(q){
+ const v=q?.verification;
+ return q?.status==='verified'
+  && v?.method==='human_original_review'
+  && typeof v.reviewer==='string'&&v.reviewer.trim().length>=2
+  && typeof v.evidence_locator==='string'&&v.evidence_locator.trim().length>=4
+  && typeof v.review_note==='string'&&v.review_note.trim().length>=8
+  && q.reviewed_at&&Number.isFinite(Date.parse(q.reviewed_at))
+  && typeof q.evidence_url==='string'&&/^https:\/\//.test(q.evidence_url);
+}
+
 export function getQuestionProgress(question,events=[],today=jstDayKey()){
  const history=events.filter(e=>e.question_id===question.id&&e.question_version===question.version
   &&['again','hard','good','easy'].includes(e.rating))
@@ -35,7 +46,7 @@ export function getQuestionProgress(question,events=[],today=jstDayKey()){
   if(e.rating==='easy'){step=Math.min(INTERVALS.length-1,step+2);streak++;due=nextDayKey(day,INTERVALS[step]);}
   lastDay=day;lastRating=e.rating;
  }
- const formal=question.status==='verified'&&Boolean(question.reviewed_at)&&Boolean(question.evidence_url);
+ const formal=isMedicallyVerified(question);
  return {
   attempts:history.length,streak,step,next_due_jst:history.length?due:today,last_rating:lastRating,
   weak:lastRating==='again'||lastRating==='hard',
@@ -100,12 +111,16 @@ export function validateQuestionBank(questions){
   if(!q.prompt||!q.source_path||!q.source_section||!Array.isArray(q.tags))throw Error('Question is missing provenance: '+q.id);
   if(q.type==='mcq'&&(!Array.isArray(q.choices)||q.choices.length<2||!Number.isInteger(q.correct_index)||q.correct_index<0||q.correct_index>=q.choices.length))throw Error('Bad MCQ choices: '+q.id);
   if(q.type==='self'&&!q.model_answer)throw Error('Missing model answer: '+q.id);
-  if(q.status==='verified'&&(!q.reviewed_at||!/^https:\/\//.test(q.evidence_url||'')))throw Error('Verified question requires reviewed_at and external source: '+q.id);
+  if(!['blood','antibiotic','infection','ast','tdm'].includes(q.domain))throw Error('Unknown review domain: '+q.id);
+  if(!['unreviewed','candidate_linked','human_reviewed'].includes(q.evidence_state))throw Error('Missing evidence_state: '+q.id);
+  if(!Array.isArray(q.candidate_evidence_urls)||!q.candidate_evidence_urls.length||q.candidate_evidence_urls.some(u=>typeof u!=='string'||!/^https:\/\//.test(u)))throw Error('Missing candidate evidence URLs: '+q.id);
+  if(q.status==='verified'&&(!isMedicallyVerified(q)||q.evidence_state!=='human_reviewed'))throw Error('Verified question requires human original-source review: '+q.id);
+  if(q.status!=='verified'&&(q.reviewed_at||q.evidence_url||q.verification?.method==='human_original_review'))throw Error('Draft question cannot claim completed clinical verification: '+q.id);
  }
  return true;
 }
 export function assessAnswer(question,selectedIndex=null){
- if(question.type==='mcq')return {correct:selectedIndex===question.correct_index,reference_index:question.correct_index,graded_as:question.status==='verified'?'verified':'practice_only'};
+ if(question.type==='mcq')return {correct:selectedIndex===question.correct_index,reference_index:question.correct_index,graded_as:isMedicallyVerified(question)?'verified':'practice_only'};
  return {correct:null,reference_index:null,graded_as:'self_assessment'};
 }
 export function eventFromAnswer({question,rating,selectedIndex=null,deviceId,now=new Date()}){
