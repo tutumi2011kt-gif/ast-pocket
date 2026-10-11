@@ -25,6 +25,7 @@ function nextDayKey(key,days){
 export function isMedicallyVerified(q){
  const v=q?.verification;
  return q?.status==='verified'
+  && q?.evidence_state==='human_reviewed'
   && v?.method==='human_original_review'
   && typeof v.reviewer==='string'&&v.reviewer.trim().length>=2
   && typeof v.evidence_locator==='string'&&v.evidence_locator.trim().length>=4
