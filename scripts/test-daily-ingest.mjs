@@ -70,6 +70,17 @@ assert.equal(merged.addedQA,0);
 assert.ok(merged.weekly.includes('Candida血症では'));
 assert.ok(merged.weekly.includes('MSSA菌血症の再血培'));
 assert.equal(merged.index.weekly.length,2);
+const moreSources=appendDailyRecord(make({learning:[{...make().learning[0],
+ source_urls:['https://www.idsociety.org/practice-guideline/staphylococcus-aureus-bacteremia/','https://www.idsociety.org/practice-guideline/vancomycin/']}]}),
+ {index:first.index,weeklyByPath:{[first.weeklyPath]:first.weekly}});
+assert.equal(moreSources.changed,true,'New source candidate for an existing point should be appended');
+assert.equal(moreSources.added,0);
+assert.ok(moreSources.weekly.includes('https://www.idsociety.org/practice-guideline/vancomycin/'));
+const withSafety=first.weekly.replace('# 安全上の注意\n','# 安全上の注意\n- 旧ファイルにあった安全上の注意は保持する\n');
+const safetyMerged=appendDailyRecord(make({learning:[one]}),
+ {index:first.index,weeklyByPath:{[first.weeklyPath]:withSafety}});
+assert.ok(safetyMerged.weekly.includes('旧ファイルにあった安全上の注意は保持する'));
+
 const conflicting=make({learning:[{...make().learning[0],answer:'異なる回答を上書きする'}]});
 assert.throws(()=>appendDailyRecord(conflicting,{index:first.index,weeklyByPath:{[first.weeklyPath]:first.weekly}}),/different answer/);
 const dir=fs.mkdtempSync(path.join(os.tmpdir(),'ast-daily-ingest-'));
