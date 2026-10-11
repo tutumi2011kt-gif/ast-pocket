@@ -36,5 +36,9 @@ jobs:
         run: node scripts/test-review-v2.mjs
       - name: Test daily quiz rendering and clinical-mode isolation
         run: node scripts/test-review-ui.mjs
+      - name: Validate detailed MSSA notebook module syntax
+        run: node --check mssa-notebook.mjs
+      - name: Test 8-chapter MSSA notebook, reading resume and draft safety
+        run: node scripts/test-mssa-notebook.mjs
       - name: Check required files
         run: test -f index.html && test -f app.js && test -f styles.css
