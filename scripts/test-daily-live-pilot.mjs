@@ -6,7 +6,7 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
-import {assertPublicWeekly} from './daily-ingest-core.mjs';
+import {assertPublicWeekly,appendDailyRecord} from './daily-ingest-core.mjs';
 const date='2026-10-15';
 const path='content/weekly/'+date+'.md';
 const original=fs.readFileSync(path,'utf8');
@@ -18,6 +18,26 @@ assert.ok(original.includes('# 今週の復習\n\n# 正式ノート候補'),'Do 
 const index=JSON.parse(fs.readFileSync('content/index.json','utf8'));
 assert.equal(index.weekly[0],path);
 assert.equal(index.weekly.filter(x=>x===path).length,1);
+
+const realLearning={
+ schema_version:1,date:'2026-10-15',coverage:'accessible_context_only',
+ public_release_reviewed:true,
+ window_start_jst:'2026-10-14T03:00:00+09:00',window_end_jst:'2026-10-15T03:00:00+09:00',
+ learning:[
+  {topic:'市中肺炎・CTRX',point:'市中肺炎では肺炎球菌やインフルエンザ菌などの原因菌を想定し、非定型菌とCTRXの位置づけを整理した'},
+  {topic:'院内肺炎・緑膿菌',point:'院内肺炎では緑膿菌などの耐性菌リスクと、CFPMなどの抗菌薬選択を考えた'},
+  {topic:'喀痰MRSAと定着',point:'喀痰MRSA陽性だけで肺炎の原因菌と決めず、定着の可能性や臨床所見と合わせて評価することを学んだ'},
+  {topic:'de-escalation',point:'de-escalationでは培養結果と臨床経過に応じて、抗菌薬の狭域化が可能か再評価することを学んだ'}
+ ]};
+const noOctober15={...index,weekly:index.weekly.filter(p=>p!==path)};
+const fromIntake=appendDailyRecord(realLearning,{index:noOctober15,weeklyByPath:{}});
+assert.equal(fromIntake.changed,true,'Real learning must convert to a Weekly using the shipped importer');
+assert.equal(fromIntake.added,4);
+assert.deepEqual(fromIntake.index,index,'Importer should produce the same chronological Weekly index');
+for(const learning of realLearning.learning)assert.ok(fromIntake.weekly.includes(learning.point),'Importer output missing real study point');
+const repeat=appendDailyRecord(realLearning,{index,weeklyByPath:{[path]:original}});
+assert.equal(repeat.changed,false,'Running the new importer over the reviewed Weekly must be idempotent');
+
 execFileSync(process.execPath,['scripts/organize-weekly.mjs','--write'],{stdio:'pipe'});
 execFileSync(process.execPath,['scripts/propose-integrations.mjs','--write'],{stdio:'pipe'});
 const organized=JSON.parse(fs.readFileSync('content/organized.json','utf8'));
