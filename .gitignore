@@ -1,0 +1,11 @@
+# Private local ChatGPT study intake: NEVER commit or publish
+local-intake/
+private-intake/
+*.daily-intake.private.json
+*.raw-chat.json
+*.raw-chat.md
+.env
+.env.*
+# Generated only during GitHub Pages build; source is existing public Weekly
+content/organized.json
+content/integration-proposals.json
