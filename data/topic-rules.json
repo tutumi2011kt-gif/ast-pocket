@@ -59,6 +59,18 @@
       ]
     },
     {
+      "id": "infection-pneumonia",
+      "title": "肺炎（市中・院内）",
+      "category": "infection",
+      "aliases": [
+        "市中肺炎",
+        "院内肺炎",
+        "肺炎",
+        "CAP",
+        "HAP"
+      ]
+    },
+    {
       "id": "infection-uti",
       "title": "尿路感染症",
       "category": "infection",
