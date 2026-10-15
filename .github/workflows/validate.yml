@@ -51,5 +51,7 @@ jobs:
         run: node scripts/test-mssa-notebook.mjs
       - name: Validate six reusable notebook templates and chapter routing
         run: node --check notebook-templates.mjs && node scripts/test-notebook-templates.mjs
+      - name: Verify real dated CAP and HAP daily learning into infection notebook
+        run: node scripts/test-daily-live-pilot.mjs
       - name: Check required files
         run: test -f index.html && test -f app.js && test -f styles.css
