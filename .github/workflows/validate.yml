@@ -53,5 +53,7 @@ jobs:
         run: node --check notebook-templates.mjs && node scripts/test-notebook-templates.mjs
       - name: Verify real dated CAP and HAP daily learning into infection notebook
         run: node scripts/test-daily-live-pilot.mjs
+      - name: Check nightly ingest watchdog module and JST status classification
+        run: node --check scripts/audit-nightly-ingest.mjs && node scripts/test-nightly-ingest-audit.mjs
       - name: Check required files
         run: test -f index.html && test -f app.js && test -f styles.css
