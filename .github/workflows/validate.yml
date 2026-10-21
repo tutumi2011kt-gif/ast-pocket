@@ -55,5 +55,11 @@ jobs:
         run: node scripts/test-daily-live-pilot.mjs
       - name: Check nightly ingest watchdog module and JST status classification
         run: node --check scripts/audit-nightly-ingest.mjs && node scripts/test-nightly-ingest-audit.mjs
+      - name: Validate private ChatGPT export intake and AI textbook draft gate
+        run: |
+          node --check scripts/read-private-chat-export.mjs
+          node --check scripts/study-pipeline-core.mjs
+          node --check scripts/ai-study-draft.mjs
+          node scripts/test-ai-study-pipeline.mjs
       - name: Check required files
         run: test -f index.html && test -f app.js && test -f styles.css
