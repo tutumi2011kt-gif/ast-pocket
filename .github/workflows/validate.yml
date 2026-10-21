@@ -67,5 +67,6 @@ jobs:
           node --check scripts/note-revision-core.mjs
           node --check scripts/review-note-revision.mjs
           node scripts/test-note-revision.mjs
+          node scripts/test-two-detailed-textbooks.mjs
       - name: Check required files
         run: test -f index.html && test -f app.js && test -f styles.css
