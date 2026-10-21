@@ -71,5 +71,7 @@ jobs:
           node --check scripts/check-evidence-ledger.mjs
           node scripts/test-evidence-ledger.mjs
           node scripts/check-evidence-ledger.mjs
+          node --check scripts/watch-official-sab-guideline.mjs
+          node scripts/test-guideline-version-watch.mjs
       - name: Check required files
         run: test -f index.html && test -f app.js && test -f styles.css
