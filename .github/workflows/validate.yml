@@ -59,7 +59,7 @@ jobs:
         run: |
           node --check scripts/read-private-chat-export.mjs
           node --check scripts/study-pipeline-core.mjs
-          node --check scripts/ai-study-draft.mjs
+          node --check scripts/render-chatgpt-draft.mjs
           node --check scripts/check-guideline-excerpts.mjs
           node --check scripts/weekly-to-study-packet.mjs
           node scripts/test-ai-study-pipeline.mjs
