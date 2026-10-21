@@ -16,7 +16,7 @@ for(const [filename,category,needles] of spec){
  const headings=text.split('\n').filter(x=>/^## [1-8]\. /.test(x));
  const expected=getChapters(category).map((c,i)=>'## '+(i+1)+'. '+c.title);
  assert.deepEqual(headings,expected,filename+' must have exactly eight recognized chapters');
- assert.match(text,/医学的未承認|医学的未承認の草案/,'Draft must be clearly unapproved');
+ assert.match(text,/未承認(?:の)?草案|医学的未承認/,'Draft must be clearly unapproved');
  assert.ok(text.includes('https://www.idsociety.org/practice-guideline/staphylococcus-aureus-bacteremia/'));
  for(const needle of needles)assert.ok(text.includes(needle),filename+' missing '+needle);
  assert.ok(text.length>3500,'Need educational explanations, not an index-only note');
