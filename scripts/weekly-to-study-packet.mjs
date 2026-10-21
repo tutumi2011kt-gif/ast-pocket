@@ -33,9 +33,10 @@ export function buildPacketFromWeekly({topicId,date,index,proposals,readWeekly})
   const lines=pointsFromWeekly(readWeekly(wanted));
   const point=lines[ref.index];
   if(!point||point.length>280)throw Error('Bad Weekly source point');
-  if(unique.has(point))continue;unique.add(point);
-  learning.push({id:'p'+(learning.length+1),point,
-   chapter_id:ids.has(link.target_chapter)?link.target_chapter:'unclassified'});
+  if(unique.has(point))continue;
+  if(!ids.has(link.target_chapter))continue; // Remains in original Weekly; manual chapter assignment required.
+  unique.add(point);
+  learning.push({id:'p'+(learning.length+1),point,chapter_id:link.target_chapter});
  }
  if(!learning.length)throw Error('No new point for topic on this date; never invent input');
  return {schema_version:1,date,origin:'task_accessible_partial',
