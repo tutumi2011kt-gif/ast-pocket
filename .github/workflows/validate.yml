@@ -77,5 +77,7 @@ jobs:
           node scripts/test-evidence-gap-triage.mjs
           node --check scripts/build-weekly-review-pack.mjs
           node scripts/test-weekly-review-pack.mjs
+      - name: Verify 2026-10-14 to 21 real learning and fungal topic routing
+        run: node --check scripts/test-weekly-seven-day-recovery.mjs && node scripts/test-weekly-seven-day-recovery.mjs
       - name: Check required files
         run: test -f index.html && test -f app.js && test -f styles.css
