@@ -1,0 +1,41 @@
+import assert from 'node:assert/strict';
+import {isRealDate,currentExpectedDate,jstParts,inspectNightly,getOpenWeeklyPrs,weeklyForDate} from './audit-nightly-ingest.mjs';
+
+const date='2026-10-18',target=weeklyForDate(date);
+const now=new Date('2026-10-18T20:30:00Z'); // 2026-10-19 05:30 JST
+assert.equal(isRealDate('2026-10-18'),true);
+assert.equal(isRealDate('2026-02-30'),false);
+assert.equal(isRealDate('../../foo'),false);
+assert.deepEqual(jstParts(new Date('2026-10-18T18:00:00Z')),{date:'2026-10-19',hour:3});
+assert.equal(currentExpectedDate(new Date('2026-10-18T20:30:00Z')),'2026-10-19');
+assert.equal(currentExpectedDate(new Date('2026-10-18T17:00:00Z')),'2026-10-18');
+assert.equal(currentExpectedDate(new Date('2026-01-01T17:00:00Z')),'2026-01-01');
+const index={weekly:['content/weekly/2026-10-15.md'],notes:[]};
+const local={date,index,files:['content/weekly/2026-10-15.md'],prs:[],now};
+assert.equal(inspectNightly(local).status,'unconfirmed');
+assert.match(inspectNightly(local).reason,/cannot distinguish no study/);
+assert.equal(inspectNightly({...local,date:'2026-10-15'}).status,'published');
+assert.equal(inspectNightly({...local,date:'2026-10-15',files:[]}).status,'unconfirmed');
+assert.equal(inspectNightly({...local,date,files:[target]}).status,'unconfirmed');
+assert.equal(inspectNightly({...local,date,prs:[{state:'open',number:12,files:[target]}]}).status,'pending_review');
+assert.deepEqual(inspectNightly({...local,date,prs:[{state:'open',number:12,files:[target]}]}).pr_numbers,[12]);
+assert.equal(inspectNightly({...local,date,prs:[{state:'closed',number:12,files:[target]}]}).status,'unconfirmed');
+assert.equal(inspectNightly({...local,date,prs:[{state:'open',number:9,files:['content/notes/example.md']}]}).status,'unconfirmed');
+assert.equal(inspectNightly({...local,date,index:{...index,weekly:[target]},files:[target]}).status,'published');
+assert.equal(inspectNightly({...local,date:'2026-10-19',now:new Date('2026-10-18T18:30:00Z')}).status,'not_due');
+assert.throws(()=>inspectNightly({...local,date:'2026-02-30'}),/Invalid date/);
+assert.throws(()=>inspectNightly({...local,index:null}),/Invalid Weekly index/);
+const requested=[];
+const mockFetch=async(url)=>{
+ requested.push(url);
+ if(url.includes('/pulls?'))return {ok:true,json:async()=>[{number:4,state:'open'},{number:9,state:'open'}]};
+ if(url.includes('/pulls/4/files?'))return {ok:true,json:async()=>[{filename:target},{filename:'app.js'}]};
+ if(url.includes('/pulls/9/files?'))return {ok:true,json:async()=>[{filename:'content/weekly/2026-10-09.md'}]};
+ throw Error('Unexpected URL '+url);
+};
+const out=await getOpenWeeklyPrs({repo:'tutumi2011kt-gif/ast-pocket',token:'fake',fetchImpl:mockFetch});
+assert.equal(out.length,2);
+assert.deepEqual(out[0].files,[target]);
+assert.equal(requested.length,3);
+assert.equal(inspectNightly({...local,prs:out}).status,'pending_review');
+console.log('Nightly ingest watchdog tests passed: UTC/JST boundary, published/pending/unconfirmed, GitHub PR inspection.');

@@ -1,0 +1,21 @@
+name: AST Pocket Nightly Ingest Audit
+on:
+  schedule:
+    # 05:25 JST = 20:25 UTC previous day. GitHub scheduled runs may be delayed.
+    - cron: '25 20 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+  pull-requests: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Audit previous 03:00 JST ingest and review PRs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/audit-nightly-ingest.mjs
