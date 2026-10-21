@@ -73,5 +73,9 @@ jobs:
           node scripts/check-evidence-ledger.mjs
           node --check scripts/watch-official-sab-guideline.mjs
           node scripts/test-guideline-version-watch.mjs
+          node --check scripts/triage-evidence-gaps.mjs
+          node scripts/test-evidence-gap-triage.mjs
+          node --check scripts/build-weekly-review-pack.mjs
+          node scripts/test-weekly-review-pack.mjs
       - name: Check required files
         run: test -f index.html && test -f app.js && test -f styles.css
