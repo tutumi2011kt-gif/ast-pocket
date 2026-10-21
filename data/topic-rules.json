@@ -55,7 +55,11 @@
         "Candida血症",
         "カンジダ血症",
         "candidemia",
-        "侵襲性カンジダ血症"
+        "侵襲性カンジダ血症",
+        "Candida",
+        "カンジダ",
+        "MCFG",
+        "エキノキャンディン"
       ]
     },
     {
@@ -229,6 +233,66 @@
         "感受性検査",
         "ブレイクポイント",
         "MIC"
+      ]
+    },
+    {
+      "id": "infection-invasive-aspergillosis",
+      "title": "侵襲性アスペルギルス症",
+      "category": "infection",
+      "aliases": [
+        "Aspergillus",
+        "アスペルギルス",
+        "侵襲性肺アスペルギルス症",
+        "VRCZ",
+        "halo sign"
+      ]
+    },
+    {
+      "id": "infection-cryptococcosis",
+      "title": "クリプトコックス症",
+      "category": "infection",
+      "aliases": [
+        "Cryptococcus",
+        "クリプトコックス",
+        "クリプトコッカス",
+        "Cryptococcal meningitis",
+        "フルシトシン",
+        "5-FC"
+      ]
+    },
+    {
+      "id": "infection-mucormycosis",
+      "title": "ムーコル症",
+      "category": "infection",
+      "aliases": [
+        "Mucorales",
+        "ムーコル",
+        "ムコール",
+        "mucormycosis"
+      ]
+    },
+    {
+      "id": "infection-pneumocystis",
+      "title": "ニューモシスチス肺炎",
+      "category": "infection",
+      "aliases": [
+        "Pneumocystis",
+        "ニューモシスチス",
+        "ニューモシスチス肺炎",
+        "PJP",
+        "PCP"
+      ]
+    },
+    {
+      "id": "cross-antifungal-spectrum",
+      "title": "抗真菌薬スペクトル・略語",
+      "category": "cross",
+      "aliases": [
+        "抗真菌薬スペクトル",
+        "抗真菌薬",
+        "抗真菌スペクトル",
+        "L-AMB",
+        "AmBisome"
       ]
     }
   ]
