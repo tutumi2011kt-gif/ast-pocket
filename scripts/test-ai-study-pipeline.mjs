@@ -4,7 +4,7 @@ import path from 'node:path';
 import {
  validateStudyPacket,validateModelDraft,makeDraftMarkdown,publicAIInput
 } from './study-pipeline-core.mjs';
-import {parseResponse,generateDraft} from './ai-study-draft.mjs';
+import {compileReviewedChatGPTDraft} from './render-chatgpt-draft.mjs';
 import {listExport,extractChosenUserQuestions} from './read-private-chat-export.mjs';
 import {checkExcerpt,checkAllSources} from './check-guideline-excerpts.mjs';
 const study={
@@ -58,23 +58,18 @@ assert.throws(()=>validateModelDraft(unchecked,draft),/manually matched/);
 const disputed={...draft,chapters:[{chapter_id:'interpretation',points:[{...draft.chapters[0].points[0],source_alignment:'contradiction'}]}]};
 text=makeDraftMarkdown(study,disputed);
 assert.ok(text.includes('矛盾の可能性：追加保留'));
-assert.throws(()=>parseResponse({output:[]}),/Empty model response/);
-assert.deepEqual(parseResponse({output:[{type:'message',content:[{type:'output_text',text:JSON.stringify(draft)}]}]}),draft);
-const fakeFetch=async(url,req)=>{
- assert.equal(url,'https://api.openai.com/v1/responses');
- assert.equal(req.method,'POST');
- assert.ok(req.headers.Authorization.endsWith('fake-key'));
- const body=JSON.parse(req.body);
- assert.equal(body.store,false);
- assert.equal(body.text.format.type,'json_schema');
- assert.equal(body.text.format.strict,true);
- assert.ok(!req.body.includes('PATIENT_PRIVATE'));
- return {ok:true,json:async()=>({output:[{type:'message',content:[{type:'output_text',text:JSON.stringify(draft)}]}]})};
-};
-const generated=await generateDraft(study,{apiKey:'fake-key',fetchImpl:fakeFetch});
-assert.ok(generated.markdown.includes('GPC clusters'));
-await assert.rejects(()=>generateDraft(study,{}),/OPENAI_API_KEY/);
-await assert.rejects(()=>generateDraft(study,{apiKey:'fake-key',fetchImpl:async()=>({ok:false,status:403})}),/HTTP 403/);
+const compiled=compileReviewedChatGPTDraft(study,draft);
+assert.ok(compiled.markdown.includes('GPC clusters'));
+assert.equal(compiled.medically_approved,false);
+assert.equal(compiled.clinical_knowledge_updated,false);
+assert.equal(compiled.publishing_approved,false);
+assert.equal(compiled.requires_human_review,true);
+assert.throws(()=>compileReviewedChatGPTDraft({...study,public_safe_reviewed:false},draft),/public-safety/);
+assert.throws(()=>compileReviewedChatGPTDraft(study,{...draft,topic_id:'fake'}),/topic/);
+const renderer=fs.readFileSync('scripts/render-chatgpt-draft.mjs','utf8');
+assert.ok(renderer.includes("flag:'wx'"),'Never overwrite prior draft');
+assert.ok(!renderer.includes('OPENAI_API_KEY'),'OpenAI API usage must be entirely absent');
+assert.ok(!renderer.includes('api.openai.com'),'No model HTTP endpoint');
 const exportData=[{
  id:'c1',title:'感染症学習',create_time:1792530000,update_time:1792620000,
  mapping:{
@@ -101,7 +96,7 @@ assert.ok(!JSON.stringify(privateQuestions).includes('治療を勝手に決め�
 assert.ok(!JSON.stringify(privateQuestions).includes('secret_image'));
 assert.throws(()=>extractChosenUserQuestions(exportData,{conversationIds:[],from:'2026-10-19',to:'2026-10-22'}),/selection/);
 assert.throws(()=>extractChosenUserQuestions(exportData,{conversationIds:['missing'],from:'2026-10-19',to:'2026-10-22'}),/Unknown/);
-assert.ok(fs.readFileSync('scripts/ai-study-draft.mjs','utf8').includes("flag:'wx'"),'Do not overwrite existing draft');
+assert.ok(fs.readFileSync('scripts/render-chatgpt-draft.mjs','utf8').includes("flag:'wx'"),'Do not overwrite existing draft');
 assert.ok(fs.readFileSync('.gitignore','utf8').includes('local-intake/'),'Ensure local sensitive inputs remain untracked');
 
 const fakeOfficial=async()=>({
@@ -123,4 +118,4 @@ assert.equal(medical.medical_approval,false);
 assert.equal(medical.source_checks.length,1);
 assert.equal(medical.source_checks[0].status,'excerpt_present_not_medically_verified');
 console.log('Guideline excerpt tests passed: official URL, exact excerpt, missing, redirect, PDF, and no auto-approval.');
-console.log('AI learning pipeline tests passed: reviewed inputs, 8 chapters, evidence citations, no self-verification, mock AI call, private export selection.');
+console.log('AI learning pipeline tests passed: reviewed inputs, 8 chapters, evidence citations, no self-verification, no-API local compilation, private export selection.');
