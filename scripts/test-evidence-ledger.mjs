@@ -1,0 +1,53 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {checkLedger,auditLedger,formatAudit} from './check-evidence-ledger.mjs';
+const ledger=JSON.parse(fs.readFileSync('docs/evidence/sab-2026-10-21.json','utf8'));
+const readDocument=p=>fs.readFileSync(p,'utf8');
+const checked=checkLedger(ledger,readDocument);
+assert.equal(checked.sourceMap.size,4);
+assert.equal(checked.claimCount,17);
+const audit=auditLedger(ledger,{readDocument});
+assert.equal(audit.medically_verified,false);
+assert.equal(audit.auto_publish_allowed,false);
+assert.equal(audit.stats.claims,17);
+assert.equal(audit.stats.tracked_chapters,16);
+assert.equal(audit.stats.total_chapters,16);
+assert.equal(audit.coverage.length,2);
+assert.equal(audit.coverage.every(x=>x.untracked_chapters.length===0),true);
+assert.equal(audit.claims.every(x=>x.status!=='verified'),true);
+assert.ok(audit.claims.find(x=>x.id==='mssa_cez').status.includes('review_pending'));
+assert.equal(audit.alerts.length,0);
+assert.ok(formatAudit(audit).includes('医学的未承認'));
+assert.ok(!formatAudit(audit).includes('正式ノートを更新しました'));
+const updates={idsa_sab2026:'2026-10-20'};
+const changed=auditLedger(ledger,{readDocument,observedUpdates:updates});
+assert.equal(changed.alerts.length,1);
+assert.equal(changed.alerts[0].type,'source_edition_changed');
+assert.equal(changed.alerts[0].source_id,'idsa_sab2026');
+assert.equal(changed.stats.claims,17,'Version change must not silently rewrite or delete claim data');
+assert.equal(changed.claims.find(x=>x.id==='mssa_tte').status,'edition_recheck_required');
+assert.equal(changed.claims.find(x=>x.id==='mssa_cez').status,'citation_located_medical_review_pending');
+const older=auditLedger(ledger,{readDocument,observedUpdates:{idsa_sab2026:'2025-01-01'}});
+assert.equal(older.alerts[0].type,'older_observation');
+assert.equal(older.claims.find(x=>x.id==='mssa_tte').status,'citation_located_medical_review_pending');
+const invalidUpdate=auditLedger(ledger,{readDocument,observedUpdates:{idsa_sab2026:'2026-02-30'}});
+assert.equal(invalidUpdate.alerts[0].type,'invalid_updated_date');
+assert.throws(()=>checkLedger({...ledger,editor_status:'verified'},readDocument),/schema\/status/);
+assert.throws(()=>checkLedger({...ledger,claims:[...ledger.claims,ledger.claims[0]]},readDocument),/duplicate/);
+const missing={...ledger,claims:ledger.claims.map(x=>x.id==='mssa_tte'?{...x,anchor:'そんな文言は存在しない検査事項'}:x)};
+assert.throws(()=>checkLedger(missing,readDocument),/anchor missing/);
+const forged={...ledger,claims:ledger.claims.map(x=>x.id==='mssa_cez'?
+ {...x,citations:[{source_id:'made_up_guideline',locator:'fake',status:'section_located_review_pending'}]}:x)};
+assert.throws(()=>checkLedger(forged,readDocument),/invented evidence/);
+const falseApproval={...ledger,claims:ledger.claims.map(x=>x.id==='mssa_cez'?
+ {...x,medical_review:'verified'}:x)};
+assert.throws(()=>checkLedger(falseApproval,readDocument),/medical approval forbidden/);
+const wrongContext={...ledger,claims:ledger.claims.map(x=>x.id==='gpc_two_sets'?
+ {...x,chapter_id:'followup'}:x)};
+assert.throws(()=>checkLedger(wrongContext,readDocument),/within chapter/);
+const restricted={...ledger,sources:ledger.sources.map(x=>x.id==='idsa_sab2026'?
+ {...x,url:'https://chatgpt.com/c/private-chat'}:x)};
+assert.throws(()=>checkLedger(restricted,readDocument),/public HTTPS/);
+assert.ok(fs.readFileSync('content/notes/mssa-bacteremia.md','utf8').includes('status: draft'));
+assert.equal(JSON.parse(fs.readFileSync('content/index.json','utf8')).notes.length,2);
+console.log('Evidence ledger passed: 17 anchored claims across 16 chapters, 4 references, version alert, source scope and no medical approval.');
