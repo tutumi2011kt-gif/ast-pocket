@@ -61,6 +61,8 @@ jobs:
           node --check scripts/study-pipeline-core.mjs
           node --check scripts/ai-study-draft.mjs
           node --check scripts/check-guideline-excerpts.mjs
+          node --check scripts/weekly-to-study-packet.mjs
           node scripts/test-ai-study-pipeline.mjs
+          node scripts/test-weekly-to-packet.mjs
       - name: Check required files
         run: test -f index.html && test -f app.js && test -f styles.css
