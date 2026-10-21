@@ -41,15 +41,20 @@ node scripts/weekly-to-study-packet.mjs --topic infection-pneumonia --date 2026-
 
 `scripts/study-pipeline-core.mjs` は安全な入力とモデル出力の形式を検証し、6分類・各8章の見出しを使った**教科書草案Markdown**を組み立てます。学習項目のID・章ID・出典IDは既存のものだけが許可され、余分なIDを生成したAI出力はエラーになります。全ての草案に「医学的未承認／人手確認待ち」を明記し、正式ノートを上書きしません。根拠不足・矛盾・照合候補の状態も表示します。
 
-`scripts/ai-study-draft.mjs` は別途利用権限を持つAPIキーを設定した場合に、**OpenAI Responses API**で章別草案を作成します。標準モデル名は `gpt-5-mini` ですが、利用可能なモデルと料金はアカウント側で確認する必要があります。ChatGPTの利用プランとAPIの料金は別です。
+**APIなし方式に変更しました。** 感染症学習ノートの解説文と原典の比較は、このChatGPTの会話内または既存の03:00 JST定期タスクで行います。**GitHub ActionsやAST PocketはOpenAI APIを呼び出しません**。追加のAPIキーや別途API料金は不要です。
+
+実際の流れ：
+1. ChatGPTに、公開安全性を事前確認した `study-packet.json` の内容を元に、`scripts/study-pipeline-core.mjs` の出力形式（`schema_version`, `topic_id`, `chapters`）に従った**確認用の8章解説草案JSON**を作成するよう依頼する。根拠が不足する項目は `insufficient_evidence`、矛盾があれば `contradiction`、抜粋との対応が人手で確認されていない場合は `supported_excerpt` としない。
+2. 会話から得たJSONをローカルの `local-intake/chatgpt-draft.json` に保存する（生会話全文・患者情報を一緒に保存しない）。
+3. 下記コマンドで本文Markdownを生成・検証する。**このコマンドはAI APIに通信しません**。
 
 ```bash
-# CLI実行環境のみ。キーそのものをGitHub・チャットに貼らない。
-export OPENAI_API_KEY=＜各自のAPIキー＞
-node scripts/ai-study-draft.mjs --input local-intake/study-packet.json --out local-intake/ai-draft.md
+node scripts/render-chatgpt-draft.mjs --input local-intake/study-packet.json --draft local-intake/chatgpt-draft.json --out local-intake/ai-draft.md
 ```
 
-生成結果は `local-intake/` に書くだけです（.gitignore登録済み）。`content/notes/` や臨床Knowledgeを自動更新しません。過去の原稿に対する差分の評価と取り込みは、まだ将来の実装対象です。
+この出力は個人環境の `local-intake/` 内の**人によるレビュー待ち**です。元ノートを上書きしたり公開GitHubへ自動送信したりしません。このチャットで内容・出典・安全性を確認し、GitHub連携を使ってドラフトPRを作る方法を優先します。
+
+**重要：** ChatGPTタスクが実行時にどの会話を検索できるか、GitHubへ実際に書き込めるかは環境に依存します。全会話の漏れない日次自動取得と、AI生成した本文を完全自動で公開することは未完成です。APIなしでも会話内の生成は可能ですが、ChatGPTを介さずGitHub Actionsだけで新しい解説文を自律生成することはできません。
 
 ### study-packetの入力契約
 
@@ -82,6 +87,6 @@ node scripts/check-guideline-excerpts.mjs --input local-intake/study-packet.json
 ## データ安全とCI
 
 - 生のChatGPTエクスポート、患者情報、秘密ファイル、原典の長文抜粋、生成草案は**公開GitHubにアップロードしない**。
-- このPRのテストは架空の一般化したデータと擬似API応答のみ。実際のAPIキー、患者情報、ユーザー会話は一切含まない。
+- このPRのテストは架空の一般化したデータだけ。OpenAI APIクライアントと擬似API応答のテストも削除し、実際のAPIキー、患者情報、ユーザー会話は一切含まない。
 - 既存のMSSA読書履歴・50問復習履歴・Weekly・臨床モードを変更しない。
 - コードと安全検査のテスト成功は、医学的な品質保証とは別。
