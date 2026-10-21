@@ -65,6 +65,29 @@ node scripts/render-chatgpt-draft.mjs --input local-intake/study-packet.json --d
 - 裏付け不足や矛盾がある場合は `insufficient_evidence` または `contradiction` と明記。モデルによる分類は人の確認に代わりません。
 - AIが生成した新規事実や出典IDの捏造は安全検査で拒否しますが、文章の医学的な誤りが完全に防げるわけではありません。
 
+## 2.5. ChatGPT草案と既存ノートの差分を判定（API不要）
+
+`scripts/note-revision-core.mjs` と `scripts/review-note-revision.mjs` を追加しました。**これは初期段階の「改訂候補の比較・審査」機能であり、臨床的な意味の等価性・矛盾を機械で判定するものではありません。**
+
+- `exact_duplicate`：タイトル・説明・ASTでの確認事項・元の学習ポイントが、既存ノート内の行にいずれも文字列レベルで一致した場合のみ。
+- `possible_overlap`：同じテーマの表現が既存ノートと文字列上で似ている場合。意味が同じとは断定しない。
+- `new_review_candidate`：既存ノートには同様の表現が見つからない場合。医学的に正しいという意味ではない。
+- `blocked_possible_contradiction`：ChatGPTが原典に矛盾の可能性があるとラベル付けした項目。**自動更新の対象から外して保留**する。ただし、この検出は網羅的ではない。
+
+対象は公開済みの `status: draft` ノートだけです。別ステータスのノートは比較自体を停止します。元の既存ノートのSHA-256をレポートに保持し、後から内容が変更された状態で承認することを防ぎます。
+
+```bash
+node scripts/review-note-revision.mjs \
+  --input local-intake/study-packet.json \
+  --draft local-intake/chatgpt-draft.json \
+  --existing content/notes/mssa-bacteremia.md \
+  --out local-intake/mssa-revision-report.md
+```
+
+新しいノートの場合は `--existing` を省略できます。確認用レポートは **.gitignore 対象の local-intake にのみ保存**され、AST Pocketの表示データ・正式ノート・臨床用Knowledge・GitHubへ書き込みません。
+
+この段階を経て、根拠を人が確認した内容だけを改訂用ブランチ・ドラフトPRとして提出する工程を今後実装します。AIによる自動チェックやテスト成功を、医学的承認として扱わないことが重要です。
+
 ## 3. 原典との照合を支援する処理
 
 `scripts/check-guideline-excerpts.mjs` は出典URLの**公式ドメイン**を限定して、HTMLページ上に入力された短い原典抜粋があるかを検査します。
