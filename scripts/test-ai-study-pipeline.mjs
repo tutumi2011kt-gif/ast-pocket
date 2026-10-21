@@ -6,6 +6,7 @@ import {
 } from './study-pipeline-core.mjs';
 import {parseResponse,generateDraft} from './ai-study-draft.mjs';
 import {listExport,extractChosenUserQuestions} from './read-private-chat-export.mjs';
+import {checkExcerpt,checkAllSources} from './check-guideline-excerpts.mjs';
 const study={
  schema_version:1,date:'2026-10-21',origin:'user_reviewed_export',
  public_safe_reviewed:true,topic_id:'culture-gpc-clusters',title:'GPC clusters',
@@ -102,4 +103,24 @@ assert.throws(()=>extractChosenUserQuestions(exportData,{conversationIds:[],from
 assert.throws(()=>extractChosenUserQuestions(exportData,{conversationIds:['missing'],from:'2026-10-19',to:'2026-10-22'}),/Unknown/);
 assert.ok(fs.readFileSync('scripts/ai-study-draft.mjs','utf8').includes("flag:'wx'"),'Do not overwrite existing draft');
 assert.ok(fs.readFileSync('.gitignore','utf8').includes('local-intake/'),'Ensure local sensitive inputs remain untracked');
+
+const fakeOfficial=async()=>({
+ ok:true,status:200,headers:{get:key=>key==='content-type'?'text/html':'100'},
+ text:async()=>'<html><body>This is a fictional test excerpt about microbiology, not a medical recommendation.</body></html>'
+});
+const matched=await checkExcerpt(study.sources[0],{fetchImpl:fakeOfficial});
+assert.equal(matched.status,'excerpt_present_not_medically_verified');
+const absent=await checkExcerpt({...study.sources[0],excerpt:'No match expected'}, {fetchImpl:fakeOfficial});
+assert.equal(absent.status,'excerpt_not_found');
+const outside=await checkExcerpt({...study.sources[0],url:'https://unapproved.example.org/official'}, {fetchImpl:async()=>{throw Error('should not request')}});
+assert.equal(outside.status,'non_official_domain');
+const pdf=await checkExcerpt({...study.sources[0],url:'https://www.idsociety.org/file.pdf'}, {fetchImpl:fakeOfficial});
+assert.equal(pdf.status,'pdf_manual_review');
+const redirected=await checkExcerpt(study.sources[0],{fetchImpl:async()=>({status:302,ok:false,headers:{get:()=>''}})});
+assert.equal(redirected.status,'redirect_manual_review');
+const medical=await checkAllSources(study,{fetchImpl:fakeOfficial});
+assert.equal(medical.medical_approval,false);
+assert.equal(medical.source_checks.length,1);
+assert.equal(medical.source_checks[0].status,'excerpt_present_not_medically_verified');
+console.log('Guideline excerpt tests passed: official URL, exact excerpt, missing, redirect, PDF, and no auto-approval.');
 console.log('AI learning pipeline tests passed: reviewed inputs, 8 chapters, evidence citations, no self-verification, mock AI call, private export selection.');
