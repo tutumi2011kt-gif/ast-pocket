@@ -44,7 +44,7 @@ const falseApproval={...ledger,claims:ledger.claims.map(x=>x.id==='mssa_cez'?
 assert.throws(()=>checkLedger(falseApproval,readDocument),/medical approval forbidden/);
 const wrongContext={...ledger,claims:ledger.claims.map(x=>x.id==='gpc_two_sets'?
  {...x,chapter_id:'followup'}:x)};
-assert.throws(()=>checkLedger(wrongContext,readDocument),/within chapter/);
+assert.throws(()=>checkLedger(wrongContext,readDocument),/anchor missing in chapter/);
 const restricted={...ledger,sources:ledger.sources.map(x=>x.id==='idsa_sab2026'?
  {...x,url:'https://chatgpt.com/c/private-chat'}:x)};
 assert.throws(()=>checkLedger(restricted,readDocument),/public HTTPS/);
