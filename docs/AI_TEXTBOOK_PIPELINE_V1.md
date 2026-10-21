@@ -25,6 +25,18 @@ node scripts/read-private-chat-export.mjs --input local-intake/conversations.jso
 
 ユーザーが**一般化・公開安全性・学習ポイント・章・出典の抜粋を確認した後**に、入力の `local-intake/study-packet.json` を作成します。ここまでの取り込みは、全会話自動取得の代替となる手動ステップが必要です。
 
+## 1.5. 公開済みWeeklyからAI草案用データを作る
+
+取得済みWeeklyとソースポインタから、学習テーマごとにAIに入力する候補データを自動組み立てできます。以下の入力は**すでに公開されている、匿名化済みのWeeklyに限ります**。取り込み漏れは推測補完しません。
+
+```bash
+node scripts/organize-weekly.mjs --write
+node scripts/propose-integrations.mjs --write
+node scripts/weekly-to-study-packet.mjs --topic infection-pneumonia --date 2026-10-15 --out local-intake/pneumonia-packet.json
+```
+
+生成されるJSONの `public_safe_reviewed` は意図的に `false` です。章を分類できない項目は元Weeklyに残し、AIによる無理な分類は避けます。入力を人が再確認し、項目・根拠資料を付記してからAI生成へ進めてください。これで**Weeklyから詳細草案の入力までの書式変換**はつながりますが、原典の内容の自動保証や臨床用の自動公開までは行いません。
+
 ## 2. 学習ノートのAI詳細生成と改訂候補
 
 `scripts/study-pipeline-core.mjs` は安全な入力とモデル出力の形式を検証し、6分類・各8章の見出しを使った**教科書草案Markdown**を組み立てます。学習項目のID・章ID・出典IDは既存のものだけが許可され、余分なIDを生成したAI出力はエラーになります。全ての草案に「医学的未承認／人手確認待ち」を明記し、正式ノートを上書きしません。根拠不足・矛盾・照合候補の状態も表示します。
