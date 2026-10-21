@@ -1,0 +1,331 @@
+{
+  "schema_version": 1,
+  "created_date": "2026-10-21",
+  "editor_status": "needs_human_review",
+  "sources": [
+    {
+      "id": "idsa_sab2026",
+      "title": "IDSA/ESCMID 2026 SAB Consensus Statements Part 1",
+      "url": "https://www.idsociety.org/practice-guideline/staphylococcus-aureus-bacteremia/",
+      "type": "official_consensus",
+      "published_date": "2026-09-09",
+      "observed_updated_date": "2026-09-09",
+      "checked_date": "2026-10-21",
+      "medical_approval": false
+    },
+    {
+      "id": "idsa_icu2023",
+      "title": "SCCM/IDSA 2023 Guidelines for Evaluating New Fever in Adult ICU Patients",
+      "url": "https://www.idsociety.org/practice-guideline/new-fever-in-critically-ill-patients/",
+      "type": "official_guideline",
+      "published_date": "2023-11-17",
+      "observed_updated_date": "2023-11-17",
+      "checked_date": "2026-10-21",
+      "medical_approval": false
+    },
+    {
+      "id": "jama_sab2025",
+      "title": "Management of Staphylococcus aureus Bacteremia: A Review, JAMA 2025",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/40193249/",
+      "type": "review",
+      "published_date": "2025-09-02",
+      "observed_updated_date": "2025-09-02",
+      "checked_date": "2026-10-21",
+      "medical_approval": false
+    },
+    {
+      "id": "cmi_cez2025",
+      "title": "Cefazolin vs antistaphylococcal penicillins for MSSA bacteraemia: systematic review",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/40349971/",
+      "type": "systematic_review",
+      "published_date": "2025-05-09",
+      "observed_updated_date": "2025-05-09",
+      "checked_date": "2026-10-21",
+      "medical_approval": false
+    }
+  ],
+  "claims": [
+    {
+      "id": "gpc_morphology",
+      "document": "docs/review-drafts/gpc-clusters-2026-10-21.md",
+      "category": "culture",
+      "chapter_id": "basics",
+      "anchor": "GPC clustersという形態だけでS. aureusまたはMRSAと同定したことにはならない。",
+      "risk": "medium",
+      "medical_review": "needs_specialist_review",
+      "citations": [
+        {
+          "source_id": "idsa_icu2023",
+          "locator": "Blood Cultures in Critically Ill Patients",
+          "status": "fulltext_not_checked"
+        }
+      ]
+    },
+    {
+      "id": "gpc_two_sets",
+      "document": "docs/review-drafts/gpc-clusters-2026-10-21.md",
+      "category": "culture",
+      "chapter_id": "sampling",
+      "anchor": "成人ICUで血培を採取する場面では",
+      "risk": "high",
+      "medical_review": "needs_specialist_review",
+      "citations": [
+        {
+          "source_id": "idsa_icu2023",
+          "locator": "IV. Blood Cultures in Critically Ill Patients, recommendation 4",
+          "status": "section_located_review_pending"
+        }
+      ]
+    },
+    {
+      "id": "gpc_gram_rapid",
+      "document": "docs/review-drafts/gpc-clusters-2026-10-21.md",
+      "category": "culture",
+      "chapter_id": "microscopy",
+      "anchor": "Gram染色は**速報**であり最終同定ではない。",
+      "risk": "medium",
+      "medical_review": "needs_specialist_review",
+      "citations": [
+        {
+          "source_id": "idsa_icu2023",
+          "locator": "IV. Blood Cultures, recommendations 3-4",
+          "status": "fulltext_not_checked"
+        }
+      ]
+    },
+    {
+      "id": "gpc_id_to_target",
+      "document": "docs/review-drafts/gpc-clusters-2026-10-21.md",
+      "category": "culture",
+      "chapter_id": "identification",
+      "anchor": "MSSAとMRSAの区別は**標的抗菌薬選択に直結**する。",
+      "risk": "high",
+      "medical_review": "needs_specialist_review",
+      "citations": [
+        {
+          "source_id": "jama_sab2025",
+          "locator": "PubMed abstract, Observations",
+          "status": "abstract_located_review_pending"
+        }
+      ]
+    },
+    {
+      "id": "gpc_persistent_48h",
+      "document": "docs/review-drafts/gpc-clusters-2026-10-21.md",
+      "category": "culture",
+      "chapter_id": "interpretation",
+      "anchor": "S. aureusで初回血培から**48時間以上の持続陽性**",
+      "risk": "high",
+      "medical_review": "needs_specialist_review",
+      "citations": [
+        {
+          "source_id": "idsa_sab2026",
+          "locator": "Consensus Statement 1 and 7, prolonged bacteremia",
+          "status": "section_located_review_pending"
+        }
+      ]
+    },
+    {
+      "id": "gpc_repeat_cultures",
+      "document": "docs/review-drafts/gpc-clusters-2026-10-21.md",
+      "category": "culture",
+      "chapter_id": "followup",
+      "anchor": "最初の陽性血液培養採取から48時間で少なくとも2セット",
+      "risk": "high",
+      "medical_review": "needs_specialist_review",
+      "citations": [
+        {
+          "source_id": "idsa_sab2026",
+          "locator": "Consensus Statement 2, Follow-up Blood Cultures",
+          "status": "section_located_review_pending"
+        }
+      ]
+    },
+    {
+      "id": "gpc_ast_branch",
+      "document": "docs/review-drafts/gpc-clusters-2026-10-21.md",
+      "category": "culture",
+      "chapter_id": "ast",
+      "anchor": "菌種判明後の分岐",
+      "risk": "high",
+      "medical_review": "needs_specialist_review",
+      "citations": [
+        {
+          "source_id": "jama_sab2025",
+          "locator": "PubMed abstract, antibiotic selection",
+          "status": "abstract_located_review_pending"
+        },
+        {
+          "source_id": "idsa_sab2026",
+          "locator": "Part 1 scope excludes MSSA antibiotic details",
+          "status": "fulltext_not_checked"
+        }
+      ]
+    },
+    {
+      "id": "gpc_evidence_scope",
+      "document": "docs/review-drafts/gpc-clusters-2026-10-21.md",
+      "category": "culture",
+      "chapter_id": "evidence",
+      "anchor": "IDSA/ESCMID SAB Part 1",
+      "risk": "low",
+      "medical_review": "needs_specialist_review",
+      "citations": [
+        {
+          "source_id": "idsa_sab2026",
+          "locator": "Part 1 Executive Summary, scope",
+          "status": "section_located_review_pending"
+        }
+      ]
+    },
+    {
+      "id": "mssa_risk_framework",
+      "document": "docs/review-drafts/mssa-bacteremia-2026-10-21.md",
+      "category": "infection",
+      "chapter_id": "basics",
+      "anchor": "初期リスク層別化→必要な精査",
+      "risk": "high",
+      "medical_review": "needs_specialist_review",
+      "citations": [
+        {
+          "source_id": "idsa_sab2026",
+          "locator": "Consensus Statement 1, risk stratification",
+          "status": "section_located_review_pending"
+        }
+      ]
+    },
+    {
+      "id": "mssa_tte",
+      "document": "docs/review-drafts/mssa-bacteremia-2026-10-21.md",
+      "category": "infection",
+      "chapter_id": "diagnosis",
+      "anchor": "TTE（経胸壁心エコー）のルーチン実施",
+      "risk": "high",
+      "medical_review": "needs_specialist_review",
+      "citations": [
+        {
+          "source_id": "idsa_sab2026",
+          "locator": "Consensus Statement 3, TTE for adults",
+          "status": "section_located_review_pending"
+        }
+      ]
+    },
+    {
+      "id": "mssa_cez",
+      "document": "docs/review-drafts/mssa-bacteremia-2026-10-21.md",
+      "category": "infection",
+      "chapter_id": "treatment",
+      "anchor": "CEZ（セファゾリン）や抗ブドウ球菌ペニシリン",
+      "risk": "high",
+      "medical_review": "needs_specialist_review",
+      "citations": [
+        {
+          "source_id": "jama_sab2025",
+          "locator": "PubMed abstract, Observations, MSSA treatment",
+          "status": "abstract_located_review_pending"
+        },
+        {
+          "source_id": "cmi_cez2025",
+          "locator": "PubMed abstract, systematic review",
+          "status": "abstract_located_review_pending"
+        }
+      ]
+    },
+    {
+      "id": "mssa_risk_48h",
+      "document": "docs/review-drafts/mssa-bacteremia-2026-10-21.md",
+      "category": "infection",
+      "chapter_id": "source",
+      "anchor": "市中発症、初回血培から48時間以上の持続陽性",
+      "risk": "high",
+      "medical_review": "needs_specialist_review",
+      "citations": [
+        {
+          "source_id": "idsa_sab2026",
+          "locator": "Consensus Statement 1 and 5, risk features",
+          "status": "section_located_review_pending"
+        }
+      ]
+    },
+    {
+      "id": "mssa_duration_low",
+      "document": "docs/review-drafts/mssa-bacteremia-2026-10-21.md",
+      "category": "infection",
+      "chapter_id": "duration",
+      "anchor": "低リスクSABで、適切な精査",
+      "risk": "high",
+      "medical_review": "needs_specialist_review",
+      "citations": [
+        {
+          "source_id": "idsa_sab2026",
+          "locator": "Consensus Statement 6, 14 days low risk",
+          "status": "section_located_review_pending"
+        }
+      ]
+    },
+    {
+      "id": "mssa_duration_increased",
+      "document": "docs/review-drafts/mssa-bacteremia-2026-10-21.md",
+      "category": "infection",
+      "chapter_id": "duration",
+      "anchor": "増加リスクSABでも、適切な評価",
+      "risk": "high",
+      "medical_review": "needs_specialist_review",
+      "citations": [
+        {
+          "source_id": "idsa_sab2026",
+          "locator": "Consensus Statement 7, increased-risk without focus",
+          "status": "section_located_review_pending"
+        }
+      ]
+    },
+    {
+      "id": "mssa_ast_reassess",
+      "document": "docs/review-drafts/mssa-bacteremia-2026-10-21.md",
+      "category": "infection",
+      "chapter_id": "ast",
+      "anchor": "薬剤の適正化（抗MRSA薬の継続要否）",
+      "risk": "medium",
+      "medical_review": "needs_specialist_review",
+      "citations": [
+        {
+          "source_id": "jama_sab2025",
+          "locator": "PubMed abstract, treatment once susceptibilities known",
+          "status": "abstract_located_review_pending"
+        }
+      ]
+    },
+    {
+      "id": "mssa_scenario_b",
+      "document": "docs/review-drafts/mssa-bacteremia-2026-10-21.md",
+      "category": "infection",
+      "chapter_id": "cases",
+      "anchor": "CEZが直ちに無効、VCMに戻すべき",
+      "risk": "medium",
+      "medical_review": "needs_specialist_review",
+      "citations": [
+        {
+          "source_id": "jama_sab2025",
+          "locator": "Clinical explanation beyond abstract; specialist review required",
+          "status": "fulltext_not_checked"
+        }
+      ]
+    },
+    {
+      "id": "mssa_evidence_scope",
+      "document": "docs/review-drafts/mssa-bacteremia-2026-10-21.md",
+      "category": "infection",
+      "chapter_id": "evidence",
+      "anchor": "IDSA/ESCMID SAB Part 1",
+      "risk": "low",
+      "medical_review": "needs_specialist_review",
+      "citations": [
+        {
+          "source_id": "idsa_sab2026",
+          "locator": "Part 1 scope and future MSSA/MRSA publications",
+          "status": "section_located_review_pending"
+        }
+      ]
+    }
+  ]
+}
