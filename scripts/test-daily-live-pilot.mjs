@@ -16,7 +16,8 @@ assert.match(original,/^source_coverage:\s*accessible_context_only\s*$/m);
 assert.ok(original.includes('2026-10-14T03:00:00+09:00〜2026-10-15T03:00:00+09:00'));
 assert.ok(original.includes('# 今週の復習\n\n# 正式ノート候補'),'Do not fabricate quizzes');
 const index=JSON.parse(fs.readFileSync('content/index.json','utf8'));
-assert.equal(index.weekly[0],path);
+assert.ok(index.weekly.includes(path),'2026-10-15 Weekly must remain registered after later recovery notes');
+assert.deepEqual(index.weekly,[...index.weekly].sort().reverse(),'Weekly index must remain newest-first');
 assert.equal(index.weekly.filter(x=>x===path).length,1);
 
 const realLearning={
