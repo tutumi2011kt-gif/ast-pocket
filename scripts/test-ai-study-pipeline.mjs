@@ -37,7 +37,7 @@ const draft={
 assert.equal(validateStudyPacket(study),study);
 assert.equal(validateModelDraft(study,draft),draft);
 let text=makeDraftMarkdown(study,draft);
-assert.equal((text.match(/^## /gm)||[]).length,8);
+assert.equal((text.match(/^## (?!改訂履歴)/gm)||[]).length,8);
 assert.ok(text.includes('GPC clusters'));
 assert.ok(text.includes('原典との整合性未確認'));
 assert.ok(text.includes('臨床Knowledgeへの自動反映禁止'));
