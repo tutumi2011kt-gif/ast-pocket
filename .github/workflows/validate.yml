@@ -55,5 +55,31 @@ jobs:
         run: node scripts/test-daily-live-pilot.mjs
       - name: Check nightly ingest watchdog module and JST status classification
         run: node --check scripts/audit-nightly-ingest.mjs && node scripts/test-nightly-ingest-audit.mjs
+      - name: Validate private ChatGPT export intake and AI textbook draft gate
+        run: |
+          node --check scripts/read-private-chat-export.mjs
+          node --check scripts/study-pipeline-core.mjs
+          node --check scripts/render-chatgpt-draft.mjs
+          node --check scripts/check-guideline-excerpts.mjs
+          node --check scripts/weekly-to-study-packet.mjs
+          node scripts/test-ai-study-pipeline.mjs
+          node scripts/test-weekly-to-packet.mjs
+          node --check scripts/note-revision-core.mjs
+          node --check scripts/review-note-revision.mjs
+          node scripts/test-note-revision.mjs
+          node scripts/test-two-detailed-textbooks.mjs
+          node --check scripts/check-evidence-ledger.mjs
+          node scripts/test-evidence-ledger.mjs
+          node scripts/check-evidence-ledger.mjs
+          node --check scripts/watch-official-sab-guideline.mjs
+          node scripts/test-guideline-version-watch.mjs
+          node --check scripts/triage-evidence-gaps.mjs
+          node scripts/test-evidence-gap-triage.mjs
+          node --check scripts/build-weekly-review-pack.mjs
+          node scripts/test-weekly-review-pack.mjs
+      - name: Verify 2026-10-14 to 21 real learning and fungal topic routing
+        run: node --check scripts/test-weekly-seven-day-recovery.mjs && node scripts/test-weekly-seven-day-recovery.mjs
+      - name: Validate eight chapter antifungal summary from October study
+        run: node scripts/test-antifungal-textbook-draft.mjs
       - name: Check required files
         run: test -f index.html && test -f app.js && test -f styles.css
