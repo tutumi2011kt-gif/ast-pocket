@@ -6,6 +6,7 @@ import {
 import {getChapters} from '../notebook-templates.mjs';
 
 const index=JSON.parse(fs.readFileSync('content/index.json','utf8'));
+const ledger=JSON.parse(fs.readFileSync('docs/evidence/sab-2026-10-21.json','utf8'));
 assert.equal(REVIEW_TEXTBOOKS.length,3);
 assert.equal(new Set(REVIEW_TEXTBOOKS.map(x=>x.id)).size,3);
 assert.equal(new Set(REVIEW_TEXTBOOKS.map(x=>x.path)).size,3);
@@ -33,7 +34,13 @@ for(const entry of REVIEW_TEXTBOOKS){
  assert.ok(learning.includes('https://'));
  assert.ok(learning.includes(chapters[0].title));
  assert.ok(learning.includes(chapters[7].title));
- const clinical=renderReviewTextbook({entry,textbook:parsed,mode:'clinical'});
+ const ledgerDisplay=renderReviewTextbook({entry,textbook:parsed,mode:'study',evidenceLedger:ledger});
+ if(entry.id==='antifungal')assert.ok(ledgerDisplay.includes('根拠台帳はまだ未整備'));
+ else{
+  assert.ok(ledgerDisplay.includes('重要記述の原典対応'));
+  assert.ok(ledgerDisplay.includes('追跡 1件'));
+ }
+ const clinical=renderReviewTextbook({entry,textbook:parsed,mode:'clinical',evidenceLedger:ledger});
  assert.ok(clinical.includes('臨床モードでは非表示'));
  assert.ok(!clinical.includes('data-template-chapter'));
  assert.ok(!clinical.includes('data-template-reader='));
