@@ -3,7 +3,7 @@ import {MSSA_PATH,renderMssaNotebook,bindMssaReader,stopMssaReader} from './mssa
 import {renderTemplateNotebook,bindTemplateReader,stopTemplateReader} from './notebook-templates.mjs';
 import {REVIEW_TEXTBOOKS,parseReviewTextbook,renderReviewTextbook} from './review-textbooks.mjs';
 const reviewFeature=new ReviewFeature();
-const state={mode:'clinical',noteOrigin:'search',view:'home',query:'',filter:'all',notes:[],weekly:[],organisms:[],antibiotics:[],review:[],selectedNote:null,selectedWeeklyPath:null,organized:null,libraryCategory:'all',integrations:null,selectedTopicId:null,selectedTextbookId:null,textbooks:{},textbookErrors:{}};
+const state={mode:'clinical',noteOrigin:'search',view:'home',query:'',filter:'all',notes:[],weekly:[],organisms:[],antibiotics:[],review:[],selectedNote:null,selectedWeeklyPath:null,organized:null,libraryCategory:'all',integrations:null,selectedTopicId:null,selectedTextbookId:null,textbooks:{},textbookErrors:{},evidenceLedger:null};
 const $=s=>document.querySelector(s); const app=$('#app');
 try{const m=localStorage.getItem('astPocketModeV2');if(m==='clinical'||m==='study')state.mode=m;}catch(e){/* Private browsing may disable storage */}
 
@@ -55,7 +55,7 @@ async function load(){
 let textbookPromise=null;
 async function loadTextbooks(){
  if(textbookPromise)return textbookPromise;
- textbookPromise=Promise.all(REVIEW_TEXTBOOKS.map(async entry=>{
+ textbookPromise=Promise.all([...REVIEW_TEXTBOOKS.map(async entry=>{
   try{
    const response=await fetch(entry.path,{cache:'no-store'});
    if(!response.ok)throw Error('HTTP '+response.status);
@@ -64,7 +64,15 @@ async function loadTextbooks(){
    state.textbookErrors[entry.id]='読込・章構成の検証ができませんでした';
    console.warn('Learning-only textbook could not be loaded',entry.id,error);
   }
- }));
+ }), (async()=>{
+  try{
+   const response=await fetch('docs/evidence/sab-2026-10-21.json',{cache:'no-store'});
+   if(!response.ok)throw Error('Evidence ledger unavailable');
+   const data=await response.json();
+   if(data.schema_version===1&&data.editor_status==='needs_human_review'&&Array.isArray(data.claims))
+    state.evidenceLedger=data;
+  }catch(e){console.warn('Evidence ledger remains unconfirmed',e)}
+ })()]);
  return textbookPromise;
 }
 function textbookShelf(){
@@ -80,7 +88,7 @@ function textbookView(){
  const entry=REVIEW_TEXTBOOKS.find(x=>x.id===state.selectedTextbookId);
  if(!entry)return '<main class="screen">'+brand('学習教科書')+'<section class="card empty">この教科書は見つかりません。</section></main>'+nav();
  return renderReviewTextbook({entry,textbook:state.mode==='study'?state.textbooks[entry.id]:null,
-  mode:state.mode,modeHtml:modeControl()})+nav();
+  mode:state.mode,modeHtml:modeControl(),evidenceLedger:state.evidenceLedger})+nav();
 }
 function brand(sub='感染症ナレッジ'){return `<div class="brand"><div><h1><span class="ast">AST</span> Pocket</h1><p>${sub}</p></div><div class="brand-mark">🩺</div></div>${modeControl()}`}
 function modeControl(){return `<div class="mode-toggle" role="group" aria-label="AST Pocket表示モード"><button type="button" data-mode="clinical" class="${state.mode==='clinical'?'selected':''}" aria-pressed="${state.mode==='clinical'}">🩺 臨床モード</button><button type="button" data-mode="study" class="${state.mode==='study'?'selected':''}" aria-pressed="${state.mode==='study'}">📘 学習モード</button></div>`}
