@@ -11,7 +11,7 @@ assert.ok(src.includes("if(state.view==='weekly')main.insertAdjacentHTML('before
 
 const state={
  view:'home',mode:'study',query:'',filter:'all',noteOrigin:'search',
- selectedNote:null,selectedWeeklyPath:null,selectedTopicId:null,libraryCategory:'all',
+ selectedNote:null,selectedWeeklyPath:null,selectedTopicId:null,selectedTextbookId:null,libraryCategory:'all',
  notes:[{path:'content/notes/mssa-bacteremia.md',fm:{title:'MSSA菌血症'}}],
  integrations:{topics:[{topic_id:'infection-candidemia',title:'Candida血症'}]}
 };
@@ -25,7 +25,7 @@ function fakeRender(){
  scroll=0;
 }
 const ctx={
- state,console,
+ state,console,REVIEW_TEXTBOOKS:[{id:'mssa-bacteremia',title:'MSSA菌血症：根拠から学ぶ8章'}],
  window:{get scrollY(){return scroll},scrollTo:({top})=>goToScroll(top)},
  document:{querySelectorAll(selector){
   if(selector==='main.screen details')return details;
@@ -63,6 +63,15 @@ assert.equal(state.libraryCategory,'infection');
 vm.runInContext('goBack()',ctx);
 assert.equal(state.view,'home');
 assert.equal(vm.runInContext('backMarkup()',ctx),'');
+assert.equal(vm.runInContext('navigationStack.length',ctx),0);
+
+// Study Home -> 8-chapter textbook -> back to Study Home.
+vm.runInContext("navigate('textbook',{selectedTextbookId:'mssa-bacteremia'})",ctx);
+assert.equal(state.view,'textbook');
+assert.equal(state.selectedTextbookId,'mssa-bacteremia');
+assert.match(vm.runInContext('backMarkup()',ctx),/Homeへ戻る/);
+vm.runInContext('goBack()',ctx);
+assert.equal(state.view,'home');
 assert.equal(vm.runInContext('navigationStack.length',ctx),0);
 
 // Home -> Search -> MSSA note -> back to exact search term and search filter.

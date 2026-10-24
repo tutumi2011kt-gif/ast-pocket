@@ -1,8 +1,9 @@
 import {ReviewFeature} from './review-feature.mjs';
 import {MSSA_PATH,renderMssaNotebook,bindMssaReader,stopMssaReader} from './mssa-notebook.mjs';
 import {renderTemplateNotebook,bindTemplateReader,stopTemplateReader} from './notebook-templates.mjs';
+import {REVIEW_TEXTBOOKS,parseReviewTextbook,renderReviewTextbook} from './review-textbooks.mjs';
 const reviewFeature=new ReviewFeature();
-const state={mode:'clinical',noteOrigin:'search',view:'home',query:'',filter:'all',notes:[],weekly:[],organisms:[],antibiotics:[],review:[],selectedNote:null,selectedWeeklyPath:null,organized:null,libraryCategory:'all',integrations:null,selectedTopicId:null};
+const state={mode:'clinical',noteOrigin:'search',view:'home',query:'',filter:'all',notes:[],weekly:[],organisms:[],antibiotics:[],review:[],selectedNote:null,selectedWeeklyPath:null,organized:null,libraryCategory:'all',integrations:null,selectedTopicId:null,selectedTextbookId:null,textbooks:{},textbookErrors:{},evidenceLedger:null};
 const $=s=>document.querySelector(s); const app=$('#app');
 try{const m=localStorage.getItem('astPocketModeV2');if(m==='clinical'||m==='study')state.mode=m;}catch(e){/* Private browsing may disable storage */}
 
@@ -37,6 +38,7 @@ async function load(){
   state.notes=await Promise.all(idx.notes.map(async p=>parseMD(await fetch(p).then(r=>r.text()),p)));
   state.weekly=await Promise.all(idx.weekly.map(async p=>parseMD(await fetch(p).then(r=>r.text()),p)));
   state.weekly.sort((a,b)=>b.path.localeCompare(a.path));
+  if(state.mode==='study')await loadTextbooks();
   try{
     const response=await fetch('content/organized.json',{cache:'no-store'});
     if(response.ok){
@@ -49,6 +51,44 @@ async function load(){
     if(response.ok){const data=await response.json();if(data.schema_version===1&&Array.isArray(data.topics)&&Array.isArray(data.facts)&&data.verified===false)state.integrations=data;}
   }catch(e){console.warn('Integration drafts not yet available',e);}
   render();
+}
+let textbookPromise=null;
+async function loadTextbooks(){
+ if(textbookPromise)return textbookPromise;
+ textbookPromise=Promise.all([...REVIEW_TEXTBOOKS.map(async entry=>{
+  try{
+   const response=await fetch(entry.path,{cache:'no-store'});
+   if(!response.ok)throw Error('HTTP '+response.status);
+   state.textbooks[entry.id]=parseReviewTextbook(entry,await response.text());
+  }catch(error){
+   state.textbookErrors[entry.id]='読込・章構成の検証ができませんでした';
+   console.warn('Learning-only textbook could not be loaded',entry.id,error);
+  }
+ }), (async()=>{
+  try{
+   const response=await fetch('docs/evidence/sab-2026-10-21.json',{cache:'no-store'});
+   if(!response.ok)throw Error('Evidence ledger unavailable');
+   const data=await response.json();
+   if(data.schema_version===1&&data.editor_status==='needs_human_review'&&Array.isArray(data.claims))
+    state.evidenceLedger=data;
+  }catch(e){console.warn('Evidence ledger remains unconfirmed',e)}
+ })()]);
+ return textbookPromise;
+}
+function textbookShelf(){
+ if(state.mode!=='study')return '';
+ return '<section class="card textbook-shelf"><div class="section-title compact">📘 詳しい教科書ノート</div>'+
+ '<p>GPC clusters・MSSA菌血症・抗真菌薬の全24章。医学的に未承認の学習草案です。</p>'+
+ '<div class="textbook-shelf-list">'+REVIEW_TEXTBOOKS.map(entry=>
+  '<button type="button" class="textbook-shelf-item" data-open-textbook="'+esc(entry.id)+'">'+
+  '<strong>'+esc(entry.title)+'</strong><span>'+esc(entry.short)+'</span>'+
+  '<small>8章 ／ 原典確認待ち　›</small></button>').join('')+'</div></section>';
+}
+function textbookView(){
+ const entry=REVIEW_TEXTBOOKS.find(x=>x.id===state.selectedTextbookId);
+ if(!entry)return '<main class="screen">'+brand('学習教科書')+'<section class="card empty">この教科書は見つかりません。</section></main>'+nav();
+ return renderReviewTextbook({entry,textbook:state.mode==='study'?state.textbooks[entry.id]:null,
+  mode:state.mode,modeHtml:modeControl(),evidenceLedger:state.evidenceLedger})+nav();
 }
 function brand(sub='感染症ナレッジ'){return `<div class="brand"><div><h1><span class="ast">AST</span> Pocket</h1><p>${sub}</p></div><div class="brand-mark">🩺</div></div>${modeControl()}`}
 function modeControl(){return `<div class="mode-toggle" role="group" aria-label="AST Pocket表示モード"><button type="button" data-mode="clinical" class="${state.mode==='clinical'?'selected':''}" aria-pressed="${state.mode==='clinical'}">🩺 臨床モード</button><button type="button" data-mode="study" class="${state.mode==='study'?'selected':''}" aria-pressed="${state.mode==='study'}">📘 学習モード</button></div>`}
@@ -63,7 +103,7 @@ function capturePage(){
  return {
   view:state.view,mode:state.mode,query:state.query,filter:state.filter,
   selectedNotePath:state.selectedNote?.path||null,
-  selectedWeeklyPath:state.selectedWeeklyPath,selectedTopicId:state.selectedTopicId,
+  selectedWeeklyPath:state.selectedWeeklyPath,selectedTopicId:state.selectedTopicId,selectedTextbookId:state.selectedTextbookId,
   libraryCategory:state.libraryCategory,noteOrigin:state.noteOrigin,
   scrollY:window.scrollY||0,
   expandedDetails:elements('main.screen details').flatMap((el,i)=>el.open?[i]:[]),
@@ -73,6 +113,7 @@ function capturePage(){
 function routeLabel(snapshot){
  if(snapshot.view==='note')return state.notes.find(n=>n.path===snapshot.selectedNotePath)?.fm.title||'ノート';
  if(snapshot.view==='topic')return state.integrations?.topics?.find(t=>t.topic_id===snapshot.selectedTopicId)?.title||'学習ノート';
+ if(snapshot.view==='textbook')return REVIEW_TEXTBOOKS.find(x=>x.id===snapshot.selectedTextbookId)?.title||'詳細教科書';
  const labels={home:'Home',search:'検索結果',weekly:'Weekly',review:'Review',library:'分野別ノート一覧',integration:'原典確認待ち一覧'};
  return labels[snapshot.view]||'前の画面';
 }
@@ -105,6 +146,7 @@ function goBack(){
  state.selectedNote=state.notes.find(n=>n.path===previous.selectedNotePath)||null;
  state.selectedWeeklyPath=previous.selectedWeeklyPath;
  state.selectedTopicId=previous.selectedTopicId;
+ state.selectedTextbookId=previous.selectedTextbookId;
  try{localStorage.setItem('astPocketModeV2',state.mode)}catch(e){}
  render(false);
  requestAnimationFrame(()=>{
@@ -182,7 +224,7 @@ function home(){
   const organizerCard=organizationIntro();
   const fcard=featured?`<section class="card featured-note"><div class="eyebrow">📖 分野別統合ノート・第1号</div><h2>${esc(featured.fm.title)}</h2><p>30秒要約／詳細学習／関連する菌・抗菌薬</p><span class="draft-label">学習用・原典確認待ち</span><button type="button" id="openFeaturedNote" class="primary-btn">MSSA菌血症ノートを開く ›</button></section>`:'';
   const weekCard=w?`<div class="section-title">🎓 今週の学習</div><section class="card weekly-card"><strong>📅 ${esc(w.fm.week||'今週')}</strong><ul>${mdList(w.sections['今週の学習']).slice(0,4).map(x=>`<li>${esc(x)}</li>`).join('')}</ul><button class="primary-btn" id="goWeekly">今週のまとめを見る ›</button></section>`:'';
-  if(state.mode==='study')return `<main class="screen">${brand('感染症を学び、ASTの判断力を育てる')}${searchBox()}<section class="hero-card study-hero"><div class="hero-title">🎓 学習モード</div><p>統合ノートで知識を整理し、復習で定着を目指す</p></section><section class="card study-landing"><div class="section-title compact">🧠 今日の復習</div><p>平日5問・週末10問の復習、自己評価、端末内の回答履歴で学習を継続できます。</p><button class="primary-btn" id="openReviewHome">Reviewを開く ›</button><p class="small-note">現在の問題は原典未確認の練習用です。正式な理解度には算入しません。</p></section>${organizerCard}${fcard}${weekCard}<section class="card notice">💾 回答履歴は端末内に保存します。ReviewからJSONの書き出し・読み込みができます。</section></main>${nav()}`;
+  if(state.mode==='study')return `<main class="screen">${brand('感染症を学び、ASTの判断力を育てる')}${searchBox()}<section class="hero-card study-hero"><div class="hero-title">🎓 学習モード</div><p>統合ノートで知識を整理し、復習で定着を目指す</p></section><section class="card study-landing"><div class="section-title compact">🧠 今日の復習</div><p>平日5問・週末10問の復習、自己評価、端末内の回答履歴で学習を継続できます。</p><button class="primary-btn" id="openReviewHome">Reviewを開く ›</button><p class="small-note">現在の問題は原典未確認の練習用です。正式な理解度には算入しません。</p></section>${organizerCard}${textbookShelf()}${fcard}${weekCard}<section class="card notice">💾 回答履歴は端末内に保存します。ReviewからJSONの書き出し・読み込みができます。</section></main>${nav()}`;
   return `<main class="screen">${brand()}${searchBox()}<section class="hero-card"><div class="hero-title">💡 AST重要ポイント</div><p>明日からの診療に役立つ<br>感染症診療・ASTのキーポイントを確認</p></section>${organizerCard}${fcard}<div class="grid"><button class="category" data-cat="菌"><span class="icon-bubble teal">🦠</span><strong>菌</strong></button><button class="category" data-cat="抗菌薬"><span class="icon-bubble">💊</span><strong>抗菌薬</strong></button></div><div class="grid three"><button class="category" data-cat="感染症"><span class="icon-bubble pink">🧫</span><strong>感染症</strong></button><button class="category" data-cat="血培"><span class="icon-bubble purple">🧪</span><strong>血培</strong></button><button class="category" data-cat="AST介入"><span class="icon-bubble teal">👥</span><strong>AST介入</strong></button></div>${weekCard}<section class="card notice">🔔 更新確認が必要 <strong>${staleCount()}件</strong></section></main>${nav()}`;
 }
 function organizationIntro(){
@@ -283,7 +325,11 @@ function dynamicTopicView(){
   modeHtml:modeControl(),links:t.links||[],fragmentForLink:l=>proposalSnippet(l),
   historyHtml:state.mode==='study'?classifiedHistory(t.weekly_refs||[],6):''
  });
- return html+nav();
+ const extra=state.mode==='study'?REVIEW_TEXTBOOKS.find(e=>e.related.includes(t.topic_id)):null;
+ return (extra?html.replace('</main>',
+  '<section class="card integrated-card"><h2>📘 詳しい教科書も読む</h2>'+
+  '<button type="button" class="primary-btn" data-open-textbook="'+esc(extra.id)+'">'+esc(extra.title)+' ›</button>'+
+  '<p class="small-note">医学的未承認の学習用解説です。</p></section></main>'):html)+nav();
 }
 function integrationReviewView(){
  const all=state.integrations;
@@ -307,7 +353,7 @@ function libraryView(){
  }).join('');
  return `<main class="screen">${brand('6分類で学習を蓄積')}
  <section class="card organizer-info"><strong>🗂 Weeklyの自動整理と追記候補</strong><p>${data.stats.weekly_count}週分から${data.stats.classified_topics}テーマを検出。学習メモの追記候補は自動作成します。</p><p class="small-note">ルールによる処理です。臨床推奨の原典照合・自動更新は行いません。</p>${state.integrations?`<button id="openReviewQueue" class="review-queue-button">医学的な確認待ち ${state.integrations.stats.review_required}件を見る ›</button>`:''}</section>
- <div class="tabs organizer-tabs">${categoryControls}</div><p class="small-note">分類されたテーマ ${topics.length}件</p>${cards||'<section class="card empty">この分類に学習記録はありません。</section>'}</main>${nav()}`;
+ ${textbookShelf()}<div class="tabs organizer-tabs">${categoryControls}</div><p class="small-note">分類されたテーマ ${topics.length}件</p>${cards||'<section class="card empty">この分類に学習記録はありません。</section>'}</main>${nav()}`;
 }
 function searchResults(){
   return `<main class="screen">${brand()}${searchBox()}<div id="searchPanel">${searchPanelHtml()}</div></main>${nav()}`;
@@ -424,12 +470,19 @@ function reviewView(){
 function openMemo(){document.body.insertAdjacentHTML('beforeend',`<div class="modal" id="memoModal"><div class="sheet"><h2>今日覚えたこと</h2><textarea id="memoText" placeholder="あとで整理したいことを短くメモ"></textarea><div class="sheet-actions"><button class="cancel" id="memoCancel">キャンセル</button><button class="save" id="memoSave">保存</button></div></div></div>`);$('#memoCancel').onclick=()=>$('#memoModal').remove();$('#memoSave').onclick=()=>{const t=$('#memoText').value.trim();if(t){const arr=JSON.parse(localStorage.getItem('astPocketInbox')||'[]');arr.unshift({text:t,at:new Date().toISOString()});localStorage.setItem('astPocketInbox',JSON.stringify(arr))}$('#memoModal').remove()}}
 function bindPage(){
   bindCommon();
-  document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{const m=b.dataset.mode;if(m!==state.mode&&(m==='clinical'||m==='study')){state.mode=m;try{localStorage.setItem('astPocketModeV2',m)}catch(e){}render(false)}}));
+  document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{const m=b.dataset.mode;if(m!==state.mode&&(m==='clinical'||m==='study')){state.mode=m;try{localStorage.setItem('astPocketModeV2',m)}catch(e){}render(false);if(m==='study')void loadTextbooks().then(()=>{if(state.mode==='study')render(false)})}}));
   $('#openFeaturedNote')?.addEventListener('click',()=>{const n=state.notes.find(n=>n.fm.layout==='integrated');if(n)navigate('note',{selectedNote:n,noteOrigin:'home'});});
   $('#openReviewHome')?.addEventListener('click',()=>navigate('review'));
   $('#openOrganizer')?.addEventListener('click',()=>navigate('library',{libraryCategory:'all'}));
   $('#openReviewQueue')?.addEventListener('click',()=>navigate('integration'));
   document.querySelectorAll('.open-generated-topic').forEach(b=>b.addEventListener('click',()=>navigate('topic',{selectedTopicId:b.dataset.topicId})));
+  document.querySelectorAll('[data-open-textbook]').forEach(b=>b.addEventListener('click',()=>{
+   if(state.mode!=='study')return;
+   const id=b.dataset.openTextbook;
+   if(!REVIEW_TEXTBOOKS.some(entry=>entry.id===id))return;
+   navigate('textbook',{selectedTextbookId:id});
+   if(!state.textbooks[id])void loadTextbooks().then(()=>{if(state.view==='textbook'&&state.mode==='study')render(false)});
+  }));
   $('#openOrganizerFromNote')?.addEventListener('click',()=>navigate('library',{libraryCategory:'all'}));
   document.querySelectorAll('[data-library-cat]').forEach(b=>b.addEventListener('click',()=>{state.libraryCategory=b.dataset.libraryCat;render(false);}));
   document.querySelectorAll('.open-classified-note').forEach(b=>b.addEventListener('click',()=>{
@@ -448,7 +501,7 @@ function bindPage(){
   $('#latestBtn')?.addEventListener('click',()=>alert('Ver.1では「最新情報を確認」の導線まで実装。次段階でWeb検索・差分確認を接続します。'));
   document.querySelectorAll('.q-row').forEach(q=>q.onclick=()=>q.classList.toggle('open'));
   if(state.view==='review'&&state.mode==='study')void reviewFeature.mount();
-  if((state.view==='topic'||state.view==='note')&&document.querySelector('.template-screen')&&state.mode==='study'){
+  if((state.view==='topic'||state.view==='note'||state.view==='textbook')&&document.querySelector('.template-screen')&&state.mode==='study'){
     bindTemplateReader(document.querySelector('.template-screen'),{rerender:()=>render(false)});
   }
   if(state.view==='note'&&state.selectedNote?.path===MSSA_PATH&&state.mode==='study'){
@@ -456,7 +509,7 @@ function bindPage(){
   }
 }
 
-function render(scroll=true){stopMssaReader();stopTemplateReader();let html='';if(state.view==='home')html=home();else if(state.view==='search')html=searchResults();else if(state.view==='note')html=noteView();else if(state.view==='library')html=libraryView();else if(state.view==='topic')html=dynamicTopicView();else if(state.view==='integration')html=integrationReviewView();else if(state.view==='weekly')html=weeklyView();else html=reviewView();app.innerHTML=html;
+function render(scroll=true){stopMssaReader();stopTemplateReader();let html='';if(state.view==='home')html=home();else if(state.view==='search')html=searchResults();else if(state.view==='note')html=noteView();else if(state.view==='library')html=libraryView();else if(state.view==='topic')html=dynamicTopicView();else if(state.view==='textbook')html=textbookView();else if(state.view==='integration')html=integrationReviewView();else if(state.view==='weekly')html=weeklyView();else html=reviewView();app.innerHTML=html;
  const main=app.querySelector('main.screen');
  if(main && navigationStack.length){
   const place=main.querySelector('.mode-toggle');
