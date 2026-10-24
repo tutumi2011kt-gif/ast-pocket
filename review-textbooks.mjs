@@ -104,7 +104,7 @@ function simpleLines(body){
  }
  return picked.length?picked:['詳しい内容は「詳しく」で確認してください。'];
 }
-export function renderReviewTextbook({entry,textbook,mode='study',modeHtml=''}={}){
+export function renderReviewTextbook({entry,textbook,mode='study',modeHtml='',evidenceLedger=null}={}){
  const clinical=mode!=='study',title=entry?.title||'詳細教科書';
  let out='<main class="screen integrated-screen template-screen textbook-screen"'+
   (!clinical&&textbook?' data-template-reader="textbook:'+h(entry.id)+'" data-template-category="'+h(entry.category)+'"':'')+'>'+
@@ -118,7 +118,13 @@ export function renderReviewTextbook({entry,textbook,mode='study',modeHtml=''}={
   '<button type="button" class="primary-btn" data-mode="study">学習モードへ切り替える ›</button></section></main>';
  if(!textbook||textbook.reviewStatus!=='medical_review_pending')return out+
   '<section class="card integrated-card"><h2>ノートを確認できませんでした</h2><p>原稿の形式・読込状態を確認してください。</p></section></main>';
+ const tracked=Array.isArray(evidenceLedger?.claims)&&evidenceLedger.editor_status==='needs_human_review'
+  ?evidenceLedger.claims.filter(c=>c.document===entry.path&&c.medical_review==='needs_specialist_review'):[];
  const prefs=readNotebookPrefs('textbook:'+entry.id,entry.category);
+ out+='<section class="card integrated-card textbook-source-status"><h2>🧪 医学的な根拠確認の状況</h2>'+
+  (tracked.length?'<p>重要記述の原典対応：'+tracked.length+'件を台帳に登録（<strong>医学的最終確認は未完了</strong>）。</p>':
+   '<p>文献リンクはありますが、記述単位の根拠台帳はまだ未整備です。</p>')+
+  '<p class="small-note">台帳への登録、原典リンクの存在、GitHubのテスト成功は、医学的な正しさを証明しません。</p></section>';
  out+='<section class="card integrated-card template-controls"><h2>📚 詳細ノートを読む</h2>'+
   '<p class="small-note">要点／詳しくを切替。章の開閉・読書位置はこの端末内だけに保存します。</p>'+
   '<div class="mssa-depth"><button type="button" data-template-depth="simple" aria-pressed="'+(prefs.depth==='simple')+'" class="'+(prefs.depth==='simple'?'selected':'')+'">要点</button>'+
@@ -132,7 +138,8 @@ export function renderReviewTextbook({entry,textbook,mode='study',modeHtml=''}={
   const lines=prefs.depth==='simple'?simpleLines(chapter.body):chapter.body.split('\n');
   out+='<details class="mssa-chapter" data-template-chapter="'+h(chapter.id)+'" '+(prefs.open.includes(chapter.id)?'open':'')+'>'+
    '<summary><strong>'+(chapter.index+1)+'. '+h(chapter.title)+'</strong>'+
-   '<small>原典照合・医学的確認待ち</small></summary>'+
+   '<small>'+ (tracked.length?'重要記述の追跡 '+tracked.filter(c=>c.chapter_id===chapter.id).length+'件 ／ ':'')+
+   '医学的確認待ち</small></summary>'+
    '<div class="mssa-chapter-body textbook-body">'+renderTextbookMarkdown(lines)+
    (prefs.depth==='simple'?'<p class="small-note">詳しい出典・説明は「詳しく」で確認できます。</p>':'')+
    '</div></details>';
