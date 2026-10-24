@@ -200,3 +200,29 @@ button,input{font:inherit}.app-shell{min-height:100vh;padding-bottom:92px}.scree
 .template-screen .mssa-chapter-body .small-note{font-size:13px;line-height:1.6}
 .template-screen .template-source-note li{margin:7px 0}
 .template-screen .mssa-resume{margin-top:6px}
+
+
+/* The source-linked textbook shelf is displayed in Study mode only. */
+.textbook-shelf{margin-top:14px;padding:18px}
+.textbook-shelf>p{font-size:14px;line-height:1.65;color:var(--muted)}
+.textbook-shelf-list{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px}
+.textbook-shelf-item{display:flex;flex-direction:column;align-items:flex-start;gap:6px;width:100%;min-height:82px;padding:14px 16px;
+ text-align:left;background:#f4faff;color:var(--ink);border:1px solid #cee4f5;border-radius:15px;cursor:pointer}
+.textbook-shelf-item strong{font-size:15px;line-height:1.5}
+.textbook-shelf-item span{font-size:13px;line-height:1.5;color:var(--muted);overflow-wrap:anywhere}
+.textbook-shelf-item small{font-size:12px;color:#226d94;font-weight:700}
+.textbook-screen .integrated-heading{margin-bottom:12px}
+.textbook-screen .textbook-safety{margin-bottom:16px}
+.textbook-body{font-size:15px;line-height:1.9}
+.textbook-body p{margin:9px 0;overflow-wrap:anywhere}
+.textbook-body ul,.textbook-body ol{margin:9px 0;padding-left:24px}
+.textbook-body li{margin:8px 0}
+.textbook-body blockquote{margin:14px 0;border-left:3px solid #e0b371;padding:10px 12px;background:#fff8ed;font-size:14px}
+.textbook-body h3,.textbook-body h4{font-size:15px;margin:17px 0 8px;color:#16577f}
+.textbook-body a{color:#1568a7;text-decoration:underline;overflow-wrap:anywhere}
+.textbook-table-scroll{width:100%;overflow-x:auto;margin:12px 0}
+.textbook-table{width:100%;border-collapse:collapse;min-width:400px;font-size:13px}
+.textbook-table th,.textbook-table td{padding:9px;border:1px solid #d3e4f0;text-align:left;vertical-align:top;line-height:1.6}
+.textbook-table th{background:#eef7fd}
+@media(min-width:590px){.textbook-shelf-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){.textbook-body{font-size:14px}.textbook-shelf{padding:15px}.textbook-table{min-width:350px}}
