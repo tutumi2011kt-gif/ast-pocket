@@ -83,7 +83,7 @@ export function renderAmpcStudy({mode='study',chapters=[],questions=[],tab='note
  choice=null,revealed=false,progress={},modeHtml=''}={}){
  let html='<main class="screen ampc-screen">'+modeHtml+
   '<header class="ampc-heading"><div class="eyebrow">📘 AmpCを復習する</div><h1>AmpC βラクタマーゼ</h1>'+
-  '<p>ECKH → CTRXがSでも注意 → CFPM → 必要時MEPM</p></header>';
+  (mode==='study'?'<p>ECKH → CTRXがSでも注意 → CFPM → 必要時MEPM</p>':'')+'</header>';
  if(mode!=='study')return html+
   '<section class="card ampc-alert"><strong>臨床モードでは学習草案を表示しません</strong><p>医学的確認待ちの情報は学習モードで確認してください。</p>'+
   '<button class="primary-btn" data-mode="study">学習モードに切り替える</button></section></main>';
