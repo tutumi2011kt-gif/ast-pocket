@@ -1,8 +1,9 @@
 import {ReviewFeature} from './review-feature.mjs';
 import {MSSA_PATH,renderMssaNotebook,bindMssaReader,stopMssaReader} from './mssa-notebook.mjs';
 import {renderTemplateNotebook,bindTemplateReader,stopTemplateReader} from './notebook-templates.mjs';
+import {AMP_C_NOTE,AMP_C_QUIZ,parseAmpcNote,validateAmpcQuiz,rankAmpcQuestions,renderAmpcStudy} from './ampc-study.mjs';
 const reviewFeature=new ReviewFeature();
-const state={mode:'clinical',noteOrigin:'search',view:'home',query:'',filter:'all',notes:[],weekly:[],organisms:[],antibiotics:[],review:[],selectedNote:null,selectedWeeklyPath:null,organized:null,libraryCategory:'all',integrations:null,selectedTopicId:null};
+const state={mode:'clinical',noteOrigin:'search',view:'home',query:'',filter:'all',notes:[],weekly:[],organisms:[],antibiotics:[],review:[],selectedNote:null,selectedWeeklyPath:null,organized:null,libraryCategory:'all',integrations:null,selectedTopicId:null,ampcChapters:[],ampcQuestions:[],ampcProgress:{},ampcTab:'notes',ampcOrder:[],ampcIndex:0,ampcChoice:null,ampcRevealed:false};
 const $=s=>document.querySelector(s); const app=$('#app');
 try{const m=localStorage.getItem('astPocketModeV2');if(m==='clinical'||m==='study')state.mode=m;}catch(e){/* Private browsing may disable storage */}
 
@@ -29,6 +30,38 @@ function parseMD(text,path){
 function mdList(s=''){return s.split('\n').filter(x=>/^[-*]\s/.test(x)).map(x=>x.replace(/^[-*]\s+/,''))}
 function esc(s=''){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 
+let ampcLoading=null;
+async function loadAmpc(){
+ if(ampcLoading)return ampcLoading;
+ ampcLoading=(async()=>{
+  try{
+   const [a,b]=await Promise.all([fetch(AMP_C_NOTE,{cache:'no-store'}),fetch(AMP_C_QUIZ,{cache:'no-store'})]);
+   if(!a.ok||!b.ok)throw Error('AmpC content could not be loaded');
+   const chapters=parseAmpcNote(await a.text()),questions=await b.json();
+   validateAmpcQuiz(questions);
+   state.ampcChapters=chapters;state.ampcQuestions=questions;
+   try{
+    const data=JSON.parse(localStorage.getItem('astPocketAmpcStudyV1')||'{}');
+    state.ampcProgress=data&&typeof data==='object'&&!Array.isArray(data)?data:{};
+   }catch{state.ampcProgress={}}
+  }catch(e){console.warn('AmpC education material unavailable',e)}
+ })();
+ await ampcLoading;
+ if(state.view==='ampc'&&state.mode==='study')render(false);
+}
+function openAmpc(quiz=false){
+ if(state.mode!=='study')return;
+ state.ampcTab=quiz?'quiz':'notes';
+ state.ampcIndex=0;state.ampcChoice=null;state.ampcRevealed=false;
+ state.ampcOrder=state.ampcQuestions.length?rankAmpcQuestions(state.ampcQuestions,state.ampcProgress):[];
+ navigate('ampc');
+ if(!state.ampcQuestions.length)void loadAmpc();
+}
+function ampcView(){
+ return renderAmpcStudy({mode:state.mode,chapters:state.ampcChapters,questions:state.ampcQuestions,
+ tab:state.ampcTab,index:state.ampcIndex,order:state.ampcOrder,choice:state.ampcChoice,
+ revealed:state.ampcRevealed,progress:state.ampcProgress,modeHtml:modeControl()})+nav();
+}
 async function load(){
   const [org,abx,idx,review,reviewBank]=await Promise.all([
     fetch('data/organisms.json').then(r=>r.json()),fetch('data/antibiotics.json').then(r=>r.json()),fetch('content/index.json').then(r=>r.json()),fetch('content/review/questions.json').then(r=>r.json()),fetch('content/review/bank-v2.json').then(r=>r.json())
@@ -73,6 +106,7 @@ function capturePage(){
 function routeLabel(snapshot){
  if(snapshot.view==='note')return state.notes.find(n=>n.path===snapshot.selectedNotePath)?.fm.title||'ノート';
  if(snapshot.view==='topic')return state.integrations?.topics?.find(t=>t.topic_id===snapshot.selectedTopicId)?.title||'学習ノート';
+ if(snapshot.view==='ampc')return 'AmpCの学習と復習';
  const labels={home:'Home',search:'検索結果',weekly:'Weekly',review:'Review',library:'分野別ノート一覧',integration:'原典確認待ち一覧'};
  return labels[snapshot.view]||'前の画面';
 }
@@ -182,7 +216,7 @@ function home(){
   const organizerCard=organizationIntro();
   const fcard=featured?`<section class="card featured-note"><div class="eyebrow">📖 分野別統合ノート・第1号</div><h2>${esc(featured.fm.title)}</h2><p>30秒要約／詳細学習／関連する菌・抗菌薬</p><span class="draft-label">学習用・原典確認待ち</span><button type="button" id="openFeaturedNote" class="primary-btn">MSSA菌血症ノートを開く ›</button></section>`:'';
   const weekCard=w?`<div class="section-title">🎓 今週の学習</div><section class="card weekly-card"><strong>📅 ${esc(w.fm.week||'今週')}</strong><ul>${mdList(w.sections['今週の学習']).slice(0,4).map(x=>`<li>${esc(x)}</li>`).join('')}</ul><button class="primary-btn" id="goWeekly">今週のまとめを見る ›</button></section>`:'';
-  if(state.mode==='study')return `<main class="screen">${brand('感染症を学び、ASTの判断力を育てる')}${searchBox()}<section class="hero-card study-hero"><div class="hero-title">🎓 学習モード</div><p>統合ノートで知識を整理し、復習で定着を目指す</p></section><section class="card study-landing"><div class="section-title compact">🧠 今日の復習</div><p>平日5問・週末10問の復習、自己評価、端末内の回答履歴で学習を継続できます。</p><button class="primary-btn" id="openReviewHome">Reviewを開く ›</button><p class="small-note">現在の問題は原典未確認の練習用です。正式な理解度には算入しません。</p></section>${organizerCard}${fcard}${weekCard}<section class="card notice">💾 回答履歴は端末内に保存します。ReviewからJSONの書き出し・読み込みができます。</section></main>${nav()}`;
+  if(state.mode==='study')return `<main class="screen">${brand('感染症を学び、ASTの判断力を育てる')}${searchBox()}<section class="hero-card study-hero"><div class="hero-title">🎓 学習モード</div><p>統合ノートで知識を整理し、復習で定着を目指す</p></section><section class="card study-landing"><div class="section-title compact">🧠 今日の復習</div><p>平日5問・週末10問の復習、自己評価、端末内の回答履歴で学習を継続できます。</p><button class="primary-btn" id="openReviewHome">Reviewを開く ›</button><p class="small-note">現在の問題は原典未確認の練習用です。正式な理解度には算入しません。</p></section>${organizerCard}<section class="card ampc-landing"><div class="eyebrow">🧬 以前の学習を復習</div><h2>AmpC βラクタマーゼ</h2><p>ECKH・CTRX・CFPM・MEPM・CMZを最新IDSAに照らして整理。</p><div class="ampc-shortcuts"><button id="ampcStudyOpen" class="primary-btn">8章の教科書を読む ›</button><button id="ampcQuizOpen" class="primary-btn">AmpCの10問を復習する ›</button></div><p class="small-note">学習専用・原典確認待ち</p></section>${fcard}${weekCard}<section class="card notice">💾 回答履歴は端末内に保存します。ReviewからJSONの書き出し・読み込みができます。</section></main>${nav()}`;
   return `<main class="screen">${brand()}${searchBox()}<section class="hero-card"><div class="hero-title">💡 AST重要ポイント</div><p>明日からの診療に役立つ<br>感染症診療・ASTのキーポイントを確認</p></section>${organizerCard}${fcard}<div class="grid"><button class="category" data-cat="菌"><span class="icon-bubble teal">🦠</span><strong>菌</strong></button><button class="category" data-cat="抗菌薬"><span class="icon-bubble">💊</span><strong>抗菌薬</strong></button></div><div class="grid three"><button class="category" data-cat="感染症"><span class="icon-bubble pink">🧫</span><strong>感染症</strong></button><button class="category" data-cat="血培"><span class="icon-bubble purple">🧪</span><strong>血培</strong></button><button class="category" data-cat="AST介入"><span class="icon-bubble teal">👥</span><strong>AST介入</strong></button></div>${weekCard}<section class="card notice">🔔 更新確認が必要 <strong>${staleCount()}件</strong></section></main>${nav()}`;
 }
 function organizationIntro(){
@@ -215,6 +249,9 @@ function getSearchResults(){
   for(const w of state.weekly){
     const s=bestScore(q,[w.fm.title,w.fm.week,w.fm.tags,...w.body.split('\n').filter(Boolean).slice(0,80)]);
     if(s>36)results.push({type:'Weekly',score:s,title:w.fm.title,sub:w.fm.week,obj:w});
+  }
+  if(q&&['ampc','ampcβ','誘導型ampc','enterobacter','cfpm','eckh','シトロバクター'].some(v=>normalize(q).includes(normalize(v))||normalize(v).includes(normalize(q)))){
+    results.push({type:'AmpC学習',score:100,title:'AmpC βラクタマーゼ',sub:'教科書8章・復習10問',obj:null});
   }
   if(!q){
     results=[
@@ -321,6 +358,7 @@ function updateSearchPanel(){
 }
 
 function bindSearchPanel(){
+  document.querySelectorAll('[data-search-ampc]').forEach(b=>b.onclick=()=>openAmpc(false));
   document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{
     state.filter=b.dataset.filter;
     updateSearchPanel();
@@ -335,6 +373,7 @@ function bindSearchPanel(){
 }
 
 function resultCard(r,top){
+  if(r.type==='AmpC学習')return '<section class="card result-card"><div class="result-head"><span class="icon-bubble purple">🧬</span><div class="result-title"><h3>AmpC βラクタマーゼ</h3><p>最新IDSAを基に学ぶ8章・集中復習10問</p></div></div><button type="button" class="primary-btn" data-search-ampc>AmpCを学ぶ ›</button></section>';
   if(r.type==='ノート')return `<section class="card result-card"><div class="result-head"><span class="icon-bubble pink">📖</span><div class="result-title"><h3>${esc(r.title)}</h3><p>${esc(r.sub||'')} · 統合ノート</p><span class="draft-label">原典確認待ち</span></div></div><button class="primary-btn open-note" data-note="${esc(r.obj.path)}">統合ノートを開く ›</button></section>`;
   if(r.type==='菌')return `<section class="card result-card"><div class="result-head"><span class="icon-bubble teal">🦠</span><div class="result-title"><h3>${esc(r.title)} ${top?'<span class="verified">✓ 候補</span>':''}</h3><p>${esc(r.sub||'')}</p><div class="tags">${(r.obj.tags||[]).map(t=>`<span class="tag">#${esc(t)}</span>`).join('')}</div></div></div><div class="summary">${r.obj.id==='stenotrophomonas-maltophilia'?'カルバペネムは基本的に期待しにくい / ST使用時はK・腎機能を確認':'菌名・別名・関連タグから一致しました。'}</div>${r.obj.note?'<button class="primary-btn open-note" data-note="'+r.obj.note+'">菌ノートを開く ›</button>':''}</section>`;
   if(r.type==='抗菌薬')return `<section class="card result-card"><div class="result-head"><span class="icon-bubble">💊</span><div class="result-title"><h3>${esc(r.title)}</h3><p>${esc(r.sub)}</p><div class="tags">${[...(r.obj.brands||[]),...(r.obj.abbr||[])].slice(0,4).map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div></div></div><div class="summary">一般名・商品名・略語・入力ゆれから検索できます。</div></section>`;
@@ -418,6 +457,8 @@ function weeklyView(){
 }
 function parseQA(s=''){const lines=s.split('\n');const out=[];let cur=null;for(const line of lines){if(line.startsWith('- Q:')){cur={q:line.replace('- Q:','').trim(),a:''};out.push(cur)}else if(line.trim().startsWith('A:')&&cur)cur.a=line.trim().replace(/^A:\s*/,'')}return out}
 function reviewView(){
+ if(state.mode==='study')return `<main class="screen">${brand('復習')}<section class="card ampc-landing"><h2>🧬 AmpCを集中復習</h2><p>以前勉強したECKH、CTRXの耐性化、CFPMとMEPMの判断を10問で確認。</p><button id="ampcQuizOpen" class="primary-btn">AmpCの10問に挑戦する ›</button></section><div id="reviewFeature" aria-live="polite"><section class="card review-panel">復習問題を準備しています…</section></div></main>${nav()}`;
+
  if(state.mode!=='study')return `<main class="screen">${brand('復習')}<section class="card review-panel"><h2>📘 学習モードで復習します</h2><p>臨床モードには原典未確認の練習問題を表示しません。学習モードへ切り替えてください。</p><button class="primary-btn" type="button" data-mode="study">学習モードへ切り替える ›</button></section></main>${nav()}`;
  return `<main class="screen">${brand('復習')}<div id="reviewFeature" aria-live="polite"><section class="card review-panel">復習問題を準備しています…</section></div></main>${nav()}`;
 }
@@ -427,6 +468,8 @@ function bindPage(){
   document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{const m=b.dataset.mode;if(m!==state.mode&&(m==='clinical'||m==='study')){state.mode=m;try{localStorage.setItem('astPocketModeV2',m)}catch(e){}render(false)}}));
   $('#openFeaturedNote')?.addEventListener('click',()=>{const n=state.notes.find(n=>n.fm.layout==='integrated');if(n)navigate('note',{selectedNote:n,noteOrigin:'home'});});
   $('#openReviewHome')?.addEventListener('click',()=>navigate('review'));
+  $('#ampcStudyOpen')?.addEventListener('click',()=>openAmpc(false));
+  $('#ampcQuizOpen')?.addEventListener('click',()=>openAmpc(true));
   $('#openOrganizer')?.addEventListener('click',()=>navigate('library',{libraryCategory:'all'}));
   $('#openReviewQueue')?.addEventListener('click',()=>navigate('integration'));
   document.querySelectorAll('.open-generated-topic').forEach(b=>b.addEventListener('click',()=>navigate('topic',{selectedTopicId:b.dataset.topicId})));
@@ -440,6 +483,29 @@ function bindPage(){
     navigate('weekly',{selectedWeeklyPath:b.dataset.weeklyPath});
   }));
   document.querySelectorAll('[data-go-back]').forEach(b=>b.addEventListener('click',goBack));
+  document.querySelectorAll('[data-ampc-tab]').forEach(b=>b.addEventListener('click',()=>{
+   state.ampcTab=b.dataset.ampcTab;if(state.ampcTab==='quiz'&&!state.ampcOrder.length&&state.ampcQuestions.length)
+    state.ampcOrder=rankAmpcQuestions(state.ampcQuestions,state.ampcProgress);
+   render(false);
+  }));
+  document.querySelectorAll('input[name="ampcChoice"]').forEach(b=>b.addEventListener('change',()=>{
+   state.ampcChoice=Number(b.value);render(false);
+  }));
+  document.querySelector('[data-ampc-reveal]')?.addEventListener('click',()=>{
+   if(state.ampcChoice!==null){state.ampcRevealed=true;render(false)}
+  });
+  document.querySelectorAll('[data-ampc-rating]').forEach(b=>b.addEventListener('click',()=>{
+   const rating=b.dataset.ampcRating;
+   const id=state.ampcOrder[state.ampcIndex];
+   if(!state.ampcRevealed||!id||!['again','hard','good','easy'].includes(rating))return;
+   state.ampcProgress[id]={rating,completed_at:new Date().toISOString()};
+   try{localStorage.setItem('astPocketAmpcStudyV1',JSON.stringify(state.ampcProgress))}catch(e){console.warn('Could not save AmpC progress',e)}
+   state.ampcIndex++;state.ampcChoice=null;state.ampcRevealed=false;render(false);
+  }));
+  document.querySelector('[data-ampc-repeat]')?.addEventListener('click',()=>{
+   state.ampcOrder=rankAmpcQuestions(state.ampcQuestions,state.ampcProgress);
+   state.ampcIndex=0;state.ampcChoice=null;state.ampcRevealed=false;render(false);
+  });
   document.querySelectorAll('[data-related]').forEach(b=>b.addEventListener('click',()=>navigate('search',{query:b.dataset.related,filter:'all'})));
   document.querySelectorAll('[data-cat]').forEach(b=>b.onclick=()=>navigate('search',{query:b.dataset.cat,filter:'all'}));
   $('#goWeekly')?.addEventListener('click',()=>navigate('weekly',{selectedWeeklyPath:null}));
@@ -456,7 +522,7 @@ function bindPage(){
   }
 }
 
-function render(scroll=true){stopMssaReader();stopTemplateReader();let html='';if(state.view==='home')html=home();else if(state.view==='search')html=searchResults();else if(state.view==='note')html=noteView();else if(state.view==='library')html=libraryView();else if(state.view==='topic')html=dynamicTopicView();else if(state.view==='integration')html=integrationReviewView();else if(state.view==='weekly')html=weeklyView();else html=reviewView();app.innerHTML=html;
+function render(scroll=true){stopMssaReader();stopTemplateReader();let html='';if(state.view==='home')html=home();else if(state.view==='search')html=searchResults();else if(state.view==='note')html=noteView();else if(state.view==='library')html=libraryView();else if(state.view==='topic')html=dynamicTopicView();else if(state.view==='ampc')html=ampcView();else if(state.view==='integration')html=integrationReviewView();else if(state.view==='weekly')html=weeklyView();else html=reviewView();app.innerHTML=html;
  const main=app.querySelector('main.screen');
  if(main && navigationStack.length){
   const place=main.querySelector('.mode-toggle');
