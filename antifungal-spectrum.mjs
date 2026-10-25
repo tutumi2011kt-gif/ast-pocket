@@ -4,7 +4,7 @@
  * associations, NOT susceptibility testing or clinical recommendations.
  */
 export const ANTIFUNGAL_SPECTRUM_PATH='content/spectrum/antifungal-2026-10.json';
-const KEY_RE=/^[a-z][a-z0-9-]*$/;
+const KEY_RE=/^[a-z0-9][a-z0-9-]*$/;
 const SYMBOLS=['◎','○','△','×','○※','◎※'];
 const ALLOWED_URLS=new Set([
  'https://www.idsociety.org/practice-guideline/candidiasis/',
