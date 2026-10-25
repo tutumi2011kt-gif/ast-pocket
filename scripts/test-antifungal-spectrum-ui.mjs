@@ -24,7 +24,7 @@ const required=[
  "document.querySelector('[data-spectrum-clear]')",
  "t.topic_id==='cross-antifungal-spectrum'",
  "state.spectrumOrganism=previous.spectrumOrganism",
- "if(state.view==='spectrum')return '抗真菌薬スペクトル'"
+ "if(snapshot.view==='spectrum')return '抗真菌薬スペクトル'"
 ];
 for(const phrase of required)assert.ok(app.includes(phrase),'Missing UI link/guard: '+phrase);
 assert.ok(app.includes('data-open-spectrum'));
