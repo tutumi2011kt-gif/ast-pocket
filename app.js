@@ -250,7 +250,7 @@ function getSearchResults(){
     const s=bestScore(q,[w.fm.title,w.fm.week,w.fm.tags,...w.body.split('\n').filter(Boolean).slice(0,80)]);
     if(s>36)results.push({type:'Weekly',score:s,title:w.fm.title,sub:w.fm.week,obj:w});
   }
-  if(q&&['ampc','ampcβ','誘導型ampc','enterobacter','cfpm','eckh','シトロバクター'].some(v=>normalize(q).includes(normalize(v))||normalize(v).includes(normalize(q)))){
+  if(state.mode==='study'&&q&&['ampc','ampcβ','誘導型ampc','enterobacter','cfpm','eckh','シトロバクター'].some(v=>normalize(q).includes(normalize(v))||normalize(v).includes(normalize(q)))){
     results.push({type:'AmpC学習',score:100,title:'AmpC βラクタマーゼ',sub:'教科書8章・復習10問',obj:null});
   }
   if(!q){
