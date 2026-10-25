@@ -12,7 +12,7 @@ const ALLOWED_URLS=new Set([
  'https://www.idsociety.org/practice-guideline/Diagnosis-and-Management-of-Cryptococcosis/',
  'https://www.ecmm.info/guidelines/mucormycoses-2019/'
 ]);
-const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;':'&quot;',"'":'&#39;'}[c]));
+const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const text=(s,max=330)=>typeof s==='string'&&s.length>0&&s.length<=max&&
  !/(?:<|>|\bjavascript:|https?:\/\/|患者名|患者ID|院内限定|@)/i.test(s);
 export function validateSpectrum(data){
