@@ -1,0 +1,336 @@
+{
+  "schema_version": 1,
+  "origin": "ChatGPT learning table 2026-10-17",
+  "updated": "2026-10-25",
+  "review_status": "educational_draft_human_medical_review_pending",
+  "notes": [
+    "◎＝重要な活性・代表的治療選択肢。全病態で第一選択という意味ではない。",
+    "○＝活性あり・条件により選択肢。",
+    "△＝活性や臨床的位置づけが限定的・不確実。",
+    "×＝基本的に臨床効果を期待しない。",
+    "※＝併用・代替・特別な注意事項。セルをタップして確認。",
+    "本表は菌種・病型・感受性・部位・耐性・国内承認を省略した暗記用の簡略表。処方の決定には使用しない。"
+  ],
+  "columns": [
+    {
+      "id": "albicans",
+      "label": "C. albicans",
+      "short": "C. albicans",
+      "group": "Candida"
+    },
+    {
+      "id": "glabrata",
+      "label": "C. glabrata",
+      "short": "C. glabrata",
+      "group": "Candida"
+    },
+    {
+      "id": "krusei",
+      "label": "C. krusei",
+      "short": "C. krusei",
+      "group": "Candida"
+    },
+    {
+      "id": "aspergillus",
+      "label": "Aspergillus",
+      "short": "Aspergillus",
+      "group": "糸状菌"
+    },
+    {
+      "id": "cryptococcus",
+      "label": "Cryptococcus",
+      "short": "Cryptococcus",
+      "group": "酵母"
+    },
+    {
+      "id": "mucorales",
+      "label": "Mucorales",
+      "short": "Mucorales",
+      "group": "ムーコル目"
+    }
+  ],
+  "rows": [
+    {
+      "id": "echinocandin",
+      "label": "MCFG／CPFG",
+      "generic": "ミカファンギン／カスポファンギン",
+      "group": "エキノキャンディン系",
+      "cells": {
+        "albicans": {
+          "rating": "◎",
+          "note": "多くの侵襲性Candida感染で初期治療の代表的選択肢。感受性と病型を確認。"
+        },
+        "glabrata": {
+          "rating": "◎",
+          "note": "C. glabrata感染で重要な初期選択肢。獲得耐性・FKS変異に注意。"
+        },
+        "krusei": {
+          "rating": "◎",
+          "note": "C. kruseiはFLCZ自然耐性だが、エキノキャンディンが治療選択肢になる。"
+        },
+        "aspergillus": {
+          "rating": "△",
+          "note": "Aspergillusに活性はあるが、侵襲性肺アスペルギルス症の標準的な初期単剤治療ではない。"
+        },
+        "cryptococcus": {
+          "rating": "×",
+          "note": "Cryptococcusに対する臨床的有効性は期待できない。"
+        },
+        "mucorales": {
+          "rating": "×",
+          "note": "Mucoralesに対する臨床的有効性は期待できない。"
+        }
+      }
+    },
+    {
+      "id": "flcz",
+      "label": "FLCZ",
+      "generic": "フルコナゾール",
+      "group": "トリアゾール系",
+      "cells": {
+        "albicans": {
+          "rating": "◎",
+          "note": "感受性のあるC. albicansで使用可能。Candida血症の初期選択は重症度等で異なる。"
+        },
+        "glabrata": {
+          "rating": "△",
+          "note": "C. glabrataは感受性確認後のみ高用量等を検討。無条件の選択肢ではない。"
+        },
+        "krusei": {
+          "rating": "×",
+          "note": "C. kruseiはフルコナゾールに本質的耐性。使用しない。"
+        },
+        "aspergillus": {
+          "rating": "×",
+          "note": "Aspergillusには基本的に活性がない。"
+        },
+        "cryptococcus": {
+          "rating": "○",
+          "note": "Cryptococcus感染症の地固め・維持療法などで主要な役割。髄膜炎の初期単剤治療ではない。"
+        },
+        "mucorales": {
+          "rating": "×",
+          "note": "Mucoralesに対する活性は期待できない。"
+        }
+      }
+    },
+    {
+      "id": "vrcz",
+      "label": "VRCZ",
+      "generic": "ボリコナゾール",
+      "group": "トリアゾール系",
+      "cells": {
+        "albicans": {
+          "rating": "○",
+          "note": "Candidaの一部菌種で有効だが、FLCZと比べた利点は病型・耐性次第。"
+        },
+        "glabrata": {
+          "rating": "△",
+          "note": "C. glabrataでは感受性に個体差があり、結果確認が必要。"
+        },
+        "krusei": {
+          "rating": "○",
+          "note": "感受性のあるC. kruseiのstep-down等で検討される。"
+        },
+        "aspergillus": {
+          "rating": "◎",
+          "note": "侵襲性肺アスペルギルス症の代表的な第一選択薬。"
+        },
+        "cryptococcus": {
+          "rating": "△",
+          "note": "Cryptococcusに活性を示すことがあるが標準の導入療法ではない。"
+        },
+        "mucorales": {
+          "rating": "×",
+          "note": "ムーコル症には活性がなく、VRCZ単剤は不適切。"
+        }
+      }
+    },
+    {
+      "id": "itcz",
+      "label": "ITCZ",
+      "generic": "イトラコナゾール",
+      "group": "トリアゾール系",
+      "cells": {
+        "albicans": {
+          "rating": "○",
+          "note": "Candidaに活性を示すが血症の標準的初期選択薬ではない。"
+        },
+        "glabrata": {
+          "rating": "△",
+          "note": "C. glabrataに対する効果は不確実で、感受性や剤形に注意。"
+        },
+        "krusei": {
+          "rating": "○",
+          "note": "C. kruseiに対してin vitro活性を示し得るが、治療選択には個別根拠が必要。"
+        },
+        "aspergillus": {
+          "rating": "○",
+          "note": "Aspergillusに活性があるが侵襲性肺疾患の標準的初期治療とは異なる。"
+        },
+        "cryptococcus": {
+          "rating": "△",
+          "note": "Cryptococcusへの活性は限定的で、標準治療の中心ではない。"
+        },
+        "mucorales": {
+          "rating": "×",
+          "note": "Mucoralesの治療に通常用いない。"
+        }
+      }
+    },
+    {
+      "id": "pscz",
+      "label": "PSCZ",
+      "generic": "ポサコナゾール",
+      "group": "トリアゾール系",
+      "cells": {
+        "albicans": {
+          "rating": "○",
+          "note": "Candidaでの感受性と感染部位に応じ検討。血症の標準的初期薬とは限らない。"
+        },
+        "glabrata": {
+          "rating": "○",
+          "note": "C. glabrataへの活性は株ごとに異なる。感受性試験を確認。"
+        },
+        "krusei": {
+          "rating": "○",
+          "note": "C. kruseiに活性がある場合がある。薬剤選択は個別判断。"
+        },
+        "aspergillus": {
+          "rating": "○",
+          "note": "Aspergillusに活性があり、予防・治療の位置づけは病型とガイドラインで異なる。"
+        },
+        "cryptococcus": {
+          "rating": "△",
+          "note": "Cryptococcusへの活性は一部報告があるが標準の中心薬ではない。"
+        },
+        "mucorales": {
+          "rating": "○",
+          "note": "ムーコル症の代替・救済治療などで重要。剤形・曝露の差を確認。"
+        }
+      }
+    },
+    {
+      "id": "iscz",
+      "label": "ISCZ",
+      "generic": "イサブコナゾール",
+      "group": "トリアゾール系",
+      "cells": {
+        "albicans": {
+          "rating": "○",
+          "note": "一部Candidaに活性があるが、Candida血症の標準初期治療とは限らない。"
+        },
+        "glabrata": {
+          "rating": "△",
+          "note": "C. glabrataは株による差が大きく、感受性評価が必要。"
+        },
+        "krusei": {
+          "rating": "○",
+          "note": "C. kruseiに活性があっても臨床的な位置づけは病型で検討。"
+        },
+        "aspergillus": {
+          "rating": "○",
+          "note": "侵襲性肺アスペルギルス症でVRCZの代替選択肢の一つ。"
+        },
+        "cryptococcus": {
+          "rating": "△",
+          "note": "Cryptococcusへの臨床根拠は限定的。標準治療の中心ではない。"
+        },
+        "mucorales": {
+          "rating": "○",
+          "note": "ムーコル症の治療選択肢。国内承認状況を確認。"
+        }
+      }
+    },
+    {
+      "id": "lamb",
+      "label": "L-AMB",
+      "generic": "リポソーマルアムホテリシンB",
+      "group": "ポリエン系",
+      "cells": {
+        "albicans": {
+          "rating": "◎",
+          "note": "広い抗Candida活性があり有力な選択肢。ただし血症の標準初期治療は通常エキノキャンディン。"
+        },
+        "glabrata": {
+          "rating": "◎",
+          "note": "アゾール耐性が問題となるC. glabrataでも選択肢。腎毒性等に注意。"
+        },
+        "krusei": {
+          "rating": "◎",
+          "note": "フルコナゾール自然耐性のC. krusei感染で治療選択肢になり得る。"
+        },
+        "aspergillus": {
+          "rating": "○※",
+          "note": "Aspergillusに活性がありVRCZ不適時等の代替。全菌種・すべての状況で万能ではない。"
+        },
+        "cryptococcus": {
+          "rating": "◎",
+          "note": "Cryptococcus髄膜炎の導入治療でフルシトシンとの併用が重要。"
+        },
+        "mucorales": {
+          "rating": "◎",
+          "note": "ムーコル症の重要な第一選択。感染源の外科的管理も検討。"
+        }
+      }
+    },
+    {
+      "id": "5fc",
+      "label": "5-FC",
+      "generic": "フルシトシン",
+      "group": "ピリミジン系",
+      "cells": {
+        "albicans": {
+          "rating": "○※",
+          "note": "Candidaに活性はあるが、原則として単剤使用せず併用を検討。"
+        },
+        "glabrata": {
+          "rating": "○※",
+          "note": "C. glabrataなど一部Candidaへの活性は株により異なり、単剤使用は避ける。"
+        },
+        "krusei": {
+          "rating": "△",
+          "note": "C. kruseiでの活性には差があり、ルーチンの第一選択ではない。"
+        },
+        "aspergillus": {
+          "rating": "×",
+          "note": "Aspergillus感染に単剤治療効果は期待しない。"
+        },
+        "cryptococcus": {
+          "rating": "◎※",
+          "note": "Cryptococcus髄膜炎の導入治療でL-AMB等との併用が重要。単剤では耐性化しやすい。"
+        },
+        "mucorales": {
+          "rating": "×",
+          "note": "Mucoralesには基本的に期待しない。"
+        }
+      }
+    }
+  ],
+  "sources": [
+    {
+      "title": "IDSA Candidiasis 2016",
+      "url": "https://www.idsociety.org/practice-guideline/candidiasis/",
+      "published": "2016",
+      "scope": "Candida属・エキノキャンディン・FLCZ・C. krusei"
+    },
+    {
+      "title": "IDSA Aspergillosis 2016",
+      "url": "https://www.idsociety.org/practice-guideline/aspergillosis/",
+      "published": "2016",
+      "scope": "VRCZの初期治療、ISCZ・L-AMB代替、エキノキャンディンの限定的役割"
+    },
+    {
+      "title": "ASM/ECMM/ISHAM Cryptococcosis 2024",
+      "url": "https://www.idsociety.org/practice-guideline/Diagnosis-and-Management-of-Cryptococcosis/",
+      "published": "2024",
+      "scope": "L-AMB＋5-FCなどの併用導入、FLCZの地固め・維持"
+    },
+    {
+      "title": "ECMM Mucormycosis 2019",
+      "url": "https://www.ecmm.info/guidelines/mucormycoses-2019/",
+      "published": "2019",
+      "scope": "L-AMB・PSCZ・ISCZ、外科的管理"
+    }
+  ]
+}
