@@ -239,3 +239,52 @@ button,input{font:inherit}.app-shell{min-height:100vh;padding-bottom:92px}.scree
 .ampc-ratings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .ampc-ratings button{background:#eaf6ff;color:#155b85;border:1px solid #b6d8ed;border-radius:12px;padding:11px 6px;min-height:46px;font-weight:750}
 @media(max-width:420px){.ampc-tabs button{font-size:13px}.ampc-shortcuts .primary-btn{min-width:100%}}
+
+
+/* Antifungal spectrum: mobile-first study-only 8x6 interactive matrix. */
+.spectrum-header{margin:18px 0 16px}
+.spectrum-header h1{font-size:28px;line-height:1.3;margin:7px 0}
+.spectrum-header p{color:var(--muted);margin:7px 0;line-height:1.6}
+.spectrum-home-link{margin:14px 0;padding:18px}
+.spectrum-home-link h2{font-size:20px;margin:9px 0}
+.spectrum-home-link p{line-height:1.7;color:var(--muted)}
+.spectrum-warning{margin:13px 0;padding:15px;background:#fff9ef;border:1px solid #ecd7a8}
+.spectrum-warning p{font-size:14px;line-height:1.75}
+.spectrum-panel{padding:16px 12px;margin:13px 0}
+.spectrum-panel h2,.spectrum-reference h2{font-size:17px;margin:4px 4px 12px}
+.spectrum-filters{display:flex;overflow-x:auto;gap:8px;padding:2px 3px 12px;-webkit-overflow-scrolling:touch}
+.spectrum-filters button{flex:0 0 auto;background:#edf7fc;border:1px solid #c6dde9;border-radius:999px;padding:9px 12px;min-height:42px;color:#235c77;font-size:12px;font-weight:700}
+.spectrum-filters button.selected{background:#176b9e;color:#fff;border-color:#176b9e}
+.spectrum-panel>.small-note{font-size:12px;line-height:1.7;margin:0 3px 10px}
+.spectrum-legend{display:flex;flex-wrap:wrap;gap:8px;margin:8px 3px 15px;font-size:12px;color:#405b72}
+.spectrum-legend span{padding:5px 7px;border-radius:8px;background:#f2f7fb}
+.spectrum-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;border:1px solid #d9e6ef;border-radius:12px;-webkit-overflow-scrolling:touch}
+.spectrum-table{border-collapse:separate;border-spacing:0;min-width:670px;width:100%;background:white;table-layout:fixed;font-size:12px}
+.spectrum-table caption{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.spectrum-table th,.spectrum-table td{border-right:1px solid #d8e7ef;border-bottom:1px solid #d8e7ef;text-align:center;vertical-align:middle;padding:7px 3px}
+.spectrum-table thead th{background:#e5f2fb;font-size:11px;font-weight:800;min-width:84px}
+.spectrum-table .spectrum-sticky{position:sticky;left:0;z-index:2;text-align:left;background:#f4f9fd;min-width:118px;width:118px;padding:11px 8px;box-shadow:1px 0 4px #00000012}
+.spectrum-table thead .spectrum-sticky{z-index:3;background:#dceefa}
+.spectrum-table tbody .spectrum-sticky span{display:block;font-weight:800;font-size:13px;white-space:normal;overflow-wrap:anywhere}
+.spectrum-table tbody .spectrum-sticky small{font-size:10px;display:block;color:#56748a;line-height:1.4;margin-top:4px}
+.spectrum-table tr:nth-child(even) .spectrum-sticky{background:#ecf5fb}
+.spectrum-rating{appearance:none;cursor:pointer;border:1px solid transparent;border-radius:10px;width:100%;min-width:43px;min-height:45px;font-size:24px;line-height:1;color:#27455c;display:flex;align-items:center;justify-content:center;font-weight:800}
+.spectrum-rating small{font-size:11px;align-self:flex-start;margin:3px -2px 0 1px}
+.spectrum-rating.grade-high{background:#d8f5e9;color:#106d50}
+.spectrum-rating.grade-active{background:#e2f0ff;color:#1a65aa}
+.spectrum-rating.grade-limited{background:#fff0d4;color:#a1640e}
+.spectrum-rating.grade-none{background:#f2f4f7;color:#8b96a3}
+.spectrum-rating:focus-visible,.spectrum-filters button:focus-visible{outline:3px solid #1169ae;outline-offset:1px}
+.spectrum-detail{margin:14px 0;padding:17px;border:1px solid #90c9e7;background:#f0f9ff}
+.spectrum-detail h2{font-size:17px;line-height:1.5;margin:8px 0}
+.spectrum-detail p{line-height:1.85;margin:9px 0}
+.spectrum-detail-grade{display:inline-block;font-size:24px;color:#116b9d}
+.spectrum-detail button{background:#e1f1fb;border:1px solid #b8daee;border-radius:10px;padding:9px 17px;color:#175b83}
+.spectrum-reference{padding:18px;margin:15px 0}
+.spectrum-reference ul{padding-left:21px;line-height:1.8;font-size:13px}
+.spectrum-reference li{margin:8px 0;overflow-wrap:anywhere}
+.spectrum-reference a{color:#17689e;text-decoration:underline}
+.spectrum-reference li p{font-size:12px;color:var(--muted);margin:3px 0 9px}
+.spectrum-screen .spectrum-table:has(th:nth-child(2):last-child){min-width:245px;table-layout:auto}
+.spectrum-screen .spectrum-table:has(th:nth-child(2):last-child) th:nth-child(2){width:auto;min-width:90px}
+@media(max-width:410px){.spectrum-header h1{font-size:25px}.spectrum-panel{padding:12px 9px}.spectrum-home-link{padding:15px}}
