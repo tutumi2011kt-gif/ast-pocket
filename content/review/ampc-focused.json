@@ -1,0 +1,252 @@
+[
+  {
+    "id": "ampc-2026-ampc",
+    "version": 1,
+    "status": "draft",
+    "type": "mcq",
+    "prompt": "AmpCの酵素分類として適切なのは？",
+    "choices": [
+      "AmblerクラスC βラクタマーゼ",
+      "クラスAカルバペネマーゼのみ",
+      "DNAジャイレース",
+      "PBPそのもの"
+    ],
+    "correct_index": 0,
+    "explanation": "AmpCはAmblerクラスCに属するβラクタマーゼ群。",
+    "source_path": "content/notes/ampc-study-2026.md",
+    "source_section": "8. 根拠・更新履歴",
+    "reference_url": "https://www.idsociety.org/practice-guideline/amr-guidance/",
+    "reference_section": "Section 2, Question 2.1",
+    "tags": [
+      "AmpC",
+      "AmpC"
+    ],
+    "medical_review": "pending",
+    "integrative": false
+  },
+  {
+    "id": "ampc-2026-eckh",
+    "version": 1,
+    "status": "draft",
+    "type": "mcq",
+    "prompt": "2026年IDSAがAmpC中等度リスク群として挙げる組み合わせは？",
+    "choices": [
+      "E. coli・K. pneumoniaeのみ",
+      "E. cloacae complex・K. aerogenes・C. freundii・H. alvei",
+      "P. aeruginosa・MRSAのみ",
+      "Candida・Aspergillus"
+    ],
+    "correct_index": 1,
+    "explanation": "ECKH。2026年版はH. alveiもin vitroデータ等を踏まえて追加。ただし臨床経験は少ない。",
+    "source_path": "content/notes/ampc-study-2026.md",
+    "source_section": "8. 根拠・更新履歴",
+    "reference_url": "https://www.idsociety.org/practice-guideline/amr-guidance/",
+    "reference_section": "Section 2, Question 2.1",
+    "tags": [
+      "AmpC",
+      "ECKH"
+    ],
+    "medical_review": "pending",
+    "integrative": false
+  },
+  {
+    "id": "ampc-2026-ctrx_s",
+    "version": 1,
+    "status": "draft",
+    "type": "mcq",
+    "prompt": "E. cloacae complex菌血症でCTRXがS。最も重要な注意は？",
+    "choices": [
+      "初期Sなら耐性化は起きない",
+      "治療中のAmpC高発現・耐性化を考える",
+      "CTRXはカルバペネムである",
+      "菌種確認は不要"
+    ],
+    "correct_index": 1,
+    "explanation": "侵襲性感染ではCTRX初期Sだけで安全と判断しない。2026 IDSA Question 2.4。",
+    "source_path": "content/notes/ampc-study-2026.md",
+    "source_section": "8. 根拠・更新履歴",
+    "reference_url": "https://www.idsociety.org/practice-guideline/amr-guidance/",
+    "reference_section": "Section 2, Question 2.4",
+    "tags": [
+      "AmpC",
+      "CTRX_S"
+    ],
+    "medical_review": "pending",
+    "integrative": false
+  },
+  {
+    "id": "ampc-2026-ctrx_mechanism",
+    "version": 1,
+    "status": "draft",
+    "type": "mcq",
+    "prompt": "CTRXが誘導型AmpC感染で問題となる主な理由は？",
+    "choices": [
+      "AmpCに強く安定だから",
+      "弱い誘導でもAmpCによる加水分解を受けやすいから",
+      "抗MRSA活性が高いから",
+      "細胞壁に作用しないから"
+    ],
+    "correct_index": 1,
+    "explanation": "弱誘導でもAmpCに分解されやすく、発現上昇時にMICが上昇し得る。",
+    "source_path": "content/notes/ampc-study-2026.md",
+    "source_section": "8. 根拠・更新履歴",
+    "reference_url": "https://www.idsociety.org/practice-guideline/amr-guidance/",
+    "reference_section": "Section 2, Question 2.2",
+    "tags": [
+      "AmpC",
+      "CTRX_mechanism"
+    ],
+    "medical_review": "pending",
+    "integrative": false
+  },
+  {
+    "id": "ampc-2026-cfpm",
+    "version": 1,
+    "status": "draft",
+    "type": "mcq",
+    "prompt": "AmpC中等度リスク菌でCFPMが選択肢になる理由は？",
+    "choices": [
+      "AmpCを強く誘導し分解されやすい",
+      "AmpC誘導能が低く加水分解に比較的安定",
+      "どのMICでも必ず有効",
+      "ESBL併産でも無条件に第一選択"
+    ],
+    "correct_index": 1,
+    "explanation": "CFPMはAmpCに比較的安定。感受性・MIC・投与設計・感染源等の確認が前提。",
+    "source_path": "content/notes/ampc-study-2026.md",
+    "source_section": "8. 根拠・更新履歴",
+    "reference_url": "https://www.idsociety.org/practice-guideline/amr-guidance/",
+    "reference_section": "Section 2, Question 2.3",
+    "tags": [
+      "AmpC",
+      "CFPM"
+    ],
+    "medical_review": "pending",
+    "integrative": false
+  },
+  {
+    "id": "ampc-2026-mepm",
+    "version": 1,
+    "status": "draft",
+    "type": "mcq",
+    "prompt": "CFPMからMEPMを考える場面は？",
+    "choices": [
+      "ECKHの菌名だけで全例",
+      "感受性不十分、ESBL併産疑い、重症度等を総合評価した時",
+      "CTRXがSのとき全例",
+      "症状なく定着のみ"
+    ],
+    "correct_index": 1,
+    "explanation": "MEPMはAmpCに通常安定だが、重症度・MIC・ESBL併産などを踏まえて適正使用する。",
+    "source_path": "content/notes/ampc-study-2026.md",
+    "source_section": "8. 根拠・更新履歴",
+    "reference_url": "https://www.idsociety.org/practice-guideline/amr-guidance/",
+    "reference_section": "Section 2, Question 2.3",
+    "tags": [
+      "AmpC",
+      "MEPM"
+    ],
+    "medical_review": "pending",
+    "integrative": true
+  },
+  {
+    "id": "ampc-2026-taz_pipc",
+    "version": 1,
+    "status": "draft",
+    "type": "mcq",
+    "prompt": "AmpC中等度リスク菌の侵襲性感染でのTAZ/PIPCは？",
+    "choices": [
+      "常に第一選択",
+      "通常は推奨されない",
+      "CFPMの別名",
+      "どんな菌でも同じ"
+    ],
+    "correct_index": 1,
+    "explanation": "IDSA 2026 Question 2.5は侵襲性感染でTAZ/PIPCを推奨しない。",
+    "source_path": "content/notes/ampc-study-2026.md",
+    "source_section": "8. 根拠・更新履歴",
+    "reference_url": "https://www.idsociety.org/practice-guideline/amr-guidance/",
+    "reference_section": "Section 2, Question 2.5",
+    "tags": [
+      "AmpC",
+      "TAZ_PIPC"
+    ],
+    "medical_review": "pending",
+    "integrative": true
+  },
+  {
+    "id": "ampc-2026-cmz",
+    "version": 1,
+    "status": "draft",
+    "type": "mcq",
+    "prompt": "CMZ（セファマイシン）とAmpCの関係は？",
+    "choices": [
+      "AmpC中等度リスク侵襲性感染で標準的第一選択",
+      "AmpC誘導・加水分解の影響に注意し、ESBLの議論と分ける",
+      "AmpCを必ず阻害する",
+      "ST合剤と同一薬剤"
+    ],
+    "correct_index": 1,
+    "explanation": "セファマイシンはAmpCを誘導しやすく、AmpCが分解し得る。ESBLのCMZ使用文脈と混同しない。",
+    "source_path": "content/notes/ampc-study-2026.md",
+    "source_section": "8. 根拠・更新履歴",
+    "reference_url": "https://www.idsociety.org/practice-guideline/amr-guidance/",
+    "reference_section": "Section 2, Question 2.2",
+    "tags": [
+      "AmpC",
+      "CMZ"
+    ],
+    "medical_review": "pending",
+    "integrative": true
+  },
+  {
+    "id": "ampc-2026-exceptions",
+    "version": 1,
+    "status": "draft",
+    "type": "mcq",
+    "prompt": "2026年IDSAのCTRX使用について正しいのは？",
+    "choices": [
+      "ECKH感染は例外なく絶対禁忌",
+      "軽症・適切な感染源管理・臨床改善なら継続を検討し得る",
+      "侵襲性感染は初期Sなら全例使用",
+      "CFPMも必ず禁止"
+    ],
+    "correct_index": 1,
+    "explanation": "非重症例で既にCTRX開始後に改善しsource controlが適切なら継続が合理的な場合がある。",
+    "source_path": "content/notes/ampc-study-2026.md",
+    "source_section": "8. 根拠・更新履歴",
+    "reference_url": "https://www.idsociety.org/practice-guideline/amr-guidance/",
+    "reference_section": "Section 2, Question 2.4",
+    "tags": [
+      "AmpC",
+      "exceptions"
+    ],
+    "medical_review": "pending",
+    "integrative": true
+  },
+  {
+    "id": "ampc-2026-source_control",
+    "version": 1,
+    "status": "draft",
+    "type": "mcq",
+    "prompt": "E. cloacae complex菌血症のAST評価で優先するのは？",
+    "choices": [
+      "菌種だけでMEPM固定",
+      "感染源・病態・感受性・MIC・腎機能を合わせて評価",
+      "CTRXのSだけを見て終了",
+      "抗菌薬は常に不要"
+    ],
+    "correct_index": 1,
+    "explanation": "感染源、菌種、重症度、MIC、併存耐性機序、投与設計などを総合する。",
+    "source_path": "content/notes/ampc-study-2026.md",
+    "source_section": "8. 根拠・更新履歴",
+    "reference_url": "https://www.idsociety.org/practice-guideline/amr-guidance/",
+    "reference_section": "Section 2, Question 2.3",
+    "tags": [
+      "AmpC",
+      "source_control"
+    ],
+    "medical_review": "pending",
+    "integrative": true
+  }
+]
