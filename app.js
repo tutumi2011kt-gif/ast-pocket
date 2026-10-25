@@ -2,8 +2,9 @@ import {ReviewFeature} from './review-feature.mjs';
 import {MSSA_PATH,renderMssaNotebook,bindMssaReader,stopMssaReader} from './mssa-notebook.mjs';
 import {renderTemplateNotebook,bindTemplateReader,stopTemplateReader} from './notebook-templates.mjs';
 import {AMP_C_NOTE,AMP_C_QUIZ,parseAmpcNote,validateAmpcQuiz,rankAmpcQuestions,renderAmpcStudy} from './ampc-study.mjs';
+import {ANTIFUNGAL_SPECTRUM_PATH,validateSpectrum,renderSpectrum} from './antifungal-spectrum.mjs';
 const reviewFeature=new ReviewFeature();
-const state={mode:'clinical',noteOrigin:'search',view:'home',query:'',filter:'all',notes:[],weekly:[],organisms:[],antibiotics:[],review:[],selectedNote:null,selectedWeeklyPath:null,organized:null,libraryCategory:'all',integrations:null,selectedTopicId:null,ampcChapters:[],ampcQuestions:[],ampcProgress:{},ampcTab:'notes',ampcOrder:[],ampcIndex:0,ampcChoice:null,ampcRevealed:false};
+const state={mode:'clinical',noteOrigin:'search',view:'home',query:'',filter:'all',notes:[],weekly:[],organisms:[],antibiotics:[],review:[],selectedNote:null,selectedWeeklyPath:null,organized:null,libraryCategory:'all',integrations:null,selectedTopicId:null,ampcChapters:[],ampcQuestions:[],ampcProgress:{},ampcTab:'notes',ampcOrder:[],ampcIndex:0,ampcChoice:null,ampcRevealed:false,spectrumData:null,spectrumOrganism:'all',spectrumCell:null};
 const $=s=>document.querySelector(s); const app=$('#app');
 try{const m=localStorage.getItem('astPocketModeV2');if(m==='clinical'||m==='study')state.mode=m;}catch(e){/* Private browsing may disable storage */}
 
@@ -64,6 +65,37 @@ function ampcView(){
  tab:state.ampcTab,index:state.ampcIndex,order:state.ampcOrder,choice:state.ampcChoice,
  revealed:state.ampcRevealed,progress:state.ampcProgress,modeHtml:modeControl()})+nav();
 }
+let spectrumLoading=null;
+async function loadSpectrum(){
+ if(state.mode!=='study')return;
+ if(state.spectrumData)return;
+ if(spectrumLoading)return spectrumLoading;
+ spectrumLoading=(async()=>{
+  try{
+   const response=await fetch(ANTIFUNGAL_SPECTRUM_PATH,{cache:'no-store'});
+   if(!response.ok)throw Error('Spectrum data unavailable');
+   const data=await response.json();
+   validateSpectrum(data);
+   state.spectrumData=data;
+  }catch(error){
+   console.warn('Study-only antifungal spectrum could not load',error);
+  }finally{
+   spectrumLoading=null;
+  }
+  if(state.view==='spectrum'&&state.mode==='study')render(false);
+ })();
+ return spectrumLoading;
+}
+function openSpectrum(){
+ if(state.mode!=='study')return;
+ navigate('spectrum',{spectrumOrganism:'all',spectrumCell:null});
+ if(!state.spectrumData)void loadSpectrum();
+}
+function spectrumView(){
+ return renderSpectrum({data:state.mode==='study'?state.spectrumData:null,
+  mode:state.mode,selectedOrganism:state.spectrumOrganism,
+  selectedCell:state.spectrumCell,modeHtml:modeControl()})+nav();
+}
 async function load(){
   const [org,abx,idx,review,reviewBank]=await Promise.all([
     fetch('data/organisms.json').then(r=>r.json()),fetch('data/antibiotics.json').then(r=>r.json()),fetch('content/index.json').then(r=>r.json()),fetch('content/review/questions.json').then(r=>r.json()),fetch('content/review/bank-v2.json').then(r=>r.json())
@@ -99,6 +131,7 @@ function capturePage(){
   view:state.view,mode:state.mode,query:state.query,filter:state.filter,
   selectedNotePath:state.selectedNote?.path||null,
   selectedWeeklyPath:state.selectedWeeklyPath,selectedTopicId:state.selectedTopicId,
+  spectrumOrganism:state.spectrumOrganism,spectrumCell:state.spectrumCell,
   libraryCategory:state.libraryCategory,noteOrigin:state.noteOrigin,
   scrollY:window.scrollY||0,
   expandedDetails:elements('main.screen details').flatMap((el,i)=>el.open?[i]:[]),
@@ -109,6 +142,7 @@ function routeLabel(snapshot){
  if(snapshot.view==='note')return state.notes.find(n=>n.path===snapshot.selectedNotePath)?.fm.title||'ノート';
  if(snapshot.view==='topic')return state.integrations?.topics?.find(t=>t.topic_id===snapshot.selectedTopicId)?.title||'学習ノート';
  if(snapshot.view==='ampc')return 'AmpCの学習と復習';
+ if(snapshot.view==='spectrum')return '抗真菌薬スペクトル';
  const labels={home:'Home',search:'検索結果',weekly:'Weekly',review:'Review',library:'分野別ノート一覧',integration:'原典確認待ち一覧'};
  return labels[snapshot.view]||'前の画面';
 }
@@ -141,6 +175,8 @@ function goBack(){
  state.selectedNote=state.notes.find(n=>n.path===previous.selectedNotePath)||null;
  state.selectedWeeklyPath=previous.selectedWeeklyPath;
  state.selectedTopicId=previous.selectedTopicId;
+ state.spectrumOrganism=previous.spectrumOrganism||'all';
+ state.spectrumCell=previous.spectrumCell||null;
  try{localStorage.setItem('astPocketModeV2',state.mode)}catch(e){}
  render(false);
  requestAnimationFrame(()=>{
@@ -218,7 +254,7 @@ function home(){
   const organizerCard=organizationIntro();
   const fcard=featured?`<section class="card featured-note"><div class="eyebrow">📖 分野別統合ノート・第1号</div><h2>${esc(featured.fm.title)}</h2><p>30秒要約／詳細学習／関連する菌・抗菌薬</p><span class="draft-label">学習用・原典確認待ち</span><button type="button" id="openFeaturedNote" class="primary-btn">MSSA菌血症ノートを開く ›</button></section>`:'';
   const weekCard=w?`<div class="section-title">🎓 今週の学習</div><section class="card weekly-card"><strong>📅 ${esc(w.fm.week||'今週')}</strong><ul>${mdList(w.sections['今週の学習']).slice(0,4).map(x=>`<li>${esc(x)}</li>`).join('')}</ul><button class="primary-btn" id="goWeekly">今週のまとめを見る ›</button></section>`:'';
-  if(state.mode==='study')return `<main class="screen">${brand('感染症を学び、ASTの判断力を育てる')}${searchBox()}<section class="hero-card study-hero"><div class="hero-title">🎓 学習モード</div><p>統合ノートで知識を整理し、復習で定着を目指す</p></section><section class="card study-landing"><div class="section-title compact">🧠 今日の復習</div><p>平日5問・週末10問の復習、自己評価、端末内の回答履歴で学習を継続できます。</p><button class="primary-btn" id="openReviewHome">Reviewを開く ›</button><p class="small-note">現在の問題は原典未確認の練習用です。正式な理解度には算入しません。</p></section>${organizerCard}<section class="card ampc-landing"><div class="eyebrow">🧬 以前の学習を復習</div><h2>AmpC βラクタマーゼ</h2><p>ECKH・CTRX・CFPM・MEPM・CMZを最新IDSAに照らして整理。</p><div class="ampc-shortcuts"><button id="ampcStudyOpen" class="primary-btn">8章の教科書を読む ›</button><button id="ampcQuizOpen" class="primary-btn">AmpCの10問を復習する ›</button></div><p class="small-note">学習専用・原典確認待ち</p></section>${fcard}${weekCard}<section class="card notice">💾 回答履歴は端末内に保存します。ReviewからJSONの書き出し・読み込みができます。</section></main>${nav()}`;
+  if(state.mode==='study')return `<main class="screen">${brand('感染症を学び、ASTの判断力を育てる')}${searchBox()}<section class="hero-card study-hero"><div class="hero-title">🎓 学習モード</div><p>統合ノートで知識を整理し、復習で定着を目指す</p></section><section class="card study-landing"><div class="section-title compact">🧠 今日の復習</div><p>平日5問・週末10問の復習、自己評価、端末内の回答履歴で学習を継続できます。</p><button class="primary-btn" id="openReviewHome">Reviewを開く ›</button><p class="small-note">現在の問題は原典未確認の練習用です。正式な理解度には算入しません。</p></section>${organizerCard}<section class="card spectrum-home-link"><div class="eyebrow">💊 10月17日の学習表</div><h2>抗真菌薬スペクトル一覧</h2><p>MCFG／CPFG・FLCZ・VRCZ・ITCZ・PSCZ・ISCZ・L-AMB・5-FC を6菌種で比較。</p><button type="button" class="primary-btn" data-open-spectrum>スペクトル表を見る ›</button><p class="small-note">◎○△×をタップして薬剤別・菌種別に確認できます（学習用）。</p></section><section class="card ampc-landing"><div class="eyebrow">🧬 以前の学習を復習</div><h2>AmpC βラクタマーゼ</h2><p>ECKH・CTRX・CFPM・MEPM・CMZを最新IDSAに照らして整理。</p><div class="ampc-shortcuts"><button id="ampcStudyOpen" class="primary-btn">8章の教科書を読む ›</button><button id="ampcQuizOpen" class="primary-btn">AmpCの10問を復習する ›</button></div><p class="small-note">学習専用・原典確認待ち</p></section>${fcard}${weekCard}<section class="card notice">💾 回答履歴は端末内に保存します。ReviewからJSONの書き出し・読み込みができます。</section></main>${nav()}`;
   return `<main class="screen">${brand()}${searchBox()}<section class="hero-card"><div class="hero-title">💡 AST重要ポイント</div><p>明日からの診療に役立つ<br>感染症診療・ASTのキーポイントを確認</p></section>${organizerCard}${fcard}<div class="grid"><button class="category" data-cat="菌"><span class="icon-bubble teal">🦠</span><strong>菌</strong></button><button class="category" data-cat="抗菌薬"><span class="icon-bubble">💊</span><strong>抗菌薬</strong></button></div><div class="grid three"><button class="category" data-cat="感染症"><span class="icon-bubble pink">🧫</span><strong>感染症</strong></button><button class="category" data-cat="血培"><span class="icon-bubble purple">🧪</span><strong>血培</strong></button><button class="category" data-cat="AST介入"><span class="icon-bubble teal">👥</span><strong>AST介入</strong></button></div>${weekCard}<section class="card notice">🔔 更新確認が必要 <strong>${staleCount()}件</strong></section></main>${nav()}`;
 }
 function organizationIntro(){
@@ -252,6 +288,9 @@ function getSearchResults(){
     const s=bestScore(q,[w.fm.title,w.fm.week,w.fm.tags,...w.body.split('\n').filter(Boolean).slice(0,80)]);
     if(s>36)results.push({type:'Weekly',score:s,title:w.fm.title,sub:w.fm.week,obj:w});
   }
+  if(state.mode==='study'&&q&&['抗真菌','真菌薬','スペクトル','mcfg','cpfg','flcz','vrcz','itcz','pscz','iscz','l-amb','5-fc','カンジダ','cryptococcus','aspergillus'].some(v=>normalize(q).includes(normalize(v))||normalize(v).includes(normalize(q)))){
+    results.push({type:'抗真菌薬スペクトル',score:100,title:'抗真菌薬スペクトル一覧',sub:'10月17日の表・8薬剤×6菌種',obj:null});
+  }
   if(state.mode==='study'&&q&&['ampc','ampcβ','誘導型ampc','enterobacter','cfpm','eckh','シトロバクター'].some(v=>normalize(q).includes(normalize(v))||normalize(v).includes(normalize(q)))){
     results.push({type:'AmpC学習',score:100,title:'AmpC βラクタマーゼ',sub:'教科書8章・復習10問',obj:null});
   }
@@ -262,7 +301,7 @@ function getSearchResults(){
     ];
   }
   results.sort((a,b)=>b.score-a.score);
-  if(state.filter!=='all')results=results.filter(r=>r.type===state.filter);
+  if(state.filter!=='all')results=results.filter(r=>r.type===state.filter||(state.filter==='ノート'&&r.type==='抗真菌薬スペクトル'));
   return results;
 }
 
@@ -322,6 +361,9 @@ function dynamicTopicView(){
   modeHtml:modeControl(),links:t.links||[],fragmentForLink:l=>proposalSnippet(l),
   historyHtml:state.mode==='study'?classifiedHistory(t.weekly_refs||[],6):''
  });
+ if(state.mode==='study'&&t.topic_id==='cross-antifungal-spectrum'){
+  return html.replace('</main>','<section class="card spectrum-home-link"><div class="eyebrow">💊 10月17日の学習表</div><h2>抗真菌薬スペクトル一覧</h2><p>MCFG／CPFG・FLCZ・VRCZ・ITCZ・PSCZ・ISCZ・L-AMB・5-FC を6菌種で比較。</p><button type="button" class="primary-btn" data-open-spectrum>スペクトル表を見る ›</button><p class="small-note">◎○△×をタップして薬剤別・菌種別に確認できます（学習用）。</p></section></main>')+nav();
+ }
  return html+nav();
 }
 function integrationReviewView(){
@@ -346,7 +388,7 @@ function libraryView(){
  }).join('');
  return `<main class="screen">${brand('6分類で学習を蓄積')}
  <section class="card organizer-info"><strong>🗂 Weeklyの自動整理と追記候補</strong><p>${data.stats.weekly_count}週分から${data.stats.classified_topics}テーマを検出。学習メモの追記候補は自動作成します。</p><p class="small-note">ルールによる処理です。臨床推奨の原典照合・自動更新は行いません。</p>${state.integrations?`<button id="openReviewQueue" class="review-queue-button">医学的な確認待ち ${state.integrations.stats.review_required}件を見る ›</button>`:''}</section>
- <div class="tabs organizer-tabs">${categoryControls}</div><p class="small-note">分類されたテーマ ${topics.length}件</p>${cards||'<section class="card empty">この分類に学習記録はありません。</section>'}</main>${nav()}`;
+ ${state.mode==='study'?`<section class="card spectrum-home-link"><div class="eyebrow">💊 10月17日の学習表</div><h2>抗真菌薬スペクトル一覧</h2><p>MCFG／CPFG・FLCZ・VRCZ・ITCZ・PSCZ・ISCZ・L-AMB・5-FC を6菌種で比較。</p><button type="button" class="primary-btn" data-open-spectrum>スペクトル表を見る ›</button><p class="small-note">◎○△×をタップして薬剤別・菌種別に確認できます（学習用）。</p></section>`:''}<div class="tabs organizer-tabs">${categoryControls}</div><p class="small-note">分類されたテーマ ${topics.length}件</p>${cards||'<section class="card empty">この分類に学習記録はありません。</section>'}</main>${nav()}`;
 }
 function searchResults(){
   return `<main class="screen">${brand()}${searchBox()}<div id="searchPanel">${searchPanelHtml()}</div></main>${nav()}`;
@@ -375,6 +417,7 @@ function bindSearchPanel(){
 }
 
 function resultCard(r,top){
+  if(r.type==='抗真菌薬スペクトル')return '<section class="card result-card"><div class="result-head"><span class="icon-bubble teal">💊</span><div class="result-title"><h3>抗真菌薬スペクトル一覧</h3><p>8薬剤×6菌種：10月17日の比較表</p></div></div><button type="button" class="primary-btn" data-open-spectrum>スペクトル表を見る ›</button></section>';
   if(r.type==='AmpC学習')return '<section class="card result-card"><div class="result-head"><span class="icon-bubble purple">🧬</span><div class="result-title"><h3>AmpC βラクタマーゼ</h3><p>最新IDSAを基に学ぶ8章・集中復習10問</p></div></div><button type="button" class="primary-btn" data-search-ampc>AmpCを学ぶ ›</button></section>';
   if(r.type==='ノート')return `<section class="card result-card"><div class="result-head"><span class="icon-bubble pink">📖</span><div class="result-title"><h3>${esc(r.title)}</h3><p>${esc(r.sub||'')} · 統合ノート</p><span class="draft-label">原典確認待ち</span></div></div><button class="primary-btn open-note" data-note="${esc(r.obj.path)}">統合ノートを開く ›</button></section>`;
   if(r.type==='菌')return `<section class="card result-card"><div class="result-head"><span class="icon-bubble teal">🦠</span><div class="result-title"><h3>${esc(r.title)} ${top?'<span class="verified">✓ 候補</span>':''}</h3><p>${esc(r.sub||'')}</p><div class="tags">${(r.obj.tags||[]).map(t=>`<span class="tag">#${esc(t)}</span>`).join('')}</div></div></div><div class="summary">${r.obj.id==='stenotrophomonas-maltophilia'?'カルバペネムは基本的に期待しにくい / ST使用時はK・腎機能を確認':'菌名・別名・関連タグから一致しました。'}</div>${r.obj.note?'<button class="primary-btn open-note" data-note="'+r.obj.note+'">菌ノートを開く ›</button>':''}</section>`;
@@ -472,6 +515,24 @@ function bindPage(){
   $('#openReviewHome')?.addEventListener('click',()=>navigate('review'));
   $('#ampcStudyOpen')?.addEventListener('click',()=>openAmpc(false));
   $('#ampcQuizOpen')?.addEventListener('click',()=>openAmpc(true));
+  document.querySelectorAll('[data-open-spectrum]').forEach(el=>el.addEventListener('click',openSpectrum));
+  document.querySelectorAll('[data-spectrum-organism]').forEach(el=>el.addEventListener('click',()=>{
+   if(state.mode!=='study'||!state.spectrumData)return;
+   const id=el.dataset.spectrumOrganism;
+   if(id!=='all'&&!state.spectrumData.columns.some(c=>c.id===id))return;
+   state.spectrumOrganism=id;
+   state.spectrumCell=null;
+   render(false);
+  }));
+  document.querySelectorAll('[data-spectrum-cell]').forEach(el=>el.addEventListener('click',()=>{
+   if(state.mode!=='study'||!state.spectrumData)return;
+   const [drug,organism]=(el.dataset.spectrumCell||'').split(':');
+   if(!state.spectrumData.rows.some(r=>r.id===drug)||!state.spectrumData.columns.some(c=>c.id===organism))return;
+   state.spectrumCell=drug+':'+organism;
+   render(false);
+  }));
+  document.querySelector('[data-spectrum-clear]')?.addEventListener('click',()=>{state.spectrumCell=null;render(false)});
+  
   $('#openOrganizer')?.addEventListener('click',()=>navigate('library',{libraryCategory:'all'}));
   $('#openReviewQueue')?.addEventListener('click',()=>navigate('integration'));
   document.querySelectorAll('.open-generated-topic').forEach(b=>b.addEventListener('click',()=>navigate('topic',{selectedTopicId:b.dataset.topicId})));
@@ -524,7 +585,7 @@ function bindPage(){
   }
 }
 
-function render(scroll=true){stopMssaReader();stopTemplateReader();let html='';if(state.view==='home')html=home();else if(state.view==='search')html=searchResults();else if(state.view==='note')html=noteView();else if(state.view==='library')html=libraryView();else if(state.view==='topic')html=dynamicTopicView();else if(state.view==='ampc')html=ampcView();else if(state.view==='integration')html=integrationReviewView();else if(state.view==='weekly')html=weeklyView();else html=reviewView();app.innerHTML=html;
+function render(scroll=true){stopMssaReader();stopTemplateReader();let html='';if(state.view==='home')html=home();else if(state.view==='search')html=searchResults();else if(state.view==='note')html=noteView();else if(state.view==='library')html=libraryView();else if(state.view==='topic')html=dynamicTopicView();else if(state.view==='ampc')html=ampcView();else if(state.view==='spectrum')html=spectrumView();else if(state.view==='integration')html=integrationReviewView();else if(state.view==='weekly')html=weeklyView();else html=reviewView();app.innerHTML=html;
  const main=app.querySelector('main.screen');
  if(main && navigationStack.length){
   const place=main.querySelector('.mode-toggle');
