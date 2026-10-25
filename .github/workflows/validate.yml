@@ -84,6 +84,6 @@ jobs:
       - name: Verify AmpC learning module
         run: node --check ampc-study.mjs && node scripts/test-ampc-study.mjs && node scripts/test-ampc-ui.mjs
       - name: Check antifungal spectrum source table and study-only display
-        run: node --check antifungal-spectrum.mjs && node --check app.js && node scripts/test-antifungal-spectrum.mjs
+        run: node --check antifungal-spectrum.mjs && node --check app.js && node scripts/test-antifungal-spectrum.mjs && node scripts/test-antifungal-spectrum-ui.mjs
       - name: Check required files
         run: test -f index.html && test -f app.js && test -f styles.css
