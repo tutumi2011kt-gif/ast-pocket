@@ -44,6 +44,8 @@ async function loadAmpc(){
     const data=JSON.parse(localStorage.getItem('astPocketAmpcStudyV1')||'{}');
     state.ampcProgress=data&&typeof data==='object'&&!Array.isArray(data)?data:{};
    }catch{state.ampcProgress={}}
+   if(state.ampcTab==='quiz'&&!state.ampcOrder.length)
+    state.ampcOrder=rankAmpcQuestions(questions,state.ampcProgress);
   }catch(e){console.warn('AmpC education material unavailable',e)}
  })();
  await ampcLoading;
