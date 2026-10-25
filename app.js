@@ -402,6 +402,7 @@ function updateSearchPanel(){
 }
 
 function bindSearchPanel(){
+  document.querySelectorAll('[data-open-spectrum]').forEach(el=>el.onclick=openSpectrum);
   document.querySelectorAll('[data-search-ampc]').forEach(b=>b.onclick=()=>openAmpc(false));
   document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{
     state.filter=b.dataset.filter;
@@ -515,7 +516,7 @@ function bindPage(){
   $('#openReviewHome')?.addEventListener('click',()=>navigate('review'));
   $('#ampcStudyOpen')?.addEventListener('click',()=>openAmpc(false));
   $('#ampcQuizOpen')?.addEventListener('click',()=>openAmpc(true));
-  document.querySelectorAll('[data-open-spectrum]').forEach(el=>el.addEventListener('click',openSpectrum));
+  if(state.view!=='search')document.querySelectorAll('[data-open-spectrum]').forEach(el=>el.addEventListener('click',openSpectrum));
   document.querySelectorAll('[data-spectrum-organism]').forEach(el=>el.addEventListener('click',()=>{
    if(state.mode!=='study'||!state.spectrumData)return;
    const id=el.dataset.spectrumOrganism;
