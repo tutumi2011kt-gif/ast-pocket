@@ -81,5 +81,7 @@ jobs:
         run: node --check scripts/test-weekly-seven-day-recovery.mjs && node scripts/test-weekly-seven-day-recovery.mjs
       - name: Validate eight chapter antifungal summary from October study
         run: node scripts/test-antifungal-textbook-draft.mjs
+      - name: Verify AmpC learning module
+        run: node --check ampc-study.mjs && node scripts/test-ampc-study.mjs
       - name: Check required files
         run: test -f index.html && test -f app.js && test -f styles.css
