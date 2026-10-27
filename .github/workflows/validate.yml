@@ -85,5 +85,7 @@ jobs:
         run: node --check ampc-study.mjs && node scripts/test-ampc-study.mjs && node scripts/test-ampc-ui.mjs
       - name: Check antifungal spectrum source table and study-only display
         run: node --check antifungal-spectrum.mjs && node --check app.js && node scripts/test-antifungal-spectrum.mjs && node scripts/test-antifungal-spectrum-ui.mjs
+      - name: Verify iPhone installed-app updates and fresh deploy caching
+        run: node --check app-update.mjs && node --check scripts/prepare-pages-version.mjs && node scripts/test-app-update.mjs
       - name: Check required files
         run: test -f index.html && test -f app.js && test -f styles.css
