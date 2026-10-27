@@ -26,6 +26,8 @@ jobs:
         run: node scripts/organize-weekly.mjs --write
       - name: Build safe draft integration proposals
         run: node scripts/propose-integrations.mjs --write
+      - name: Prepare cache-busted iPhone/PWA site version
+        run: node scripts/prepare-pages-version.mjs
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .

@@ -3,9 +3,51 @@ import {MSSA_PATH,renderMssaNotebook,bindMssaReader,stopMssaReader} from './mssa
 import {renderTemplateNotebook,bindTemplateReader,stopTemplateReader} from './notebook-templates.mjs';
 import {AMP_C_NOTE,AMP_C_QUIZ,parseAmpcNote,validateAmpcQuiz,rankAmpcQuestions,renderAmpcStudy} from './ampc-study.mjs';
 import {ANTIFUNGAL_SPECTRUM_PATH,validateSpectrum,renderSpectrum} from './antifungal-spectrum.mjs';
+import {embeddedBuild,fetchPublishedBuild,compareBuilds,freshLaunchUrl} from './app-update.mjs';
 const reviewFeature=new ReviewFeature();
 const state={mode:'clinical',noteOrigin:'search',view:'home',query:'',filter:'all',notes:[],weekly:[],organisms:[],antibiotics:[],review:[],selectedNote:null,selectedWeeklyPath:null,organized:null,libraryCategory:'all',integrations:null,selectedTopicId:null,ampcChapters:[],ampcQuestions:[],ampcProgress:{},ampcTab:'notes',ampcOrder:[],ampcIndex:0,ampcChoice:null,ampcRevealed:false,spectrumData:null,spectrumOrganism:'all',spectrumCell:null};
-const $=s=>document.querySelector(s); const app=$('#app');
+const $=s=>document.querySelector(s);
+const releaseCheck={message:'アプリ起動時にも最新版を確認します。',lastCheckAt:0,busy:false};
+let releaseCheckPromise=null;
+function updateCard(){
+ return '<section class="card app-release-card">'+
+  '<div class="app-release-heading"><strong>🔄 アプリを最新版に更新</strong>'+
+  '<button type="button" id="updateAppBtn" class="app-update-button" '+(releaseCheck.busy?'disabled':'')+'>最新版に更新</button></div>'+
+  '<p id="appUpdateStatus" aria-live="polite">'+esc(releaseCheck.message)+'</p>'+
+  '<p class="small-note">ホーム画面に追加していても更新できます。学習中の内容は自動で再読み込みしません。</p></section>';
+}
+function showReleaseStatus(){
+ const status=$('#appUpdateStatus');
+ if(status)status.textContent=releaseCheck.message;
+ const button=$('#updateAppBtn');
+ if(button)button.disabled=releaseCheck.busy;
+}
+async function checkLatestRelease(manual=false){
+ if(releaseCheckPromise)return releaseCheckPromise;
+ if(!manual&&Date.now()-releaseCheck.lastCheckAt<60_000)return;
+ releaseCheck.busy=true;releaseCheck.message='公開中の最新版を確認しています…';showReleaseStatus();
+ releaseCheck.lastCheckAt=Date.now();
+ releaseCheckPromise=(async()=>{
+  try{
+   const sha=await fetchPublishedBuild();
+   const status=compareBuilds(embeddedBuild(document),sha);
+   if(manual){
+    releaseCheck.message='最新版を再読み込みします…';showReleaseStatus();
+    window.location.replace(freshLaunchUrl(window.location.href,sha,Date.now()));
+    return;
+   }
+   releaseCheck.message=status==='new_release'?'新しい版があります。「最新版に更新」を押してください。':
+    status==='up_to_date'?'最新版です。':
+    '公開中のバージョンを確認できました。必要なら「最新版に更新」を押してください。';
+  }catch(error){
+   console.warn('AST Pocket update check unavailable',error);
+   releaseCheck.message='更新を確認できませんでした。通信状況を確認して再度お試しください。';
+  }finally{
+   releaseCheck.busy=false;releaseCheckPromise=null;showReleaseStatus();
+  }
+ })();
+ return releaseCheckPromise;
+} const app=$('#app');
 try{const m=localStorage.getItem('astPocketModeV2');if(m==='clinical'||m==='study')state.mode=m;}catch(e){/* Private browsing may disable storage */}
 
 const icons={home:'⌂',search:'⌕',weekly:'▣',review:'▤',bug:'🦠',drug:'💊',infection:'🧫',culture:'🧪',ast:'👥'};
@@ -98,11 +140,11 @@ function spectrumView(){
 }
 async function load(){
   const [org,abx,idx,review,reviewBank]=await Promise.all([
-    fetch('data/organisms.json').then(r=>r.json()),fetch('data/antibiotics.json').then(r=>r.json()),fetch('content/index.json').then(r=>r.json()),fetch('content/review/questions.json').then(r=>r.json()),fetch('content/review/bank-v2.json').then(r=>r.json())
+    fetch('data/organisms.json',{cache:'no-store'}).then(r=>r.json()),fetch('data/antibiotics.json',{cache:'no-store'}).then(r=>r.json()),fetch('content/index.json',{cache:'no-store'}).then(r=>r.json()),fetch('content/review/questions.json',{cache:'no-store'}).then(r=>r.json()),fetch('content/review/bank-v2.json',{cache:'no-store'}).then(r=>r.json())
   ]); state.organisms=org;state.antibiotics=abx;state.review=review;
   await reviewFeature.init(reviewBank);
-  state.notes=await Promise.all(idx.notes.map(async p=>parseMD(await fetch(p).then(r=>r.text()),p)));
-  state.weekly=await Promise.all(idx.weekly.map(async p=>parseMD(await fetch(p).then(r=>r.text()),p)));
+  state.notes=await Promise.all(idx.notes.map(async p=>parseMD(await fetch(p,{cache:'no-store'}).then(r=>r.text()),p)));
+  state.weekly=await Promise.all(idx.weekly.map(async p=>parseMD(await fetch(p,{cache:'no-store'}).then(r=>r.text()),p)));
   state.weekly.sort((a,b)=>b.path.localeCompare(a.path));
   try{
     const response=await fetch('content/organized.json',{cache:'no-store'});
@@ -254,8 +296,8 @@ function home(){
   const organizerCard=organizationIntro();
   const fcard=featured?`<section class="card featured-note"><div class="eyebrow">📖 分野別統合ノート・第1号</div><h2>${esc(featured.fm.title)}</h2><p>30秒要約／詳細学習／関連する菌・抗菌薬</p><span class="draft-label">学習用・原典確認待ち</span><button type="button" id="openFeaturedNote" class="primary-btn">MSSA菌血症ノートを開く ›</button></section>`:'';
   const weekCard=w?`<div class="section-title">🎓 今週の学習</div><section class="card weekly-card"><strong>📅 ${esc(w.fm.week||'今週')}</strong><ul>${mdList(w.sections['今週の学習']).slice(0,4).map(x=>`<li>${esc(x)}</li>`).join('')}</ul><button class="primary-btn" id="goWeekly">今週のまとめを見る ›</button></section>`:'';
-  if(state.mode==='study')return `<main class="screen">${brand('感染症を学び、ASTの判断力を育てる')}${searchBox()}<section class="hero-card study-hero"><div class="hero-title">🎓 学習モード</div><p>統合ノートで知識を整理し、復習で定着を目指す</p></section><section class="card study-landing"><div class="section-title compact">🧠 今日の復習</div><p>平日5問・週末10問の復習、自己評価、端末内の回答履歴で学習を継続できます。</p><button class="primary-btn" id="openReviewHome">Reviewを開く ›</button><p class="small-note">現在の問題は原典未確認の練習用です。正式な理解度には算入しません。</p></section>${organizerCard}<section class="card spectrum-home-link"><div class="eyebrow">💊 10月17日の学習表</div><h2>抗真菌薬スペクトル一覧</h2><p>MCFG／CPFG・FLCZ・VRCZ・ITCZ・PSCZ・ISCZ・L-AMB・5-FC を6菌種で比較。</p><button type="button" class="primary-btn" data-open-spectrum>スペクトル表を見る ›</button><p class="small-note">◎○△×をタップして薬剤別・菌種別に確認できます（学習用）。</p></section><section class="card ampc-landing"><div class="eyebrow">🧬 以前の学習を復習</div><h2>AmpC βラクタマーゼ</h2><p>ECKH・CTRX・CFPM・MEPM・CMZを最新IDSAに照らして整理。</p><div class="ampc-shortcuts"><button id="ampcStudyOpen" class="primary-btn">8章の教科書を読む ›</button><button id="ampcQuizOpen" class="primary-btn">AmpCの10問を復習する ›</button></div><p class="small-note">学習専用・原典確認待ち</p></section>${fcard}${weekCard}<section class="card notice">💾 回答履歴は端末内に保存します。ReviewからJSONの書き出し・読み込みができます。</section></main>${nav()}`;
-  return `<main class="screen">${brand()}${searchBox()}<section class="hero-card"><div class="hero-title">💡 AST重要ポイント</div><p>明日からの診療に役立つ<br>感染症診療・ASTのキーポイントを確認</p></section>${organizerCard}${fcard}<div class="grid"><button class="category" data-cat="菌"><span class="icon-bubble teal">🦠</span><strong>菌</strong></button><button class="category" data-cat="抗菌薬"><span class="icon-bubble">💊</span><strong>抗菌薬</strong></button></div><div class="grid three"><button class="category" data-cat="感染症"><span class="icon-bubble pink">🧫</span><strong>感染症</strong></button><button class="category" data-cat="血培"><span class="icon-bubble purple">🧪</span><strong>血培</strong></button><button class="category" data-cat="AST介入"><span class="icon-bubble teal">👥</span><strong>AST介入</strong></button></div>${weekCard}<section class="card notice">🔔 更新確認が必要 <strong>${staleCount()}件</strong></section></main>${nav()}`;
+  if(state.mode==='study')return `<main class="screen">${brand('感染症を学び、ASTの判断力を育てる')}${searchBox()}<section class="hero-card study-hero"><div class="hero-title">🎓 学習モード</div><p>統合ノートで知識を整理し、復習で定着を目指す</p></section>${updateCard()}<section class="card study-landing"><div class="section-title compact">🧠 今日の復習</div><p>平日5問・週末10問の復習、自己評価、端末内の回答履歴で学習を継続できます。</p><button class="primary-btn" id="openReviewHome">Reviewを開く ›</button><p class="small-note">現在の問題は原典未確認の練習用です。正式な理解度には算入しません。</p></section>${organizerCard}<section class="card spectrum-home-link"><div class="eyebrow">💊 10月17日の学習表</div><h2>抗真菌薬スペクトル一覧</h2><p>MCFG／CPFG・FLCZ・VRCZ・ITCZ・PSCZ・ISCZ・L-AMB・5-FC を6菌種で比較。</p><button type="button" class="primary-btn" data-open-spectrum>スペクトル表を見る ›</button><p class="small-note">◎○△×をタップして薬剤別・菌種別に確認できます（学習用）。</p></section><section class="card ampc-landing"><div class="eyebrow">🧬 以前の学習を復習</div><h2>AmpC βラクタマーゼ</h2><p>ECKH・CTRX・CFPM・MEPM・CMZを最新IDSAに照らして整理。</p><div class="ampc-shortcuts"><button id="ampcStudyOpen" class="primary-btn">8章の教科書を読む ›</button><button id="ampcQuizOpen" class="primary-btn">AmpCの10問を復習する ›</button></div><p class="small-note">学習専用・原典確認待ち</p></section>${fcard}${weekCard}<section class="card notice">💾 回答履歴は端末内に保存します。ReviewからJSONの書き出し・読み込みができます。</section></main>${nav()}`;
+  return `<main class="screen">${brand()}${searchBox()}${updateCard()}<section class="hero-card"><div class="hero-title">💡 AST重要ポイント</div><p>明日からの診療に役立つ<br>感染症診療・ASTのキーポイントを確認</p></section>${organizerCard}${fcard}<div class="grid"><button class="category" data-cat="菌"><span class="icon-bubble teal">🦠</span><strong>菌</strong></button><button class="category" data-cat="抗菌薬"><span class="icon-bubble">💊</span><strong>抗菌薬</strong></button></div><div class="grid three"><button class="category" data-cat="感染症"><span class="icon-bubble pink">🧫</span><strong>感染症</strong></button><button class="category" data-cat="血培"><span class="icon-bubble purple">🧪</span><strong>血培</strong></button><button class="category" data-cat="AST介入"><span class="icon-bubble teal">👥</span><strong>AST介入</strong></button></div>${weekCard}<section class="card notice">🔔 更新確認が必要 <strong>${staleCount()}件</strong></section></main>${nav()}`;
 }
 function organizationIntro(){
  const count=state.organized?.topics?.length||0;
@@ -514,6 +556,7 @@ function bindPage(){
   document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{const m=b.dataset.mode;if(m!==state.mode&&(m==='clinical'||m==='study')){state.mode=m;try{localStorage.setItem('astPocketModeV2',m)}catch(e){}render(false)}}));
   $('#openFeaturedNote')?.addEventListener('click',()=>{const n=state.notes.find(n=>n.fm.layout==='integrated');if(n)navigate('note',{selectedNote:n,noteOrigin:'home'});});
   $('#openReviewHome')?.addEventListener('click',()=>navigate('review'));
+  $('#updateAppBtn')?.addEventListener('click',()=>{void checkLatestRelease(true)});
   $('#ampcStudyOpen')?.addEventListener('click',()=>openAmpc(false));
   $('#ampcQuizOpen')?.addEventListener('click',()=>openAmpc(true));
   if(state.view!=='search')document.querySelectorAll('[data-open-spectrum]').forEach(el=>el.addEventListener('click',openSpectrum));
@@ -597,4 +640,10 @@ function render(scroll=true){stopMssaReader();stopTemplateReader();let html='';i
  if(scroll)window.scrollTo({top:0,behavior:'instant'});
  // Reset scrolling before reader listeners attach, or opening the page could overwrite the prior bookmark.
  bindPage()}
+if(typeof window.addEventListener==='function'){
+ window.addEventListener('pageshow',()=>{void checkLatestRelease(false)});
+}
+if(typeof document.addEventListener==='function'){
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden)void checkLatestRelease(false)});
+}
 load().catch(err=>{console.error(err);app.innerHTML='<div class="screen"><div class="card empty">AST Pocketの読み込みに失敗しました。ローカルではHTTPサーバー経由で開いてください。</div></div>'});
