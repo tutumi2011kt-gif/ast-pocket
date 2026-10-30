@@ -185,7 +185,7 @@ async function loadTextbooks(){
  return textbookPromise;
 }
 function textbookShelf(){
- if(state.mode!=='study')return '';
+ if(state.mode!=='study'||typeof REVIEW_TEXTBOOKS==='undefined')return '';
  return '<section class="card textbook-shelf"><div class="section-title compact">📘 詳しい教科書ノート</div>'+
  '<p>GPC clusters・MSSA菌血症・抗真菌薬の全24章。医学的に未承認の学習草案です。</p>'+
  '<div class="textbook-shelf-list">'+REVIEW_TEXTBOOKS.map(entry=>
