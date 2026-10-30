@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
 import {MSSA_PATH,renderMssaNotebook} from '../mssa-notebook.mjs';
 import {renderTemplateNotebook} from '../notebook-templates.mjs';
+import {REVIEW_TEXTBOOKS,parseReviewTextbook,renderReviewTextbook} from '../review-textbooks.mjs';
 
 function smokeTest(){
  execFileSync(process.execPath,['scripts/organize-weekly.mjs','--write'],{stdio:'ignore'});
@@ -17,13 +18,14 @@ function smokeTest(){
   organized:JSON.parse(fs.readFileSync('content/organized.json','utf8')),
   integrations:JSON.parse(fs.readFileSync('content/integration-proposals.json','utf8'))
  };
- const context={console,Date,setTimeout(){return 1},clearTimeout(){},MSSA_PATH,renderMssaNotebook,renderTemplateNotebook,localStorage:{getItem(){return null},setItem(){}},document:{querySelector(){return {innerHTML:''}},querySelectorAll(){return []}},window:{scrollTo(){}}};
+ const context={console,Date,setTimeout(){return 1},clearTimeout(){},MSSA_PATH,renderMssaNotebook,renderTemplateNotebook,REVIEW_TEXTBOOKS,parseReviewTextbook,renderReviewTextbook,localStorage:{getItem(){return null},setItem(){}},document:{querySelector(){return {innerHTML:''}},querySelectorAll(){return []}},window:{scrollTo(){}}};
  vm.createContext(context);
  const setup=[
   `state.notes=${JSON.stringify(data.notes)}.map(x=>parseMD(x.text,x.path));`,
   `state.weekly=${JSON.stringify(data.weekly)}.map(x=>parseMD(x.text,x.path));`,
   `state.organized=${JSON.stringify(data.organized)};`,
   `state.integrations=${JSON.stringify(data.integrations)};`,
+  `state.textbooks=${JSON.stringify(REVIEW_TEXTBOOKS.map(entry=>[entry.id,parseReviewTextbook(entry,fs.readFileSync(entry.path,'utf8'))]))}.reduce((acc,[key,book])=>(acc[key]=book,acc),{});`,
   `state.mode='study';state.view='library';`,
   `state.selectedNote=state.notes.find(n=>n.fm.layout==='integrated');`,
   `state.selectedTopicId='infection-candidemia';`,
@@ -32,6 +34,8 @@ function smokeTest(){
  vm.runInContext(app.slice(0,end)+'\n'+setup,context);
  const html=context.testResult;
  assert.ok(html.home.includes('openReviewQueue'),'Home review button');
+ assert.ok(html.home.includes('data-open-textbook'),'Study home links to real 8-chapter textbooks');
+ assert.ok(html.library.includes('data-open-textbook'),'Study library lists 8-chapter textbooks');
  assert.ok(html.library.includes('open-generated-topic'),'New topic links');
  assert.ok(html.note.includes('Weeklyからの学習メモ'),'Existing note draft additions');
  assert.ok(html.note.includes('原典確認待ち'),'Medical review gate');
@@ -39,6 +43,9 @@ function smokeTest(){
  assert.ok(html.topic.includes('data-template-reader'),'Candidate topics must use shared reader');
  assert.equal((html.topic.match(/data-template-chapter=/g)||[]).length,8,'Eight chapters in Candida topic');
  assert.ok(html.topic.includes('open-weekly-ref'),'Provenance links');
+ assert.ok(html.topic.includes('data-open-textbook'),'Candida study topic links to antifungal textbook');
+ vm.runInContext("state.view='textbook';state.selectedTextbookId='antifungal';globalThis.studyBook=textbookView();",context);
+ assert.ok(context.studyBook.includes('data-template-reader'));assert.equal((context.studyBook.match(/data-template-chapter=/g)||[]).length,8);
  assert.ok(html.queue.includes('原典確認待ち'),'Medical review queue');
  vm.runInContext("state.view='note';state.selectedNote=state.notes.find(n=>n.path.includes('stenotrophomonas'));globalThis.stenoNote=noteView();",context);
  assert.ok(context.stenoNote.includes('data-template-reader'),'Existing organism note uses reusable eight-chapter layout');
@@ -46,6 +53,10 @@ function smokeTest(){
  assert.ok(context.stenoNote.includes('原典確認待ち'),'Existing unsubstantiated verified flag is not clinical clearance');
  vm.runInContext("state.selectedNote=state.notes.find(n=>n.fm.layout==='integrated');",context);
  vm.runInContext(`state.mode='clinical';globalThis.clinicalNote=integratedNoteView(state.selectedNote);globalThis.clinicalTopic=dynamicTopicView();`,context);
+ vm.runInContext("state.selectedTextbookId='antifungal';globalThis.clinicalTextbook=textbookView();globalThis.clinicalHome=home();",context);
+ assert.ok(context.clinicalTextbook.includes('臨床モードでは非表示'));
+ assert.ok(!context.clinicalTextbook.includes('data-template-chapter'));
+ assert.ok(!context.clinicalHome.includes('data-open-textbook'),'No new textbook shelf in clinical home');
  assert.ok(!context.clinicalNote.includes('Weeklyからの学習メモ'),'No unverified integration in clinical note');
  assert.ok(!context.clinicalTopic.includes('学習時の回答'),'No draft claims in clinical topic');
  assert.ok(!context.clinicalTopic.includes('open-weekly-ref'),'No candidate source snippets in clinical mode');
