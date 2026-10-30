@@ -89,5 +89,7 @@ jobs:
         run: node --check app-update.mjs && node --check scripts/prepare-pages-version.mjs && node scripts/test-app-update.mjs
       - name: Check evidence audit of six draft review questions
         run: node scripts/test-evidence-audit.mjs
+      - name: Validate study-only textbook reader and 24 source chapters
+        run: node --check review-textbooks.mjs && node scripts/test-review-textbooks.mjs
       - name: Check required files
         run: test -f index.html && test -f app.js && test -f styles.css
