@@ -87,5 +87,7 @@ jobs:
         run: node --check antifungal-spectrum.mjs && node --check app.js && node scripts/test-antifungal-spectrum.mjs && node scripts/test-antifungal-spectrum-ui.mjs
       - name: Verify iPhone installed-app updates and fresh deploy caching
         run: node --check app-update.mjs && node --check scripts/prepare-pages-version.mjs && node scripts/test-app-update.mjs
+      - name: Check evidence audit of six draft review questions
+        run: node scripts/test-evidence-audit.mjs
       - name: Check required files
         run: test -f index.html && test -f app.js && test -f styles.css
