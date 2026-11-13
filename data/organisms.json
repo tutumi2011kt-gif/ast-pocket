@@ -1053,17 +1053,28 @@
     "ja": "セレウス菌",
     "short": "B. cereus",
     "aliases": [
-      "バチルスセレウス"
+      "バチルスセレウス",
+      "バシラス",
+      "バチルス",
+      "バシラスセレウス",
+      "B. cereus",
+      "B cereus",
+      "VCM バシラス"
     ],
     "tags": [
-      "GPR"
+      "GPR",
+      "菌血症",
+      "VCM",
+      "CRBSI",
+      "コンタミ評価"
     ],
     "kind": "species",
-    "source": "https://lpsn.dsmz.de/",
-    "source_note": "参考データベース（この個別項目との照合は未完了）",
-    "last_reviewed": null,
-    "status": "draft",
-    "added_on": "2026-10-10"
+    "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4570458/",
+    "source_note": "B. cereus菌血症29例の抗菌薬感受性とCRBSI対処を原著・IDSA指針で照合（Bacillus属全体への一律推奨ではない）",
+    "last_reviewed": "2026-11-13",
+    "status": "verified",
+    "added_on": "2026-10-10",
+    "note": "content/notes/bacillus-cereus-bacteremia.md"
   },
   {
     "id": "cutibacterium-acnes",
