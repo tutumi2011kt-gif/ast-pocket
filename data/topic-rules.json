@@ -34,6 +34,23 @@
   ],
   "topics": [
     {
+      "id": "organism-bacillus-cereus",
+      "title": "Bacillus cereus菌血症・VCM",
+      "category": "organism",
+      "aliases": [
+        "Bacillus cereus",
+        "Bacillus spp.",
+        "バシラス",
+        "バチルス",
+        "セレウス菌",
+        "B. cereus",
+        "VCM バシラス",
+        "バンコマイシン バシラス",
+        "Bacillus菌血症"
+      ],
+      "note": "content/notes/bacillus-cereus-bacteremia.md"
+    },
+    {
       "id": "infection-mssa-bacteremia",
       "title": "MSSA・黄色ブドウ球菌菌血症",
       "category": "infection",
