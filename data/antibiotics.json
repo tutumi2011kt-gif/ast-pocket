@@ -891,17 +891,31 @@
     "brands": [
       "アミカシン"
     ],
-    "aliases": [],
+    "aliases": [
+      "硫酸アミカシン",
+      "アミカシン硫酸塩",
+      "アリケイス",
+      "ALIS",
+      "amikacin liposome inhalation suspension"
+    ],
     "tags": [
       "TDM",
-      "アミノグリコシド系"
+      "アミノグリコシド系",
+      "AMK",
+      "尿路感染",
+      "単回投与",
+      "ESBL",
+      "緑膿菌",
+      "肺MAC症",
+      "ALIS"
     ],
     "class": "アミノグリコシド系",
-    "source": "https://www.pmda.go.jp/PmdaSearch/iyakuSearch/",
-    "source_note": "PMDA検索入口。各販売名・薬効分類の個別照合は未完了",
-    "last_reviewed": null,
+    "source": "https://amr.jihs.go.jp/app/tebiki_hoi.html",
+    "source_note": "PMDA・日本化学療法学会TDM2022・JIHS AMR対策補遺・IDSA 2026を参照した学習ノート。国内承認用法と国外推奨の差に注意。",
+    "last_reviewed": "2026-11-21",
     "status": "draft",
-    "added_on": "2026-10-10"
+    "added_on": "2026-10-10",
+    "note": "content/notes/amikacin-ast-study.md"
   },
   {
     "id": "tobramycin",
