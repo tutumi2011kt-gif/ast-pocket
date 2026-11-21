@@ -34,6 +34,22 @@
   ],
   "topics": [
     {
+      "id": "drug-amikacin-ast",
+      "title": "アミカシン（AMK）使い分け・TDM",
+      "category": "drug",
+      "aliases": [
+        "アミカシン",
+        "硫酸アミカシン",
+        "AMK",
+        "Amikacin",
+        "アリケイス",
+        "ALIS",
+        "アミノグリコシド 1日1回",
+        "アミカシン TDM"
+      ],
+      "note": "content/notes/amikacin-ast-study.md"
+    },
+    {
       "id": "organism-bacillus-cereus",
       "title": "Bacillus cereus菌血症・VCM",
       "category": "organism",
